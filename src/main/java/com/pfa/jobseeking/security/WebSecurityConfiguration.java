@@ -31,7 +31,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.authenticationEntryPoint(basicAuthenticationEntryPoint)
 		.and()
 		.authorizeRequests()
-			.antMatchers("/test").permitAll()
+			.antMatchers("/test", "/fill").permitAll()
 			.antMatchers("/users").hasRole("ADMIN")
 			.anyRequest().authenticated();
 

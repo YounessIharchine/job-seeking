@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pfa.jobseeking.entity.User;
+import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.service.UserService;
 
@@ -21,8 +21,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findUserByUsername(String username) {
-		return userRepository.findUserByUsername(username);
+	public User findUserByEmail(String email) {
+		return userRepository.findUserByEmail(email);
+	}
+
+	@Override
+	public User save(User user) {
+		return userRepository.save(user);
 	}
 
 }

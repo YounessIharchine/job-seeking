@@ -1,8 +1,10 @@
-package com.pfa.jobseeking.entity;
+package com.pfa.jobseeking.model.user;
 
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
@@ -11,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Role {
 
+	@JsonIgnore
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	
 	String name;
@@ -23,6 +27,12 @@ public class Role {
 	
 	
 	public Role() { }
+	
+	
+	
+	public Role(String name) {
+		this.name = name;
+	}
 
 
 	

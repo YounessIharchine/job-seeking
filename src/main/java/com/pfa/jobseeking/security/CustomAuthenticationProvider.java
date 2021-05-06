@@ -13,8 +13,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.pfa.jobseeking.entity.Role;
-import com.pfa.jobseeking.entity.User;
+import com.pfa.jobseeking.model.user.Role;
+import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.service.UserService;
 
 
@@ -27,10 +27,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		
-		String username = authentication.getName();
+		String email = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        User user = userService.findUserByUsername(username);
+        User user = userService.findUserByEmail(email);
         
         if(user != null) {
         	
@@ -39,7 +39,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 for(Role role : user.getRoles())
                 	authorities.add(new SimpleGrantedAuthority(role.getName()));
 
-                return new UsernamePasswordAuthenticationToken(username, password, authorities);
+                return new UsernamePasswordAuthenticationToken(email, password, authorities);
         	}
         	else {
         		throw new BadCredentialsException("Wrong Password");

@@ -1,4 +1,4 @@
-package com.pfa.jobseeking.entity;
+package com.pfa.jobseeking.model.user;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -11,4 +11,8 @@ public class Admin extends User {
 	public Admin() { }
 	
 	
+	public Admin(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
 }
