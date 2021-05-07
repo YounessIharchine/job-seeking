@@ -2,6 +2,7 @@ package com.pfa.jobseeking.model.offer;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -13,7 +14,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
+import com.pfa.jobseeking.model.ApplicationNotification;
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.model.Domain;
 import com.pfa.jobseeking.model.user.Company;
@@ -47,6 +50,10 @@ public class Offer {
 	
 	@ManyToMany(mappedBy = "offers")
 	Set<Seeker> seekers;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "application_notif_id")
+	ApplicationNotification applicationNotification;
 	
 	
 	public Offer() { }

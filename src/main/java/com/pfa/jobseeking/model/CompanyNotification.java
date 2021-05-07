@@ -1,30 +1,37 @@
 package com.pfa.jobseeking.model;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.pfa.jobseeking.model.user.Company;
 
 @Entity
-public class CompanyCreationRequest extends Request {
+public class CompanyNotification extends Notification {
 
-	@OneToOne
-	@JoinColumn(name = "company_id")
+	@OneToOne(mappedBy = "companyNotification")
 	Company company;
 	
+	int newFollowers;
 	
-	public CompanyCreationRequest() { }
+	
+	public CompanyNotification() { }
 
-
+	
 	public Company getCompany() {
 		return company;
 	}
+	public int getNewFollowers() {
+		return newFollowers;
+	}
 
-
+	
 	public void setCompany(Company company) {
 		this.company = company;
 	}
+	public void setNewFollowers(int newFollowers) {
+		this.newFollowers = newFollowers;
+	}
+	
 	
 	
 }

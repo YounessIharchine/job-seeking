@@ -1,7 +1,6 @@
 package com.pfa.jobseeking.controller;
 
 import java.security.Principal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,13 +26,13 @@ public class TestController {
 		
 	}
 	
-	@GetMapping("/users")
+	/*@GetMapping("/users")
 	List<User> getUsers() {
 		
 		List<User> users = userService.findAll();
 		return users;
 		
-	}
+	}*/
 	
 	@GetMapping("/authenticated")
 	User showAuthenticatedUser(Principal principal) {

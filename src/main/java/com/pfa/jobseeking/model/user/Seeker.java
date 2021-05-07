@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.pfa.jobseeking.model.City;
+import com.pfa.jobseeking.model.SeekerNotification;
 import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.seeker.CoverLetter;
 import com.pfa.jobseeking.model.seeker.Preferences;
@@ -51,6 +52,11 @@ public class Seeker extends User {
 	@JoinTable(name = "save", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "offer_id"))
 	Set<Offer> offers;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "seeker_notif_id")
+	SeekerNotification seekerNotification;
+	
+	
 	public Seeker() { }
 	
 	
@@ -82,7 +88,26 @@ public class Seeker extends User {
 	public CoverLetter getCoverLetter() {
 		return coverLetter;
 	}
-
+	public City getCity() {
+		return city;
+	}
+	public Profile getProfile() {
+		return profile;
+	}
+	public Preferences getPreferences() {
+		return preferences;
+	}
+	public Set<Company> getCompanies() {
+		return companies;
+	}
+	public Set<Offer> getOffers() {
+		return offers;
+	}
+	public SeekerNotification getSeekerNotification() {
+		return seekerNotification;
+	}
+	
+	
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
@@ -101,6 +126,24 @@ public class Seeker extends User {
 	}
 	public void setCoverLetter(CoverLetter coverLetter) {
 		this.coverLetter = coverLetter;
+	}
+	public void setCity(City city) {
+		this.city = city;
+	}
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
+	public void setPreferences(Preferences preferences) {
+		this.preferences = preferences;
+	}
+	public void setCompanies(Set<Company> companies) {
+		this.companies = companies;
+	}
+	public void setOffers(Set<Offer> offers) {
+		this.offers = offers;
+	}
+	public void setSeekerNotification(SeekerNotification seekerNotification) {
+		this.seekerNotification = seekerNotification;
 	}
 	
 	

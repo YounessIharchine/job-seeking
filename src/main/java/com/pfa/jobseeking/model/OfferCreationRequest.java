@@ -12,4 +12,18 @@ public class OfferCreationRequest extends Request {
 	@OneToOne
 	@JoinColumn(name = "offer_id")
 	Offer offer;
+	
+	
+	public OfferCreationRequest() { }
+
+
+	public Offer getOffer() {
+		return offer;
+	}
+	public void setOffer(Offer offer) {
+		this.offer = offer;
+	}
+	
+	
+	
 }
