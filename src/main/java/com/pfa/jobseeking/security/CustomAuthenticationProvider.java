@@ -15,14 +15,14 @@ import org.springframework.stereotype.Component;
 
 import com.pfa.jobseeking.model.user.Role;
 import com.pfa.jobseeking.model.user.User;
-import com.pfa.jobseeking.service.UserService;
+import com.pfa.jobseeking.repository.UserRepository;
 
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
-	UserService userService;
+	UserRepository userRepository;
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -30,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		String email = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        User user = userService.findUserByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         
         if(user != null) {
         	

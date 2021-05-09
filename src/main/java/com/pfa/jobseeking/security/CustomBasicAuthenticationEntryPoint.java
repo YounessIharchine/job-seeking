@@ -1,31 +1,45 @@
 package com.pfa.jobseeking.security;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
 
 	@Override
 	public void afterPropertiesSet() {
-		setRealmName("IDK");
+		setRealmName("CustomBasicAuthRealm");
 		super.afterPropertiesSet();
 	}
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {
-		response.addHeader("WWW-Authenticate", "Basic realm=" + getRealmName() + "");
+		
+//		response.addHeader("WWW-Authenticate", "Basic realm=" + getRealmName() + "");
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        PrintWriter writer = response.getWriter();
-        writer.println("HTTP Status 401 - " + authException.getMessage());
+        
+        final Map<String, Object> body = new HashMap<>();
+        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+        body.put("message", authException.getMessage());
+
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(response.getOutputStream(), body);
+        
+//        PrintWriter writer = response.getWriter();
+//        writer.println("HTTP Status 401 - " + authException.getMessage());
 	}
 
 }

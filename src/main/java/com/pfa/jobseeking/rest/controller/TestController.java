@@ -1,4 +1,4 @@
-package com.pfa.jobseeking.controller;
+package com.pfa.jobseeking.rest.controller;
 
 import java.security.Principal;
 
@@ -11,6 +11,7 @@ import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Role;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.model.user.User;
+import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.service.UserService;
 
 @RestController
@@ -35,7 +36,7 @@ public class TestController {
 	}*/
 	
 	@GetMapping("/authenticated")
-	User showAuthenticatedUser(Principal principal) {
+	User showAuthenticatedUser(Principal principal) throws NotFoundException {
 		
 		User user = userService.findUserByEmail(principal.getName());
 		return user;

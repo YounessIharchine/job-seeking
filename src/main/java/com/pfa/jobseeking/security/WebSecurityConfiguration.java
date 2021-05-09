@@ -30,9 +30,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.httpBasic()
 		.authenticationEntryPoint(basicAuthenticationEntryPoint)
 		.and()
+		//.csrf().disable()
 		.authorizeRequests()
+			//.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 			.antMatchers("/test", "/fill").permitAll()
-			.antMatchers("/users").hasRole("ADMIN")
+			//.antMatchers("/api/users").hasRole("ADMIN")
 			.anyRequest().authenticated();
 
 	}
