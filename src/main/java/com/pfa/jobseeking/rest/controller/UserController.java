@@ -1,8 +1,12 @@
 package com.pfa.jobseeking.rest.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +30,32 @@ public class UserController {
 	//Only ADMINs can list all users
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/users")
-	List<User> listUsers() throws NotFoundException {
+	List<User> listUsers(@RequestParam(required = false) Integer page, 
+			@RequestParam(required = false, defaultValue = "20") Integer limit, 
+			@RequestParam(required = false) String[] sort,
+			@RequestParam(required = false) String[] direction) 
+					throws NotFoundException {
+		
+		if(page == null)
+			return userService.findAll();
+		else if(sort == null)
+			return userService.findAll(PageRequest.of(page, limit));
+		
+		List<Order> orders = new ArrayList<>();
+		for(String field : sort) {
 			
-		return userService.findAll();
+			if(field.contains("desc"))
+				orders.add(Sort.Order.desc(field.substring(0, field.length()-4)));
+			else if(field.contains("asc"))
+				orders.add(Sort.Order.asc(field.substring(0, field.length()-3)));
+			else
+				orders.add(Sort.Order.asc(field));
+		}
+		
+		return userService.findAll(PageRequest.of(page, limit, Sort.by(orders)));
 		
 	}
+	
 	
 	
 	//The authenticated user can only see his information using email parameter

@@ -3,6 +3,7 @@ package com.pfa.jobseeking.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.pfa.jobseeking.model.user.User;
@@ -17,9 +18,17 @@ public class UserServiceImpl implements UserService {
 	UserRepository userRepository;
 	
 	
+	
 	@Override
 	public List<User> findAll() {
 		return userRepository.findAll();
+	}
+
+	
+	
+	@Override
+	public List<User> findAll(Pageable pageable) {
+		return userRepository.findAll(pageable).getContent();
 	}
 
 	
