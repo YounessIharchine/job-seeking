@@ -9,10 +9,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.model.SeekerNotification;
+import com.pfa.jobseeking.model.offer.Application;
 import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.seeker.CoverLetter;
 import com.pfa.jobseeking.model.seeker.Preferences;
@@ -43,6 +45,9 @@ public class Seeker extends User {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cover_letter_id")
 	CoverLetter coverLetter;
+	
+	@OneToMany(mappedBy = "seeker", orphanRemoval = true, cascade = CascadeType.REMOVE)
+	Set<Application> applications;
 	
 	@ManyToMany
 	@JoinTable(name = "follow", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "company_id"))

@@ -14,6 +14,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.pfa.jobseeking.model.ApplicationNotification;
@@ -40,13 +41,15 @@ public class Offer {
 	@ManyToOne
 	@JoinColumn(name = "company_id")
 	Company company;
-	
 	@ManyToOne
 	@JoinColumn(name = "city_id")
 	City city;
 	@ManyToOne
 	@JoinColumn(name = "domain_id")
 	Domain domain;
+	
+	@OneToMany(mappedBy = "offer", orphanRemoval = true, cascade = CascadeType.REMOVE)
+	Set<Application> applications;
 	
 	@ManyToMany(mappedBy = "offers")
 	Set<Seeker> seekers;
@@ -56,7 +59,80 @@ public class Offer {
 	ApplicationNotification applicationNotification;
 	
 	
+	
 	public Offer() { }
+	
+	
+	
+	public int getId() {
+		return id;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public String getDate() {
+		return date;
+	}
+	public boolean isOpen() {
+		return isOpen;
+	}
+	public boolean isVerified() {
+		return isVerified;
+	}
+	public Company getCompany() {
+		return company;
+	}
+	public City getCity() {
+		return city;
+	}
+	public Domain getDomain() {
+		return domain;
+	}
+	public Set<Seeker> getSeekers() {
+		return seekers;
+	}
+	public ApplicationNotification getApplicationNotification() {
+		return applicationNotification;
+	}
+	
+	
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
+	}
+	public void setVerified(boolean isVerified) {
+		this.isVerified = isVerified;
+	}
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	public void setCity(City city) {
+		this.city = city;
+	}
+	public void setDomain(Domain domain) {
+		this.domain = domain;
+	}
+	public void setSeekers(Set<Seeker> seekers) {
+		this.seekers = seekers;
+	}
+	public void setApplicationNotification(ApplicationNotification applicationNotification) {
+		this.applicationNotification = applicationNotification;
+	}
 	
 	
 	

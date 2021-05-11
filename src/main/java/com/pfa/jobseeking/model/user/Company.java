@@ -1,5 +1,6 @@
 package com.pfa.jobseeking.model.user;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -41,7 +42,7 @@ public class Company extends User {
 	CompanyProfile companyProfile;
 	
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-	Set<Offer> offers;
+	Set<Offer> offers = new HashSet<Offer>();
 	
 	@ManyToMany(mappedBy = "companies")
 	Set<Seeker> seekers;
@@ -127,6 +128,11 @@ public class Company extends User {
 	}
 	public void setCompanyNotification(CompanyNotification companyNotification) {
 		this.companyNotification = companyNotification;
+	}
+	
+	
+	public void addOffer(Offer offer) {
+		this.offers.add(offer);
 	}
 	
 }
