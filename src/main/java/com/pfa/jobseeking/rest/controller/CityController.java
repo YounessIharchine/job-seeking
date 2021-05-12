@@ -7,38 +7,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pfa.jobseeking.model.user.User;
+import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
-import com.pfa.jobseeking.service.UserService;
+import com.pfa.jobseeking.service.CityService;
 
 @RestController
 @RequestMapping("${rest.api.basePath}")
-public class UserController {
+public class CityController {
 
 	@Autowired
-	UserService userService;
+	CityService cityService;
 	
-	
-	//Only ADMINs can list all users
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/users")
-	List<User> listUsers(@RequestParam(required = false) Integer page, 
+	@GetMapping("/cities")
+	List<City> listCities(@RequestParam(required = false) Integer page, 
 			@RequestParam(required = false, defaultValue = "20") Integer limit, 
 			@RequestParam(required = false) String[] sort) 
 					throws NotFoundException {
 		
 		if(page == null)
-			return userService.findAll();
+			return cityService.findAll();
 		else if(sort == null)
-			return userService.findAll(PageRequest.of(page, limit));
+			return cityService.findAll(PageRequest.of(page, limit));
 		
 		List<Order> orders = new ArrayList<>();
 		for(String field : sort) {
@@ -51,29 +45,7 @@ public class UserController {
 				orders.add(Sort.Order.asc(field));
 		}
 		
-		return userService.findAll(PageRequest.of(page, limit, Sort.by(orders)));
+		return cityService.findAll(PageRequest.of(page, limit, Sort.by(orders)));
 		
 	}
-	
-	
-	
-	//The authenticated user can only see his information using email parameter
-	@PreAuthorize("#email == authentication.name")
-	@GetMapping(value = "/users", params = "email")
-	User showUserByEmail(@RequestParam String email) throws NotFoundException {
-		
-		return userService.findUserByEmail(email);
-		
-	}
-	
-	@PostAuthorize("returnObject.email == authentication.name")
-	@GetMapping("/users/{id}")
-	User showUser(@PathVariable int id) throws NotFoundException {
-		
-		return userService.findById(id);
-		
-	}
-	
-	
-
 }

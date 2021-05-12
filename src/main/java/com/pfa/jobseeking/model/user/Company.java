@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.model.CompanyCreationRequest;
 import com.pfa.jobseeking.model.CompanyNotification;
@@ -26,6 +27,7 @@ public class Company extends User {
 	String name;
 	String publicEmail;
 	String phone;
+	@JsonIgnore //if you want to disable this, remove it from the getter
 	boolean isVerified;
 	@ManyToOne
 	@JoinColumn(name = "city_id")
@@ -34,19 +36,24 @@ public class Company extends User {
 	@JoinColumn(name = "domain_id")
 	Domain domain;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
 	CompanyCreationRequest companyCreationRequest;
 	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "company_profile_id")
 	CompanyProfile companyProfile;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
 	Set<Offer> offers = new HashSet<Offer>();
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "companies")
 	Set<Seeker> seekers;
 	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "company_notif_id")
 	CompanyNotification companyNotification;
@@ -69,6 +76,7 @@ public class Company extends User {
 	public String getPhone() {
 		return phone;
 	}
+	@JsonIgnore
 	public boolean isVerified() {
 		return isVerified;
 	}

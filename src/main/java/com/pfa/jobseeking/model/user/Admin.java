@@ -6,12 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pfa.jobseeking.model.AdminNotification;
 
 @Entity
 @DiscriminatorValue("admin")
 public class Admin extends User {
 
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "admin_notif_id")
 	AdminNotification adminNotification;

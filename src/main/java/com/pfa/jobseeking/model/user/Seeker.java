@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.model.SeekerNotification;
 import com.pfa.jobseeking.model.offer.Application;
@@ -34,29 +35,36 @@ public class Seeker extends User {
 	@JoinColumn(name = "city_id")
 	City city;
 	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "profile_id")
 	Profile profile;
 	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "preferences_id")
 	Preferences preferences;
 	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cover_letter_id")
 	CoverLetter coverLetter;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "seeker", orphanRemoval = true, cascade = CascadeType.REMOVE)
 	Set<Application> applications;
 	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "follow", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "company_id"))
 	Set<Company> companies;
 	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "save", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "offer_id"))
 	Set<Offer> offers;
 	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "seeker_notif_id")
 	SeekerNotification seekerNotification;
