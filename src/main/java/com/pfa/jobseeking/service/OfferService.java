@@ -8,7 +8,7 @@ import com.pfa.jobseeking.model.offer.Offer;
 
 public interface OfferService {
 
-	List<Offer> findAll();
+	List<Offer> findAll(String domain, String keyword);
 
 	List<Offer> findAll(Pageable pageable);
 

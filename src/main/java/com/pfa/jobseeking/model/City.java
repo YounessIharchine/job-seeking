@@ -16,7 +16,6 @@ import com.pfa.jobseeking.model.user.Seeker;
 @Entity
 public class City {
 
-	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;

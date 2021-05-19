@@ -18,8 +18,24 @@ public class OfferServiceImpl implements OfferService {
 	OfferRepository offerRepository;
 	
 	@Override
-	public List<Offer> findAll() {
-		return offerRepository.findAll();
+	public List<Offer> findAll(String domain, String keyword) {
+		if(domain == null) {
+			if(keyword == null) {
+				return offerRepository.findAll();
+			}
+			else {
+				return offerRepository.findOfferByTitleContainsOrDescriptionContains(keyword, keyword);
+			}
+		}
+		else {
+			if(keyword == null) {
+				return offerRepository.findOfferByDomainName(domain);
+			}
+			else {
+				return offerRepository.findOfferByDomainNameAndTitleContainsOrDomainNameAndDescriptionContains(domain, keyword, domain, keyword);
+			}
+		}
+
 	}
 
 	@Override
