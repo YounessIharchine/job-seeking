@@ -2,12 +2,15 @@ package com.pfa.jobseeking.security;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -61,6 +64,37 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
 				.claim("roles", springUser.getAuthorities())
 				.compact();
+		
 		response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + jwtToken);
+		
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		  
+		final Map<String, Object> body = new HashMap<>();
+		body.put("status", HttpServletResponse.SC_OK);
+		body.put("message", "Authentication Successful");
+		
+		final ObjectMapper mapper = new ObjectMapper();
+		mapper.writeValue(response.getOutputStream(), body);
 	}
+
+
+	@Override
+	protected void unsuccessfulAuthentication(
+			HttpServletRequest request, 
+			HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
+		
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		  
+		final Map<String, Object> body = new HashMap<>();
+		body.put("status", HttpServletResponse.SC_FORBIDDEN);
+		body.put("message", failed.getMessage());
+		
+		final ObjectMapper mapper = new ObjectMapper();
+		mapper.writeValue(response.getOutputStream(), body);
+	}
+	
+	
+	
 }
