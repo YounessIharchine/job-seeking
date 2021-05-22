@@ -3,7 +3,6 @@ package com.pfa.jobseeking.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.pfa.jobseeking.model.offer.Offer;
@@ -38,9 +37,17 @@ public class OfferServiceImpl implements OfferService {
 
 	}
 
-	@Override
-	public List<Offer> findAll(Pageable pageable) {
-		return offerRepository.findAll(pageable).getContent();
-	}
-
 }
+
+
+
+
+
+
+
+
+
+//@Override
+//public List<Offer> findAll(Pageable pageable) {
+//	return offerRepository.findAll(pageable).getContent();
+//}

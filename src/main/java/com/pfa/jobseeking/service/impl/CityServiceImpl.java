@@ -3,7 +3,6 @@ package com.pfa.jobseeking.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.pfa.jobseeking.model.City;
@@ -28,11 +27,6 @@ public class CityServiceImpl implements CityService {
 		return cityRepository.findAll();
 	}
 	
-	
-	@Override
-	public List<City> findAll(Pageable pageable) {
-		return cityRepository.findAll(pageable).getContent();
-	}
 
 
 	@Override
@@ -41,3 +35,12 @@ public class CityServiceImpl implements CityService {
 	}
 
 }
+
+
+
+
+
+//@Override
+//public List<City> findAll(Pageable pageable) {
+//	return cityRepository.findAll(pageable).getContent();
+//}

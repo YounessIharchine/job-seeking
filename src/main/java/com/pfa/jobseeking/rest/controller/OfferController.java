@@ -28,31 +28,35 @@ public class OfferController {
 		
 	}
 	
-	
-	
-//	@GetMapping("/offers")
-//	List<Offer> listOffers(@RequestParam(required = false) Integer page, 
-//	@RequestParam(required = false, defaultValue = "20") Integer limit, 
-//	@RequestParam(required = false) String[] sort) 
-//			throws NotFoundException {
-//
-//		if(page == null)
-//			return offerService.findAll();
-//		else if(sort == null)
-//			return offerService.findAll(PageRequest.of(page, limit));
-//		
-//		List<Order> orders = new ArrayList<>();
-//		for(String field : sort) {
-//			
-//			if(field.contains("desc"))
-//				orders.add(Sort.Order.desc(field.substring(0, field.length()-4)));
-//			else if(field.contains("asc"))
-//				orders.add(Sort.Order.asc(field.substring(0, field.length()-3)));
-//			else
-//				orders.add(Sort.Order.asc(field));
-//		}
-//		
-//		return offerService.findAll(PageRequest.of(page, limit, Sort.by(orders)));
-//	}
-	
 }
+
+
+
+
+
+
+
+//@GetMapping("/offers")
+//List<Offer> listOffers(@RequestParam(required = false) Integer page, 
+//@RequestParam(required = false, defaultValue = "20") Integer limit, 
+//@RequestParam(required = false) String[] sort) 
+//		throws NotFoundException {
+//
+//	if(page == null)
+//		return offerService.findAll();
+//	else if(sort == null)
+//		return offerService.findAll(PageRequest.of(page, limit));
+//	
+//	List<Order> orders = new ArrayList<>();
+//	for(String field : sort) {
+//		
+//		if(field.contains("desc"))
+//			orders.add(Sort.Order.desc(field.substring(0, field.length()-4)));
+//		else if(field.contains("asc"))
+//			orders.add(Sort.Order.asc(field.substring(0, field.length()-3)));
+//		else
+//			orders.add(Sort.Order.asc(field));
+//	}
+//	
+//	return offerService.findAll(PageRequest.of(page, limit, Sort.by(orders)));
+//}

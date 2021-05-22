@@ -2,11 +2,11 @@ package com.pfa.jobseeking.repository;
 
 import java.util.List;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import com.pfa.jobseeking.model.user.User;
 
-public interface UserRepository extends PagingAndSortingRepository<User, Integer> {
+public interface UserRepository extends CrudRepository<User, Integer> {
 	
 	List<User> findAll();
 		

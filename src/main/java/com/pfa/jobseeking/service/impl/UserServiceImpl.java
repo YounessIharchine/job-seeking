@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,14 +36,7 @@ public class UserServiceImpl implements UserService {
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
-
 	
-	
-	@Override
-	public List<User> findAll(Pageable pageable) {
-		return userRepository.findAll(pageable).getContent();
-	}
-
 	
 	
 	@Override
@@ -103,6 +95,15 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-
-
 }
+
+
+
+
+
+
+
+//@Override
+//public List<User> findAll(Pageable pageable) {
+//	return userRepository.findAll(pageable).getContent();
+//}
