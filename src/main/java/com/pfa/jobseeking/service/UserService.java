@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.rest.dto.UserDto;
-import com.pfa.jobseeking.rest.exception.EmailExistsException;
+import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 
 public interface UserService {
@@ -17,6 +17,6 @@ public interface UserService {
 	
 	User save(User user);
 
-	void save(UserDto user) throws EmailExistsException;
+	void save(UserDto user) throws AlreadyExistsException;
 
 }

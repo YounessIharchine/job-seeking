@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.pfa.jobseeking.rest.exception.EmailExistsException;
+import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.Response;
 
@@ -22,7 +22,7 @@ public class ControllerExceptionHandler {
 	}
 	
 	@ExceptionHandler
-	ResponseEntity<Response> emailExistsExceptionHandler(EmailExistsException e) {
+	ResponseEntity<Response> alreadyExistsExceptionHandler(AlreadyExistsException e) {
 		
 		Response response = new Response(HttpStatus.BAD_REQUEST.value(), e.getMessage());
 		

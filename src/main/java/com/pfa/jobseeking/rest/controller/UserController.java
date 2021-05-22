@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.rest.dto.UserDto;
-import com.pfa.jobseeking.rest.exception.EmailExistsException;
+import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.UserService;
 
@@ -20,7 +20,7 @@ public class UserController {
 	UserService userService;
 	
 	@PostMapping("/register")
-	ResponseEntity<Response> register(@RequestBody UserDto user) throws EmailExistsException {
+	ResponseEntity<Response> register(@RequestBody UserDto user) throws AlreadyExistsException {
 		userService.save(user);
 		
 		Response response = new Response(HttpStatus.OK.value(), "Registration Successful");

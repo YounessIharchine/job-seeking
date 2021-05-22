@@ -15,7 +15,7 @@ import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.repository.RoleRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.UserDto;
-import com.pfa.jobseeking.rest.exception.EmailExistsException;
+import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.service.UserService;
 
@@ -71,10 +71,10 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public void save(UserDto userDto) throws EmailExistsException {
+	public void save(UserDto userDto) throws AlreadyExistsException {
 		
 		if(userRepository.findUserByEmail(userDto.getEmail()) != null)
-			throw new EmailExistsException("There is already an account with that email.");
+			throw new AlreadyExistsException("There is already an account with that email.");
 
 		User user = null;
 		
