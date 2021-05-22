@@ -8,5 +8,9 @@ import com.pfa.jobseeking.model.offer.InternshipType;
 
 public interface InternshipTypeRepository extends CrudRepository<InternshipType, Integer> {
 
-	List<InternshipType> findAll(); 
+	List<InternshipType> findAll();
+
+	InternshipType findInternshipTypeByName(String internshipTypeName);
+
+	void deleteInternshipTypeByName(String internshipTypeName); 
 }

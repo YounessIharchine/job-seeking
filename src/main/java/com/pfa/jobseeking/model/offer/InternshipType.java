@@ -17,7 +17,7 @@ public class InternshipType {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	
-	String type;
+	String name;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "internshipType")
@@ -27,19 +27,17 @@ public class InternshipType {
 	public InternshipType() { }
 	
 	
-	public InternshipType(int id, String type, Set<InternshipOffer> internshipOffers) {
+	public InternshipType(String name) {
 		super();
-		this.id = id;
-		this.type = type;
-		this.internshipOffers = internshipOffers;
+		this.name = name;
 	}
 	
 	
 	public int getId() {
 		return id;
 	}
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 	public Set<InternshipOffer> getInternshipOffers() {
 		return internshipOffers;
@@ -49,8 +47,8 @@ public class InternshipType {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public void setInternshipOffers(Set<InternshipOffer> internshipOffers) {
 		this.internshipOffers = internshipOffers;
