@@ -10,7 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -33,10 +34,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 	
-//	@Bean
-//	public PasswordEncoder encoder() {
-//		return new BCryptPasswordEncoder();
-//	}
+	@Bean
+	public PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
+	}
 	
 	
 	@Override
@@ -53,7 +54,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 			//.antMatchers("/api/users").authenticated()
-			.antMatchers("/test", "/fill", "/api/**").permitAll()
+			.antMatchers("/test", "/fill", "/api/**", "/register").permitAll()
 			.anyRequest().authenticated()
 		.and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

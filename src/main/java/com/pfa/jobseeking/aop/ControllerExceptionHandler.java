@@ -5,18 +5,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.pfa.jobseeking.rest.errorresponse.ErrorResponse;
+import com.pfa.jobseeking.rest.exception.EmailExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.response.Response;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
 	@ExceptionHandler
-	ResponseEntity<ErrorResponse> notFoundExceptionHandler(NotFoundException e) {
+	ResponseEntity<Response> notFoundExceptionHandler(NotFoundException e) {
 		
-		ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value() ,e.getMessage());
+		Response response = new Response(HttpStatus.NOT_FOUND.value(), e.getMessage());
 		
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		
+	}
+	
+	@ExceptionHandler
+	ResponseEntity<Response> emailExistsExceptionHandler(EmailExistsException e) {
+		
+		Response response = new Response(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+		
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		
 	}
 	

@@ -3,6 +3,7 @@ package com.pfa.jobseeking.rest.controller;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +37,8 @@ public class TestController {
 	@Autowired
 	DomainService domainService;
 	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	
 	@GetMapping("/test")
@@ -85,14 +88,14 @@ public class TestController {
 		
 		
 		
-		Seeker seeker = new Seeker("seeker@gmail.com", "seeker", "first", "last");
+		Seeker seeker = new Seeker("seeker@gmail.com", passwordEncoder.encode("seeker"), "first", "last");
 		seeker.addRole(seekerRole);
 		seeker.setCity(cityService.findByName("Agadir"));
-		Company company = new Company("company@gmail.com", "company");
+		Company company = new Company("company@gmail.com", passwordEncoder.encode("company"));
 		company.addRole(companyRole);
 		company.setCity(cityService.findByName("Agadir"));
 		company.setDomain(domainService.findByName("Industry"));
-		Admin admin = new Admin("admin@gmail.com", "admin");
+		Admin admin = new Admin("admin@gmail.com", passwordEncoder.encode("admin"));
 		admin.addRole(adminRole);
 		
 		userService.save(seeker);
@@ -101,7 +104,7 @@ public class TestController {
 		
 		
 		
-		Company company1 = new Company("company1@gmail.com", "company1");
+		Company company1 = new Company("company1@gmail.com", passwordEncoder.encode("company1"));
 		company1.addRole(companyRole);
 		company1.setName("Company 1");
 		company1.setPhone("0652968335");

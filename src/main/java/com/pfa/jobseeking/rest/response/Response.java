@@ -1,15 +1,15 @@
-package com.pfa.jobseeking.rest.errorresponse;
+package com.pfa.jobseeking.rest.response;
 
-public class ErrorResponse {
+public class Response {
 
 	private int status;
 	private String message;
 	
 	
-	public ErrorResponse() { }
+	public Response() { }
 	
 	
-	public ErrorResponse(int status, String message) {
+	public Response(int status, String message) {
 		super();
 		this.status = status;
 		this.message = message;
