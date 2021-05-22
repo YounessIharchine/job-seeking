@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.repository.CityRepository;
+import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.service.CityService;
 
 @Service
@@ -32,6 +33,19 @@ public class CityServiceImpl implements CityService {
 	@Override
 	public City findByName(String name) {
 		return cityRepository.findCityByName(name);
+	}
+
+
+	@Override
+	public void save(String cityName) throws AlreadyExistsException {
+		
+		if(cityRepository.findCityByName(cityName) != null)
+			throw new AlreadyExistsException("This city already exists in the database.");
+		
+		City city = new City(cityName);
+		
+		cityRepository.save(city);
+		
 	}
 
 }
