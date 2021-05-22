@@ -17,7 +17,7 @@ public class JobType {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	
-	String type;
+	String name;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "jobType")
@@ -27,19 +27,17 @@ public class JobType {
 	public JobType() { }
 	
 	
-	public JobType(int id, String type, Set<JobOffer> jobOffers) {
+	public JobType(String name) {
 		super();
-		this.id = id;
-		this.type = type;
-		this.jobOffers = jobOffers;
+		this.name = name;
 	}
 	
 	
 	public int getId() {
 		return id;
 	}
-	public String getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 	public Set<JobOffer> getJobOffers() {
 		return jobOffers;
@@ -49,8 +47,8 @@ public class JobType {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public void setJobOffers(Set<JobOffer> jobOffers) {
 		this.jobOffers = jobOffers;
