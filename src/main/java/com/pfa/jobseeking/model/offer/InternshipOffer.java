@@ -14,7 +14,7 @@ public class InternshipOffer extends Offer {
 	Duration duration;
 	
 	@ManyToOne
-	@JoinColumn(name = "internship_type__id")
+	@JoinColumn(name = "internship_type_id")
 	InternshipType internshipType;
 	
 	

@@ -17,9 +17,12 @@ import com.pfa.jobseeking.model.user.Role;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.repository.RoleRepository;
+import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.service.CityService;
 import com.pfa.jobseeking.service.DomainService;
+import com.pfa.jobseeking.service.InternshipTypeService;
+import com.pfa.jobseeking.service.JobTypeService;
 import com.pfa.jobseeking.service.UserService;
 
 @RestController
@@ -36,6 +39,12 @@ public class TestController {
 	
 	@Autowired
 	DomainService domainService;
+	
+	@Autowired
+	InternshipTypeService internshipTypeService;
+	
+	@Autowired
+	JobTypeService jobTypeService;
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -61,7 +70,7 @@ public class TestController {
 	
 	
 	@GetMapping("/fill")
-	String fillDatabase() {
+	String fillDatabase() throws AlreadyExistsException {
 		
 		Role seekerRole = new Role("ROLE_SEEKER");
 		Role companyRole = new Role("ROLE_COMPANY");
@@ -144,6 +153,18 @@ public class TestController {
 		
 		userService.save(company1);
 		
+		
+		internshipTypeService.save("PFA");
+		internshipTypeService.save("PFE");
+		internshipTypeService.save("Rénuméré");
+		internshipTypeService.save("Pré-embauche");
+		
+		
+		jobTypeService.save("Part-Time");
+		jobTypeService.save("CDI");
+		jobTypeService.save("CDD");
+
+
 		
 		
 		return "Database Filled";
