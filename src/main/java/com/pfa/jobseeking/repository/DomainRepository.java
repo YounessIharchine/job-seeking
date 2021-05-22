@@ -11,5 +11,7 @@ public interface DomainRepository extends CrudRepository<Domain, Integer> {
 	List<Domain> findAll();
 	
 	Domain findDomainByName(String name);
+
+	void deleteDomainByName(String domainName);
 	
 }
