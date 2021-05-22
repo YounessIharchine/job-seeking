@@ -12,4 +12,6 @@ public interface CityRepository extends CrudRepository<City, Integer> {
 	
 	City findCityByName(String name);
 	
+	void deleteCityByName(String name);
+	
 }

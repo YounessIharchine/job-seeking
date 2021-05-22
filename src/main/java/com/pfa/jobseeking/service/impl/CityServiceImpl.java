@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
+import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.service.CityService;
 
 @Service
@@ -36,6 +38,7 @@ public class CityServiceImpl implements CityService {
 	}
 
 
+	@Transactional
 	@Override
 	public void save(String cityName) throws AlreadyExistsException {
 		
@@ -45,6 +48,18 @@ public class CityServiceImpl implements CityService {
 		City city = new City(cityName);
 		
 		cityRepository.save(city);
+		
+	}
+
+
+	@Transactional
+	@Override
+	public void delete(String cityName) throws NotFoundException {
+		
+		if(cityRepository.findCityByName(cityName) == null)
+			throw new NotFoundException("This city doesn't exist in the database.");
+		
+		cityRepository.deleteCityByName(cityName);
 		
 	}
 

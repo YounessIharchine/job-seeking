@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
+import com.pfa.jobseeking.rest.exception.NotFoundException;
 
 public interface CityService {
 
@@ -14,5 +15,7 @@ public interface CityService {
 	City findByName(String name);
 
 	void save(String city) throws AlreadyExistsException;
+
+	void delete(String city) throws NotFoundException;
 	
 }
