@@ -16,6 +16,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import static com.pfa.jobseeking.security.SecurityConstants.*;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
@@ -39,15 +41,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 		
 		else {
 			
-			String jwtToken = request.getHeader(SecurityConstants.HEADER_STRING);
+			String jwtToken = request.getHeader(HEADER_STRING);
 			
-			if (jwtToken == null || !jwtToken.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+			if (jwtToken == null || !jwtToken.startsWith(TOKEN_PREFIX)) {
 				chain.doFilter(request, response);
 				return;
 			}
 			
-			Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECRET)
-					.parseClaimsJws(jwtToken.replace(SecurityConstants.TOKEN_PREFIX, "")).getBody();
+			Claims claims = Jwts.parser().setSigningKey(SECRET)
+					.parseClaimsJws(jwtToken.replace(TOKEN_PREFIX, "")).getBody();
 			
 			String username = claims.getSubject();
 			@SuppressWarnings("unchecked")

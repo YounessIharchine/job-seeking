@@ -20,6 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static com.pfa.jobseeking.security.SecurityConstants.*;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -32,7 +34,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
 		super();
 		this.authenticationManager = authenticationManager;
-		// to change the url of our preference for the authentication end point.
 		setFilterProcessesUrl("/authenticate");
 	}	
 
@@ -60,12 +61,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	{
 		User springUser = (User) authResult.getPrincipal();
 		String jwtToken = Jwts.builder().setSubject(springUser.getUsername())
-				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-				.signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
+				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+				.signWith(SignatureAlgorithm.HS512, SECRET)
 				.claim("roles", springUser.getAuthorities())
 				.compact();
 		
-		response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + jwtToken);
+		response.addHeader(HEADER_STRING, TOKEN_PREFIX + jwtToken);
 		
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		  
