@@ -2,11 +2,13 @@ package com.pfa.jobseeking.service.impl;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Role;
@@ -62,14 +64,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	
-	
+	@Transactional
 	@Override
 	public User save(User user) {
 		return userRepository.save(user);
 	}
 
 
-
+	@Transactional
 	@Override
 	public void save(UserDto userDto) throws AlreadyExistsException {
 		
@@ -93,6 +95,31 @@ public class UserServiceImpl implements UserService {
 		
 		userRepository.save(user);
 		
+	}
+
+
+
+	@Transactional
+	@Override
+	public void update(Map<String, String> map, int id) throws NotFoundException {
+		Seeker seeker = (Seeker) userRepository.findById(id);
+		
+		if(seeker == null)
+			throw new NotFoundException("There is no seeker with that id");
+		else {
+			if(map.containsKey("firstName"))
+				seeker.setFirstName(map.get("firstName"));
+			if(map.containsKey("lastName"))
+				seeker.setLastName(map.get("lastName"));
+			if(map.containsKey("phone"))
+				seeker.setPhone(map.get("phone"));
+			if(map.containsKey("address"))
+				seeker.setAddress(map.get("address"));
+			if(map.containsKey("birthDate"))
+				seeker.setBirthDate(map.get("birthDate"));
+		}
+		
+		userRepository.save(seeker);
 	}
 
 }
