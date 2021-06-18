@@ -23,6 +23,7 @@ import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Role;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.model.user.User;
+import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.RoleRepository;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
@@ -40,6 +41,9 @@ public class TestController {
 	
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	OfferRepository offerRepository;
 	
 	@Autowired
 	CityService cityService;
@@ -95,7 +99,7 @@ public class TestController {
 	
 	
 	@GetMapping("/fill")
-	String fillDatabase() throws AlreadyExistsException {
+	String fillDatabase() throws AlreadyExistsException, NotFoundException {
 		
 		Role seekerRole = new Role("ROLE_SEEKER");
 		Role companyRole = new Role("ROLE_COMPANY");
@@ -146,6 +150,7 @@ public class TestController {
 		company1.setVerified(true);
 		company1.setCity(cityService.findByName("Casablanca"));
 		company1.setDomain(domainService.findByName("Information Tech"));
+		userService.save(company1);
 		
 		JobOffer offer1 = new JobOffer();
 		offer1.setDate("20/05/2021");
@@ -155,6 +160,8 @@ public class TestController {
 		offer1.setVerified(true);
 		offer1.setCity(cityService.findByName("Agadir"));
 		offer1.setDomain(domainService.findByName("Information Tech"));
+		offer1.setCompany((Company) userService.findUserByEmail("company1@gmail.com"));
+		
 		InternshipOffer offer2 = new InternshipOffer();
 		offer2.setDate("20/05/2021");
 		offer2.setDescription("This is a description 2");
@@ -163,6 +170,8 @@ public class TestController {
 		offer2.setVerified(true);
 		offer2.setCity(cityService.findByName("Casablanca"));
 		offer2.setDomain(domainService.findByName("Finance"));
+		offer2.setCompany((Company) userService.findUserByEmail("company1@gmail.com"));
+
 		InternshipOffer offer3 = new InternshipOffer();
 		offer3.setDate("20/05/2021");
 		offer3.setDescription("This is a description 3");
@@ -171,12 +180,12 @@ public class TestController {
 		offer3.setVerified(true);
 		offer3.setCity(cityService.findByName("Casablanca"));
 		offer3.setDomain(domainService.findByName("Information Tech"));
+		offer3.setCompany((Company) userService.findUserByEmail("company1@gmail.com"));
+
 		
-		company1.addOffer(offer1);
-		company1.addOffer(offer2);
-		company1.addOffer(offer3);
-		
-		userService.save(company1);
+		offerRepository.save(offer1);
+		offerRepository.save(offer2);
+		offerRepository.save(offer3);
 		
 		
 		internshipTypeService.save("PFA");
