@@ -12,8 +12,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.pfa.jobseeking.model.CompanyCreationRequest;
+import com.pfa.jobseeking.model.OfferCreationRequest;
 import com.pfa.jobseeking.repository.CompanyCreationRequestRepository;
+import com.pfa.jobseeking.repository.OfferCreationRequestRepository;
 import com.pfa.jobseeking.rest.response.CompanyCreationRequestResponse;
+import com.pfa.jobseeking.rest.response.OfferCreationRequestResponse;
 import com.pfa.jobseeking.service.CreationRequestService;
 
 @Service
@@ -49,4 +52,22 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 		
 		return response;
 	}
+
+	@Override
+	public List<OfferCreationRequestResponse> findAllOfferCreationRequests() {
+		List<OfferCreationRequest> requests = offerCreationRequestRepository.findAll();
+		List<OfferCreationRequestResponse> response = new ArrayList<>();
+		
+		for(OfferCreationRequest request : requests) {
+			OfferCreationRequestResponse item = new OfferCreationRequestResponse();
+			item.setRequestDate(request.getDate());
+			item.setDescription(request.getOffer().getDescription());
+			item.setTitle(request.getOffer().getTitle());
+			item.setOfferDate(request.getOffer().getDate());
+			response.add(item);
+		}
+		
+		return response;
+	}
+
 }

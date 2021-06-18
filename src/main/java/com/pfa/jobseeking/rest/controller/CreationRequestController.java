@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.rest.response.CompanyCreationRequestResponse;
+import com.pfa.jobseeking.rest.response.OfferCreationRequestResponse;
 import com.pfa.jobseeking.service.CreationRequestService;
 
 @RestController
@@ -21,6 +22,11 @@ public class CreationRequestController {
 	@GetMapping("/companyCreationRequests")
 	List<CompanyCreationRequestResponse> showCompanyCreationRequests() throws IOException {
 		return creationRequestService.findAllCompanyCreationRequests();
+	}
+	
+	@GetMapping("/offerCreationRequests")
+	List<OfferCreationRequestResponse> showOfferCreationRequests() {
+		return creationRequestService.findAllOfferCreationRequests();
 	}
 	
 }
