@@ -1,5 +1,7 @@
 package com.pfa.jobseeking.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pfa.jobseeking.model.CompanyCreationRequest;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Role;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.model.user.User;
+import com.pfa.jobseeking.repository.CompanyCreationRequestRepository;
 import com.pfa.jobseeking.repository.RoleRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.UserDto;
@@ -31,7 +35,11 @@ public class UserServiceImpl implements UserService {
 	RoleRepository roleRepository;
 	
 	@Autowired
+	CompanyCreationRequestRepository companyCreationRequestRepository;
+	
+	@Autowired
 	PasswordEncoder passwordEncoder;
+	
 	
 	
 	@Override
@@ -82,7 +90,7 @@ public class UserServiceImpl implements UserService {
 		
 		if(userDto.getRole().equals("ROLE_SEEKER"))
 			user = new Seeker();
-		else if(userDto.getRole().equals("ROLE_COMPANY"))
+		else if(userDto.getRole().equals("ROLE_COMPANY")) 
 			user = new Company();
 		
 		user.setEmail(userDto.getEmail());
@@ -95,6 +103,13 @@ public class UserServiceImpl implements UserService {
 		
 		userRepository.save(user);
 		
+		if(userDto.getRole().equals("ROLE_COMPANY")) {
+			CompanyCreationRequest request = new CompanyCreationRequest();
+			request.setCompany((Company) userRepository.findUserByEmail(userDto.getEmail()));
+			request.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+			companyCreationRequestRepository.save(request);
+		}
+
 	}
 
 
