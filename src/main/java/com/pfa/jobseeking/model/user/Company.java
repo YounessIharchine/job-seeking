@@ -27,6 +27,7 @@ public class Company extends User {
 	String name;
 	String publicEmail;
 	String phone;
+	String documentPath;
 	@JsonIgnore //if you want to disable this, remove it from the getter
 	boolean isVerified;
 	@ManyToOne
@@ -76,6 +77,9 @@ public class Company extends User {
 	public String getPhone() {
 		return phone;
 	}
+	public String getDocumentPath() {
+		return documentPath;
+	}
 	@JsonIgnore
 	public boolean isVerified() {
 		return isVerified;
@@ -113,6 +117,9 @@ public class Company extends User {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	public void setDocumentPath(String documentPath) {
+		this.documentPath = documentPath;
+	}
 	public void setVerified(boolean isVerified) {
 		this.isVerified = isVerified;
 	}
@@ -142,5 +149,9 @@ public class Company extends User {
 	public void addOffer(Offer offer) {
 		this.offers.add(offer);
 	}
+
+
+	
+	
 	
 }
