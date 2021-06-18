@@ -1,8 +1,10 @@
 package com.pfa.jobseeking.security;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.FilterChain;
@@ -15,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -69,10 +72,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.addHeader(HEADER_STRING, TOKEN_PREFIX + jwtToken);
 		
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		
+		List<String> roles = new ArrayList<>();
+		for(GrantedAuthority authority : springUser.getAuthorities())
+			roles.add(authority.getAuthority());
 		  
 		final Map<String, Object> body = new HashMap<>();
 		body.put("status", HttpServletResponse.SC_OK);
 		body.put("message", "Authentication Successful");
+		body.put("roles", roles);
 		
 		final ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(response.getOutputStream(), body);
