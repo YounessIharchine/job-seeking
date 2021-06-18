@@ -8,14 +8,15 @@ import com.pfa.jobseeking.rest.exception.NotFoundException;
 
 public interface DomainService {
 
-	Domain save(Domain domain);
-	
 	List<Domain> findAll();
 		
-	Domain findByName(String name);
-
 	void save(String domain) throws AlreadyExistsException;
 
 	void delete(String domain) throws NotFoundException;
 	
+	
+	//for filling database
+	Domain save(Domain domain);
+	Domain findByName(String name);
+
 }

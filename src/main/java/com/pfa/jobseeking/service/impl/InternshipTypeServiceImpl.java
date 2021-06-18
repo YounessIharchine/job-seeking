@@ -3,6 +3,7 @@ package com.pfa.jobseeking.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class InternshipTypeServiceImpl implements InternshipTypeService {
 	
 	@Transactional
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void save(String internshipTypeName) throws AlreadyExistsException {
 		
 		if(internshipTypeRepository.findInternshipTypeByName(internshipTypeName) != null)
@@ -40,6 +42,7 @@ public class InternshipTypeServiceImpl implements InternshipTypeService {
 	
 	@Transactional
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void delete(String internshipTypeName) throws NotFoundException {
 
 		if(internshipTypeRepository.findInternshipTypeByName(internshipTypeName) == null)

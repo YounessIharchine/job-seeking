@@ -3,6 +3,7 @@ package com.pfa.jobseeking.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +19,6 @@ public class DomainServiceImpl implements DomainService {
 	@Autowired
 	DomainRepository domainRepository;
 	
-	@Override
-	public Domain save(Domain domain) {
-		return domainRepository.save(domain);
-	}
 
 	
 	@Override
@@ -30,14 +27,10 @@ public class DomainServiceImpl implements DomainService {
 	}
 	
 
-	@Override
-	public Domain findByName(String name) {
-		return domainRepository.findDomainByName(name);
-	}
-
 
 	@Transactional
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void save(String domainName) throws AlreadyExistsException {
 		
 		if(domainRepository.findDomainByName(domainName) != null)
@@ -51,6 +44,7 @@ public class DomainServiceImpl implements DomainService {
 	
 	@Transactional
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void delete(String domainName) throws NotFoundException {
 
 		if(domainRepository.findDomainByName(domainName) == null)
@@ -59,7 +53,18 @@ public class DomainServiceImpl implements DomainService {
 		domainRepository.deleteDomainByName(domainName);
 		
 	}
-
+	
+	
+	
+	//for filling database
+	@Override
+	public Domain save(Domain domain) {
+		return domainRepository.save(domain);
+	}
+	@Override
+	public Domain findByName(String name) {
+		return domainRepository.findDomainByName(name);
+	}
 }
 
 

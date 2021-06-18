@@ -3,6 +3,7 @@ package com.pfa.jobseeking.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class JobTypeServiceImpl implements JobTypeService {
 	
 	@Transactional
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void save(String jobTypeName) throws AlreadyExistsException {
 		
 		if(jobTypeRepository.findJobTypeByName(jobTypeName) != null)
@@ -40,6 +42,7 @@ public class JobTypeServiceImpl implements JobTypeService {
 	
 	@Transactional
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void delete(String jobTypeName) throws NotFoundException {
 
 		if(jobTypeRepository.findJobTypeByName(jobTypeName) == null)

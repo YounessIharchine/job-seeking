@@ -3,6 +3,7 @@ package com.pfa.jobseeking.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +20,6 @@ public class CityServiceImpl implements CityService {
 	CityRepository cityRepository;
 	
 	
-	@Override
-	public City save(City city) {
-		return cityRepository.save(city);
-	}
-
 
 	@Override
 	public List<City> findAll() {
@@ -32,14 +28,9 @@ public class CityServiceImpl implements CityService {
 	
 
 
-	@Override
-	public City findByName(String name) {
-		return cityRepository.findCityByName(name);
-	}
-
-
 	@Transactional
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void save(String cityName) throws AlreadyExistsException {
 		
 		if(cityRepository.findCityByName(cityName) != null)
@@ -54,6 +45,7 @@ public class CityServiceImpl implements CityService {
 
 	@Transactional
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void delete(String cityName) throws NotFoundException {
 		
 		if(cityRepository.findCityByName(cityName) == null)
@@ -61,6 +53,23 @@ public class CityServiceImpl implements CityService {
 		
 		cityRepository.deleteCityByName(cityName);
 		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	//for filling database
+	@Override
+	public City save(City city) {
+		return cityRepository.save(city);
+	}
+	@Override
+	public City findByName(String name) {
+		return cityRepository.findCityByName(name);
 	}
 
 }
