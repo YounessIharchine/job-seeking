@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.CompanyCreationRequest;
+import com.pfa.jobseeking.model.company.CompanyProfile;
+import com.pfa.jobseeking.model.seeker.Profile;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Role;
 import com.pfa.jobseeking.model.user.Seeker;
@@ -86,29 +88,40 @@ public class UserServiceImpl implements UserService {
 		if(userRepository.findUserByEmail(userDto.getEmail()) != null)
 			throw new AlreadyExistsException("There is already an account with that email.");
 
-		User user = null;
 		
-		if(userDto.getRole().equals("ROLE_SEEKER"))
-			user = new Seeker();
-		else if(userDto.getRole().equals("ROLE_COMPANY")) 
-			user = new Company();
+		if(userDto.getRole().equals("ROLE_SEEKER")) {
+			Seeker seeker = new Seeker();
+			seeker.setEmail(userDto.getEmail());
+			seeker.setPassword(passwordEncoder.encode(userDto.getPassword()));
+			Set<Role> role = new HashSet<>();
+			role.add(roleRepository.findRoleByName(userDto.getRole()));
+			seeker.setRoles(role);
+			
+			Profile seekerProfile = new Profile();
+			seeker.setProfile(seekerProfile);
+			
+			userRepository.save(seeker);
+		}
 		
-		user.setEmail(userDto.getEmail());
-		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		
-		Set<Role> role = new HashSet<>();
-		role.add(roleRepository.findRoleByName(userDto.getRole()));
-		user.setRoles(role);
-
-		
-		userRepository.save(user);
-		
-		if(userDto.getRole().equals("ROLE_COMPANY")) {
+		else if(userDto.getRole().equals("ROLE_COMPANY")) {
+			Company company = new Company();
+			company.setEmail(userDto.getEmail());
+			company.setPassword(passwordEncoder.encode(userDto.getPassword()));
+			Set<Role> role = new HashSet<>();
+			role.add(roleRepository.findRoleByName(userDto.getRole()));
+			company.setRoles(role);
+			
+			CompanyProfile companyProfile = new CompanyProfile();
+			company.setCompanyProfile(companyProfile);
+			
+			userRepository.save(company);
+			
 			CompanyCreationRequest request = new CompanyCreationRequest();
 			request.setCompany((Company) userRepository.findUserByEmail(userDto.getEmail()));
 			request.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
 			companyCreationRequestRepository.save(request);
 		}
+
 
 	}
 

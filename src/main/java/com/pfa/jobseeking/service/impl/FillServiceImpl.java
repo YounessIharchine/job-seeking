@@ -25,8 +25,6 @@ import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.service.CityService;
 import com.pfa.jobseeking.service.DomainService;
 import com.pfa.jobseeking.service.FillService;
-import com.pfa.jobseeking.service.InternshipTypeService;
-import com.pfa.jobseeking.service.JobTypeService;
 
 @Service
 public class FillServiceImpl implements FillService {

@@ -34,4 +34,52 @@ public class CompanyProfile {
 	
 	
 	public CompanyProfile() { }
+
+
+
+	public int getId() {
+		return id;
+	}
+	public Company getCompany() {
+		return company;
+	}
+	public String getLogo() {
+		return logo;
+	}
+	public String getCoverPhoto() {
+		return coverPhoto;
+	}
+	public String getWebSite() {
+		return webSite;
+	}
+	public Set<Photo> getPhotos() {
+		return photos;
+	}
+	public Set<Paragraph> getParagraphs() {
+		return paragraphs;
+	}
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+	public void setCoverPhoto(String coverPhoto) {
+		this.coverPhoto = coverPhoto;
+	}
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
+	}
+	public void setPhotos(Set<Photo> photos) {
+		this.photos = photos;
+	}
+	public void setParagraphs(Set<Paragraph> paragraphs) {
+		this.paragraphs = paragraphs;
+	}
 }
