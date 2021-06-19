@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pfa.jobseeking.model.offer.Offer;
+import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.service.OfferService;
 
 @RestController
@@ -20,7 +20,7 @@ public class OfferController {
 	
 	
 	@GetMapping("/offers")
-	List<Offer> showOffers(
+	List<OfferResponse> showOffers(
 			@RequestParam(required = false) String domain,
 			@RequestParam(required = false) String keyword) {
 		

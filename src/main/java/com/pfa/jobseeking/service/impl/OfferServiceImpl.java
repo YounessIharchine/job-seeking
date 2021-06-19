@@ -1,5 +1,6 @@
 package com.pfa.jobseeking.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.repository.OfferRepository;
+import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.service.OfferService;
 
 
@@ -17,24 +19,40 @@ public class OfferServiceImpl implements OfferService {
 	OfferRepository offerRepository;
 	
 	@Override
-	public List<Offer> findAll(String domain, String keyword) {
+	public List<OfferResponse> findAll(String domain, String keyword) {
 		if(domain == null) {
 			if(keyword == null) {
-				return offerRepository.findAll();
+				return mapToResponse(offerRepository.findAll());
 			}
 			else {
-				return offerRepository.findOfferByTitleContainsOrDescriptionContains(keyword, keyword);
+				return mapToResponse(offerRepository.findOfferByTitleContainsOrDescriptionContains(keyword, keyword));
 			}
 		}
 		else {
 			if(keyword == null) {
-				return offerRepository.findOfferByDomainName(domain);
+				return mapToResponse(offerRepository.findOfferByDomainName(domain));
 			}
 			else {
-				return offerRepository.findOfferByDomainNameAndTitleContainsOrDomainNameAndDescriptionContains(domain, keyword, domain, keyword);
+				return mapToResponse(offerRepository.findOfferByDomainNameAndTitleContainsOrDomainNameAndDescriptionContains(domain, keyword, domain, keyword));
 			}
 		}
 
+	}
+	
+	
+	private List<OfferResponse> mapToResponse(List<Offer> offers) {
+		List<OfferResponse> response = new ArrayList<>();
+		for(Offer offer : offers) {
+			OfferResponse item = new OfferResponse();
+			item.setTitle(offer.getTitle());
+			item.setDescription(offer.getDescription());
+			item.setDate(offer.getDate());
+			item.setCity(offer.getCity().getName());
+			item.setDomain(offer.getDomain().getName());
+			item.setCompanyName(offer.getCompany().getName());
+			response.add(item);
+		}
+		return response;
 	}
 
 }
