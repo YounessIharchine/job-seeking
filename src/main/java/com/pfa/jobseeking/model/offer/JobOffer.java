@@ -10,9 +10,21 @@ import javax.persistence.ManyToOne;
 public class JobOffer extends Offer {
 
 	@ManyToOne
-	@JoinColumn(name = "internship_type_id")
+	@JoinColumn(name = "job_type_id")
 	JobType jobType;
 	
 	
 	public JobOffer() { }
+
+
+	public JobType getJobType() {
+		return jobType;
+	}
+
+	
+	public void setJobType(JobType jobType) {
+		this.jobType = jobType;
+	}
+	
+	
 }

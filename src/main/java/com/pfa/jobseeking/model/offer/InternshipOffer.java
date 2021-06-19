@@ -19,7 +19,22 @@ public class InternshipOffer extends Offer {
 	
 	
 	public InternshipOffer() { }
-	
+
+
+	public Duration getDuration() {
+		return duration;
+	}
+	public InternshipType getInternshipType() {
+		return internshipType;
+	}
+
+
+	public void setDuration(Duration duration) {
+		this.duration = duration;
+	}
+	public void setInternshipType(InternshipType internshipType) {
+		this.internshipType = internshipType;
+	}
 	
 	
 }

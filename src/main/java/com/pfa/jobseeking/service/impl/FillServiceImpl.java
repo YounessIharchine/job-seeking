@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.model.Domain;
+import com.pfa.jobseeking.model.offer.Duration;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.InternshipType;
 import com.pfa.jobseeking.model.offer.JobOffer;
@@ -15,6 +16,7 @@ import com.pfa.jobseeking.model.user.Admin;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Role;
 import com.pfa.jobseeking.model.user.Seeker;
+import com.pfa.jobseeking.repository.DurationRepository;
 import com.pfa.jobseeking.repository.InternshipTypeRepository;
 import com.pfa.jobseeking.repository.JobTypeRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
@@ -49,6 +51,9 @@ public class FillServiceImpl implements FillService {
 	
 	@Autowired
 	JobTypeRepository jobTypeRepository;
+	
+	@Autowired
+	DurationRepository durationRepository;
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -97,6 +102,26 @@ public class FillServiceImpl implements FillService {
 		
 		
 		
+		internshipTypeRepository.save(new InternshipType("PFA"));
+		internshipTypeRepository.save(new InternshipType("PFE"));
+		internshipTypeRepository.save(new InternshipType("Paid"));
+		internshipTypeRepository.save(new InternshipType("Pre-employment"));
+		
+		
+		jobTypeRepository.save(new JobType("Part-Time"));
+		jobTypeRepository.save(new JobType("CDI"));
+		jobTypeRepository.save(new JobType("CDD"));
+		
+		
+		durationRepository.save(new Duration("1 Month"));
+		durationRepository.save(new Duration("2 Months"));
+		durationRepository.save(new Duration("3 Months"));
+		durationRepository.save(new Duration("4 Months"));
+		durationRepository.save(new Duration("5 Months"));
+		durationRepository.save(new Duration("6 Months"));
+		
+		
+		
 		Company company1 = new Company("company1@gmail.com", passwordEncoder.encode("company1"));
 		company1.addRole(companyRole);
 		company1.setName("Company 1");
@@ -116,6 +141,7 @@ public class FillServiceImpl implements FillService {
 		offer1.setCity(cityService.findByName("Agadir"));
 		offer1.setDomain(domainService.findByName("Information Tech"));
 		offer1.setCompany((Company) userRepository.findUserByEmail("company1@gmail.com"));
+		offer1.setJobType(jobTypeRepository.findJobTypeByName("CDI"));
 		
 		InternshipOffer offer2 = new InternshipOffer();
 		offer2.setDate("20/05/2021");
@@ -126,6 +152,8 @@ public class FillServiceImpl implements FillService {
 		offer2.setCity(cityService.findByName("Casablanca"));
 		offer2.setDomain(domainService.findByName("Finance"));
 		offer2.setCompany((Company) userRepository.findUserByEmail("company1@gmail.com"));
+		offer2.setInternshipType(internshipTypeRepository.findInternshipTypeByName("PFA"));
+		offer2.setDuration(durationRepository.findByDuration("1 Month"));
 
 		InternshipOffer offer3 = new InternshipOffer();
 		offer3.setDate("20/05/2021");
@@ -136,22 +164,15 @@ public class FillServiceImpl implements FillService {
 		offer3.setCity(cityService.findByName("Casablanca"));
 		offer3.setDomain(domainService.findByName("Information Tech"));
 		offer3.setCompany((Company) userRepository.findUserByEmail("company1@gmail.com"));
+		offer3.setInternshipType(internshipTypeRepository.findInternshipTypeByName("Pré-embauche"));
+		offer3.setDuration(durationRepository.findByDuration("3 Months"));
+
 
 		
 		offerRepository.save(offer1);
 		offerRepository.save(offer2);
 		offerRepository.save(offer3);
 		
-		
-		internshipTypeRepository.save(new InternshipType("PFA"));
-		internshipTypeRepository.save(new InternshipType("PFE"));
-		internshipTypeRepository.save(new InternshipType("Rénuméré"));
-		internshipTypeRepository.save(new InternshipType("Pré-embauche"));
-		
-		
-		jobTypeRepository.save(new JobType("Part-Time"));
-		jobTypeRepository.save(new JobType("CDI"));
-		jobTypeRepository.save(new JobType("CDD"));
 		
 	}
 
