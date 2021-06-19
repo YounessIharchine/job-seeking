@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.model.City;
+import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.Response;
@@ -35,7 +36,7 @@ public class CityController {
 	
 	
 	@PostMapping("/cities")
-	ResponseEntity<Response> addCity(@RequestBody String city) throws AlreadyExistsException {
+	ResponseEntity<Response> addCity(@RequestBody NameDto city) throws AlreadyExistsException {
 		
 		cityService.save(city);
 		

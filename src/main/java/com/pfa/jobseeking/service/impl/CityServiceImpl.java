@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.repository.CityRepository;
+import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.service.CityService;
@@ -31,12 +32,12 @@ public class CityServiceImpl implements CityService {
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void save(String cityName) throws AlreadyExistsException {
+	public void save(NameDto cityName) throws AlreadyExistsException {
 		
-		if(cityRepository.findCityByName(cityName) != null)
+		if(cityRepository.findCityByName(cityName.getName()) != null)
 			throw new AlreadyExistsException("This city already exists in the database.");
 		
-		City city = new City(cityName);
+		City city = new City(cityName.getName());
 		
 		cityRepository.save(city);
 		
