@@ -164,6 +164,9 @@ public class Seeker extends User {
 	public void saveOffer(Offer offer) {
 		this.offers.add(offer);
 	}
+	public void followCompany(Company company) {
+		this.companies.add(company);
+	}
 	
 	
 }

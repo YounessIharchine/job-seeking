@@ -8,4 +8,6 @@ public interface SeekerService {
 
 	void save(int id);
 
+	void follow(String companyName);
+
 }

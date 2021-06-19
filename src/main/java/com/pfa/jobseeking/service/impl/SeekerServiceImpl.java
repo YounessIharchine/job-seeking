@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.user.Seeker;
+import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.service.SeekerService;
@@ -21,6 +22,9 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Autowired
 	OfferRepository offerRepository;
+	
+	@Autowired
+	CompanyRepository companyRepository;
 	
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
@@ -50,5 +54,15 @@ public class SeekerServiceImpl implements SeekerService {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 		seeker.saveOffer(offerRepository.findById(id));
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public void follow(String companyName) {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		seeker.followCompany(companyRepository.findCompanyByName(companyName));
 	}
 }

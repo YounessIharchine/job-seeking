@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.rest.response.Response;
@@ -31,5 +32,10 @@ public class SeekerController {
 	@GetMapping("/saveOffer/{id}")
 	void saveOffer(@PathVariable(name = "id") int id) {
 		seekerService.save(id);
+	}
+	
+	@GetMapping("/followCompany")
+	void saveOffer(@RequestParam String companyName) {
+		seekerService.follow(companyName);
 	}
 }
