@@ -9,5 +9,8 @@ import com.pfa.jobseeking.model.CompanyCreationRequest;
 public interface CompanyCreationRequestRepository extends CrudRepository<CompanyCreationRequest, Integer> {
 	
 	List<CompanyCreationRequest> findAll();
+	
+	CompanyCreationRequest findByCompanyName(String companyName);
 
 }
+

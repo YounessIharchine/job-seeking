@@ -11,5 +11,7 @@ public interface CreationRequestService {
 	List<CompanyCreationRequestResponse> findAllCompanyCreationRequests() throws IOException;
 	
 	List<OfferCreationRequestResponse> findAllOfferCreationRequests();
+
+	void acceptCompanyCreationOffer(String companyName);
 	
 }

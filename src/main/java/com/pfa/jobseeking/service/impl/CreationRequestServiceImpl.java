@@ -10,10 +10,13 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.CompanyCreationRequest;
 import com.pfa.jobseeking.model.OfferCreationRequest;
+import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.repository.CompanyCreationRequestRepository;
+import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.OfferCreationRequestRepository;
 import com.pfa.jobseeking.rest.response.CompanyCreationRequestResponse;
 import com.pfa.jobseeking.rest.response.OfferCreationRequestResponse;
@@ -27,6 +30,9 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 	
 	@Autowired
 	OfferCreationRequestRepository offerCreationRequestRepository;
+	
+	@Autowired
+	CompanyRepository companyRepository;
 	
 	@Value("${storage.images.basePath}")
 	String path;
@@ -68,6 +74,17 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 		}
 		
 		return response;
+	}
+
+	
+	@Transactional
+	@Override
+	public void acceptCompanyCreationOffer(String companyName) {
+		Company company = companyRepository.findCompanyByName(companyName);
+		company.setVerified(true);
+		company.setCompanyCreationRequest(null);
+		companyCreationRequestRepository.delete(companyCreationRequestRepository.findByCompanyName(companyName));
+		
 	}
 
 }

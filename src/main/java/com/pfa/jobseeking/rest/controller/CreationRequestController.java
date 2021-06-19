@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.rest.response.CompanyCreationRequestResponse;
@@ -13,20 +13,24 @@ import com.pfa.jobseeking.rest.response.OfferCreationRequestResponse;
 import com.pfa.jobseeking.service.CreationRequestService;
 
 @RestController
-@RequestMapping("${rest.api.basePath}")
 public class CreationRequestController {
 
 	@Autowired
 	CreationRequestService creationRequestService;
 	
-	@GetMapping("/companyCreationRequests")
+	@GetMapping("${rest.api.basePath}/companyCreationRequests")
 	List<CompanyCreationRequestResponse> showCompanyCreationRequests() throws IOException {
 		return creationRequestService.findAllCompanyCreationRequests();
 	}
 	
-	@GetMapping("/offerCreationRequests")
+	@GetMapping("${rest.api.basePath}/offerCreationRequests")
 	List<OfferCreationRequestResponse> showOfferCreationRequests() {
 		return creationRequestService.findAllOfferCreationRequests();
+	}
+	
+	@GetMapping("/acceptCompanyCreationRequest")
+	void acceptCompanyCreationRequest(@RequestParam String companyName) {
+		creationRequestService.acceptCompanyCreationOffer(companyName);
 	}
 	
 }
