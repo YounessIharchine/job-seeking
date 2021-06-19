@@ -190,6 +190,7 @@ public class OfferServiceImpl implements OfferService {
 		List<OfferResponse> response = new ArrayList<>();
 		for(Offer offer : offers) {
 			OfferResponse item = new OfferResponse();
+			item.setId(offer.getId());
 			item.setTitle(offer.getTitle());
 			item.setDescription(offer.getDescription());
 			item.setDate(offer.getDate());

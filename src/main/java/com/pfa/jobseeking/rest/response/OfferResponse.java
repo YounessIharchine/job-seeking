@@ -2,6 +2,7 @@ package com.pfa.jobseeking.rest.response;
 
 public class OfferResponse {
 
+	int id;
 	String title;
 	String description;
 	String date;
@@ -14,8 +15,9 @@ public class OfferResponse {
 	
 	public OfferResponse() { }
 
-	public OfferResponse(String title, String description, String date, String city, String domain,
+	public OfferResponse(int id, String title, String description, String date, String city, String domain,
 			String companyName, boolean isInternshipOffer, String type, String duration) {
+		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.date = date;
@@ -28,6 +30,9 @@ public class OfferResponse {
 	}
 	
 	
+	public int getId() {
+		return id;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -57,6 +62,9 @@ public class OfferResponse {
 	}
 
 	
+	public void setId(int id) {
+		this.id = id;
+	}
 	public void setTitle(String title) {
 		this.title = title;
 	}
