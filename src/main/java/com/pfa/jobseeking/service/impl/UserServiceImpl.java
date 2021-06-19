@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,28 +126,7 @@ public class UserServiceImpl implements UserService {
 
 
 
-	@Transactional
-	@Override
-	public void update(Map<String, String> map, int id) throws NotFoundException {
-		Seeker seeker = (Seeker) userRepository.findById(id);
-		
-		if(seeker == null)
-			throw new NotFoundException("There is no seeker with that id");
-		else {
-			if(map.containsKey("firstName"))
-				seeker.setFirstName(map.get("firstName"));
-			if(map.containsKey("lastName"))
-				seeker.setLastName(map.get("lastName"));
-			if(map.containsKey("phone"))
-				seeker.setPhone(map.get("phone"));
-			if(map.containsKey("address"))
-				seeker.setAddress(map.get("address"));
-			if(map.containsKey("birthDate"))
-				seeker.setBirthDate(map.get("birthDate"));
-		}
-		
-		userRepository.save(seeker);
-	}
+
 
 }
 
