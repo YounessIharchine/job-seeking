@@ -15,5 +15,9 @@ public interface CreationRequestService {
 	void acceptCompanyCreationOffer(String companyName);
 
 	void rejectCompanyCreationOffer(String companyName);
+
+	void acceptOfferCreationOffer(int id);
+
+	void rejectOfferCreationOffer(int id);
 	
 }

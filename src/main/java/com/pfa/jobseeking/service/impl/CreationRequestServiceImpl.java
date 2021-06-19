@@ -14,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.CompanyCreationRequest;
 import com.pfa.jobseeking.model.OfferCreationRequest;
+import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.repository.CompanyCreationRequestRepository;
 import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.OfferCreationRequestRepository;
+import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.rest.response.CompanyCreationRequestResponse;
 import com.pfa.jobseeking.rest.response.OfferCreationRequestResponse;
 import com.pfa.jobseeking.service.CreationRequestService;
@@ -33,6 +35,9 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 	
 	@Autowired
 	CompanyRepository companyRepository;
+	
+	@Autowired
+	OfferRepository offerRepository;
 	
 	@Value("${storage.images.basePath}")
 	String path;
@@ -91,6 +96,19 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 	@Override
 	public void rejectCompanyCreationOffer(String companyName) {
 		companyRepository.delete(companyRepository.findCompanyByName(companyName));
+	}
+
+	@Override
+	public void acceptOfferCreationOffer(int id) {
+		Offer offer = offerRepository.findById(id);
+		offer.setVerified(true);
+		offer.setOfferCreationRequest(null);
+		offerCreationRequestRepository.delete(offerCreationRequestRepository.findByOfferId(id));
+	}
+
+	@Override
+	public void rejectOfferCreationOffer(int id) {
+		offerRepository.delete(offerRepository.findById(id));
 	}
 
 }

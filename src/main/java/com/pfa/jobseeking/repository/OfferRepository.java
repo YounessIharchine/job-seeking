@@ -8,6 +8,8 @@ import com.pfa.jobseeking.model.offer.Offer;
 
 public interface OfferRepository extends CrudRepository<Offer, Integer> {
 
+	Offer findById(int id);
+	
 	List<Offer> findAll();
 	List<Offer> findOfferByDomainName(String name);
 	List<Offer> findOfferByTitleContainsOrDescriptionContains(String keyword1, String keyword2);

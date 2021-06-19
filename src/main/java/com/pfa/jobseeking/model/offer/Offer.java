@@ -17,9 +17,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pfa.jobseeking.model.ApplicationNotification;
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.model.Domain;
+import com.pfa.jobseeking.model.OfferCreationRequest;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Seeker;
 
@@ -47,6 +49,10 @@ public class Offer {
 	@ManyToOne
 	@JoinColumn(name = "domain_id")
 	Domain domain;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "offer", cascade = CascadeType.ALL)
+	OfferCreationRequest offerCreationRequest;
 	
 	@OneToMany(mappedBy = "offer", orphanRemoval = true, cascade = CascadeType.REMOVE)
 	Set<Application> applications;
@@ -97,6 +103,12 @@ public class Offer {
 	public ApplicationNotification getApplicationNotification() {
 		return applicationNotification;
 	}
+	public OfferCreationRequest getOfferCreationRequest() {
+		return offerCreationRequest;
+	}
+	public Set<Application> getApplications() {
+		return applications;
+	}
 	
 	
 	
@@ -132,6 +144,12 @@ public class Offer {
 	}
 	public void setApplicationNotification(ApplicationNotification applicationNotification) {
 		this.applicationNotification = applicationNotification;
+	}
+	public void setOfferCreationRequest(OfferCreationRequest offerCreationRequest) {
+		this.offerCreationRequest = offerCreationRequest;
+	}
+	public void setApplications(Set<Application> applications) {
+		this.applications = applications;
 	}
 	
 	

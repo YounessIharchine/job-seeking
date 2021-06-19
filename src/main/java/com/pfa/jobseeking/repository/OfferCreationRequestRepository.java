@@ -10,4 +10,6 @@ public interface OfferCreationRequestRepository extends CrudRepository<OfferCrea
 
 	List<OfferCreationRequest> findAll();
 	
+	OfferCreationRequest findByOfferId(int id);
+	
 }
