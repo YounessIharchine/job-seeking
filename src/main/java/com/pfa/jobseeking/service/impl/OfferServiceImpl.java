@@ -25,15 +25,15 @@ public class OfferServiceImpl implements OfferService {
 				return mapToResponse(offerRepository.findAll());
 			}
 			else {
-				return mapToResponse(offerRepository.findOfferByTitleContainsOrDescriptionContains(keyword, keyword));
+				return mapToResponse(offerRepository.findByKeyword(keyword));
 			}
 		}
 		else {
 			if(keyword == null) {
-				return mapToResponse(offerRepository.findOfferByDomainName(domain));
+				return mapToResponse(offerRepository.findByDomainName(domain));
 			}
 			else {
-				return mapToResponse(offerRepository.findOfferByDomainNameAndTitleContainsOrDomainNameAndDescriptionContains(domain, keyword, domain, keyword));
+				return mapToResponse(offerRepository.findByKeywordANDDomainName(keyword, domain));
 			}
 		}
 
