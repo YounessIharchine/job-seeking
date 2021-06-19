@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,7 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 	String path;
 	
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Override
 	public List<CompanyCreationRequestResponse> findAllCompanyCreationRequests() throws IOException {
 		List<CompanyCreationRequest> requests = companyCreationRequestRepository.findAll();
@@ -64,6 +66,8 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 		return response;
 	}
 
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Override
 	public List<OfferCreationRequestResponse> findAllOfferCreationRequests() {
 		List<OfferCreationRequest> requests = offerCreationRequestRepository.findAll();
@@ -82,6 +86,7 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 	}
 
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional
 	@Override
 	public void acceptCompanyCreationOffer(String companyName) {
@@ -92,12 +97,15 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 	}
 
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional
 	@Override
 	public void rejectCompanyCreationOffer(String companyName) {
 		companyRepository.delete(companyRepository.findCompanyByName(companyName));
 	}
 
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Override
 	public void acceptOfferCreationOffer(int id) {
 		Offer offer = offerRepository.findById(id);
@@ -106,6 +114,8 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 		offerCreationRequestRepository.delete(offerCreationRequestRepository.findByOfferId(id));
 	}
 
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Override
 	public void rejectOfferCreationOffer(int id) {
 		offerRepository.delete(offerRepository.findById(id));
