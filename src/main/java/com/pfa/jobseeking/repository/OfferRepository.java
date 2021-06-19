@@ -12,16 +12,38 @@ public interface OfferRepository extends CrudRepository<Offer, Integer> {
 	Offer findById(int id);
 	
 	List<Offer> findAll();
-	List<Offer> findByDomainName(String domainName);
+	
+	
 	@Query("SELECT o FROM Offer o "
-			+ "WHERE o.title LIKE %?1% "
-			+ "OR o.description LIKE %?1%")
+			+ "WHERE o.title LIKE %?1% OR o.description LIKE %?1%")
 	List<Offer> findByKeyword(String keyword);
+	List<Offer> findByDomainName(String domainName);
+	List<Offer> findByCityName(String cityName);	
+	
+	
 	@Query("SELECT o FROM Offer o "
-			+ "WHERE (o.title LIKE %?1% "
-			+ "OR o.description LIKE %?1%) "
-			+ "AND o.domain.name = ?2")
-	List<Offer> findByKeywordANDDomainName(String keyword, String domainName);
+			+ "WHERE o.domain.name = ?1 "
+			+ "AND (o.title LIKE %?2% OR o.description LIKE %?2%)")
+	List<Offer> findByDomainNameANDKeyword(String domainName, String Keyword);
+	@Query("SELECT o FROM Offer o "
+			+ "WHERE o.domain.name = ?1 "
+			+ "AND o.city.name = ?2")
+	List<Offer> findByDomainNameANDCity(String domainName, String cityName);
+	@Query("SELECT o FROM Offer o "
+			+ "WHERE (o.title LIKE %?1% OR o.description LIKE %?1%) "
+			+ "AND o.city.name = ?2")
+	List<Offer> findByKeywordANDCity(String keyword, String cityName);
+	
+	
+	@Query("SELECT o FROM Offer o "
+			+ "WHERE o.domain.name = ?1 "
+			+ "AND (o.title LIKE %?2% OR o.description LIKE %?2%) "
+			+ "AND o.city.name = ?3")
+	List<Offer> findByDomainNameANDKeywordANDCity(String domainName, String keyword, String cityName);
+	
+	
+	
+	
 	
 //	List<Offer> findOfferByTitleContainsOrDescriptionContains(String keyword1, String keyword2);
 //	List<Offer> findOfferByDomainNameAndTitleContainsOrDomainNameAndDescriptionContains(String name1, String keyword1, String name2, String keyword2);

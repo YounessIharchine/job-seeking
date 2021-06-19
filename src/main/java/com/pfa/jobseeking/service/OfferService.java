@@ -6,6 +6,6 @@ import com.pfa.jobseeking.rest.response.OfferResponse;
 
 public interface OfferService {
 
-	List<OfferResponse> findAll(String domain, String keyword);
+	List<OfferResponse> findAll(String domain, String keyword, String city);
 
 }

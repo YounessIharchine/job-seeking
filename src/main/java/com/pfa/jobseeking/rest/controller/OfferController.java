@@ -22,9 +22,10 @@ public class OfferController {
 	@GetMapping("/offers")
 	List<OfferResponse> showOffers(
 			@RequestParam(required = false) String domain,
-			@RequestParam(required = false) String keyword) {
+			@RequestParam(required = false) String keyword,
+			@RequestParam(required = false) String city) {
 		
-		return offerService.findAll(domain, keyword);
+		return offerService.findAll(domain, keyword, city);
 		
 	}
 	

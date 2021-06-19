@@ -19,21 +19,41 @@ public class OfferServiceImpl implements OfferService {
 	OfferRepository offerRepository;
 	
 	@Override
-	public List<OfferResponse> findAll(String domain, String keyword) {
+	public List<OfferResponse> findAll(String domain, String keyword, String city) {
 		if(domain == null) {
 			if(keyword == null) {
-				return mapToResponse(offerRepository.findAll());
+				if(city == null) {
+					return mapToResponse(offerRepository.findAll());
+				}
+				else {
+					return mapToResponse(offerRepository.findByCityName(city));
+				}
 			}
 			else {
-				return mapToResponse(offerRepository.findByKeyword(keyword));
+				if(city == null) {
+					return mapToResponse(offerRepository.findByKeyword(keyword));
+				}
+				else {
+					return mapToResponse(offerRepository.findByKeywordANDCity(keyword, city));
+				}
 			}
 		}
 		else {
 			if(keyword == null) {
-				return mapToResponse(offerRepository.findByDomainName(domain));
+				if(city == null) {
+					return mapToResponse(offerRepository.findByDomainName(domain));
+				}
+				else {
+					return mapToResponse(offerRepository.findByDomainNameANDCity(domain, city));
+				}
 			}
 			else {
-				return mapToResponse(offerRepository.findByKeywordANDDomainName(keyword, domain));
+				if(city == null) {
+					return mapToResponse(offerRepository.findByDomainNameANDKeyword(domain, keyword));
+				}
+				else {
+					return mapToResponse(offerRepository.findByDomainNameANDKeywordANDCity(domain, keyword, city));
+				}
 			}
 		}
 
