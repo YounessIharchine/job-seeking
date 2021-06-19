@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
+import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.repository.InternshipOfferRepository;
 import com.pfa.jobseeking.repository.JobOfferRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
+import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.service.OfferService;
 
@@ -27,6 +32,9 @@ public class OfferServiceImpl implements OfferService {
 	
 	@Autowired
 	JobOfferRepository jobOfferRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Override
 	public List<OfferResponse> findAll(String domain, String keyword, String city, String internshipType, String jobType) {
@@ -186,6 +194,16 @@ public class OfferServiceImpl implements OfferService {
 	}
 	
 	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public void save(int id) {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		seeker.saveOffer(offerRepository.findById(id));
+	}
+	
+	
 	private List<OfferResponse> mapToResponse(List<Offer> offers) {
 		List<OfferResponse> response = new ArrayList<>();
 		for(Offer offer : offers) {
@@ -215,17 +233,10 @@ public class OfferServiceImpl implements OfferService {
 		return response;
 	}
 
+
+
+
 }
 
 
 
-
-
-
-
-
-
-//@Override
-//public List<Offer> findAll(Pageable pageable) {
-//	return offerRepository.findAll(pageable).getContent();
-//}

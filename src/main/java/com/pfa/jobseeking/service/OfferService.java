@@ -8,4 +8,6 @@ public interface OfferService {
 
 	List<OfferResponse> findAll(String domain, String keyword, String city, String internshipType, String jobType);
 
+	void save(int id);
+
 }

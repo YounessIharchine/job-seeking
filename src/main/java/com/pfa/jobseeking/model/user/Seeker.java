@@ -1,5 +1,6 @@
 package com.pfa.jobseeking.model.user;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -62,7 +63,7 @@ public class Seeker extends User {
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "save", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "offer_id"))
-	Set<Offer> offers;
+	Set<Offer> offers = new HashSet<>();
 	
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
@@ -159,6 +160,10 @@ public class Seeker extends User {
 		this.seekerNotification = seekerNotification;
 	}
 	
+	
+	public void saveOffer(Offer offer) {
+		this.offers.add(offer);
+	}
 	
 	
 }
