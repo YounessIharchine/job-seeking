@@ -23,9 +23,11 @@ public class OfferController {
 	List<OfferResponse> showOffers(
 			@RequestParam(required = false) String domain,
 			@RequestParam(required = false) String keyword,
-			@RequestParam(required = false) String city) {
+			@RequestParam(required = false) String city,
+			@RequestParam(required = false) String internshipType,
+			@RequestParam(required = false) String jobType) {
 		
-		return offerService.findAll(domain, keyword, city);
+		return offerService.findAll(domain, keyword, city, internshipType, jobType);
 		
 	}
 	

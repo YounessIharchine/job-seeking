@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
+import com.pfa.jobseeking.repository.InternshipOfferRepository;
+import com.pfa.jobseeking.repository.JobOfferRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.service.OfferService;
@@ -20,43 +22,165 @@ public class OfferServiceImpl implements OfferService {
 	@Autowired
 	OfferRepository offerRepository;
 	
+	@Autowired
+	InternshipOfferRepository internshipOfferRepository;
+	
+	@Autowired
+	JobOfferRepository jobOfferRepository;
+	
 	@Override
-	public List<OfferResponse> findAll(String domain, String keyword, String city) {
+	public List<OfferResponse> findAll(String domain, String keyword, String city, String internshipType, String jobType) {
+		
 		if(domain == null) {
+			
 			if(keyword == null) {
+				
 				if(city == null) {
-					return mapToResponse(offerRepository.findAll());
+					
+					if(internshipType == null && jobType == null) {
+						return mapToResponse(offerRepository.findAll());
+					}
+					
+					else if(internshipType == null) {
+						return mapToResponse(jobOfferRepository.findByJobTypeName(jobType));
+					}
+					
+					else {
+						return mapToResponse(internshipOfferRepository.findByInternshipTypeName(internshipType));
+					}
+					
 				}
+				
 				else {
-					return mapToResponse(offerRepository.findByCityName(city));
+					
+					if(internshipType == null && jobType == null) {
+						return mapToResponse(offerRepository.findByCityName(city));
+					}
+					
+					else if(internshipType == null) {
+						return mapToResponse(jobOfferRepository.findByCityANDType(city, jobType));
+					}
+					
+					else {
+						return mapToResponse(internshipOfferRepository.findByCityANDType(city, internshipType));
+					}
+					
 				}
+				
 			}
+			
 			else {
+				
 				if(city == null) {
-					return mapToResponse(offerRepository.findByKeyword(keyword));
+					
+					if(internshipType == null && jobType == null) {
+						return mapToResponse(offerRepository.findByKeyword(keyword));
+					}
+					
+					else if(internshipType == null) {
+						return mapToResponse(jobOfferRepository.findByKeywordANDType(keyword, jobType));
+					}
+					
+					else {
+						return mapToResponse(internshipOfferRepository.findByKeywordANDType(keyword, internshipType));
+					}
+					
 				}
+				
 				else {
-					return mapToResponse(offerRepository.findByKeywordANDCity(keyword, city));
+					
+					if(internshipType == null && jobType == null) {
+						return mapToResponse(offerRepository.findByKeywordANDCity(keyword, city));
+					}
+					
+					else if(internshipType == null) {
+						return mapToResponse(jobOfferRepository.findByKeywordANDCityANDType(keyword, city, jobType));
+					}
+					
+					else {
+						return mapToResponse(internshipOfferRepository.findByKeywordANDCityANDType(keyword, city, internshipType));
+					}
+
 				}
+				
 			}
+			
 		}
 		else {
+			
 			if(keyword == null) {
+				
 				if(city == null) {
-					return mapToResponse(offerRepository.findByDomainName(domain));
+					
+					if(internshipType == null && jobType == null) {
+						return mapToResponse(offerRepository.findByDomainName(domain));
+					}
+					
+					else if(internshipType == null) {
+						return mapToResponse(jobOfferRepository.findByDomainANDType(domain, jobType));
+					}
+					
+					else {
+						return mapToResponse(internshipOfferRepository.findByDomainANDType(domain, internshipType));
+					}
+					
 				}
+				
 				else {
-					return mapToResponse(offerRepository.findByDomainNameANDCity(domain, city));
+					
+					if(internshipType == null && jobType == null) {
+						return mapToResponse(offerRepository.findByDomainNameANDCity(domain, city));
+					}
+					
+					else if(internshipType == null) {
+						return mapToResponse(jobOfferRepository.findByDomainANDCityANDType(domain, city, jobType));
+					}
+					
+					else {
+						return mapToResponse(internshipOfferRepository.findByDomainANDCityANDType(domain, city, internshipType));
+					}
+
 				}
+				
+				
 			}
+			
 			else {
+				
 				if(city == null) {
-					return mapToResponse(offerRepository.findByDomainNameANDKeyword(domain, keyword));
+					
+					if(internshipType == null && jobType == null) {
+						return mapToResponse(offerRepository.findByDomainNameANDKeyword(domain, keyword));
+					}
+					
+					else if(internshipType == null) {
+						return mapToResponse(jobOfferRepository.findByDomainANDKeywordANDType(domain, keyword, jobType));
+					}
+					
+					else {
+						return mapToResponse(internshipOfferRepository.findByDomainANDKeywordANDType(domain, keyword, internshipType));
+					}
+
 				}
+				
 				else {
-					return mapToResponse(offerRepository.findByDomainNameANDKeywordANDCity(domain, keyword, city));
+					
+					if(internshipType == null && jobType == null) {
+						return mapToResponse(offerRepository.findByDomainNameANDKeywordANDCity(domain, keyword, city));
+					}
+					
+					else if(internshipType == null) {
+						return mapToResponse(jobOfferRepository.findByDomainANDKeywordANDCityANDType(domain, keyword, city, jobType));
+					}
+					
+					else {
+						return mapToResponse(internshipOfferRepository.findByDomainANDKeywordANDCityANDType(domain, keyword, city, internshipType));
+					}
+
 				}
+				
 			}
+			
 		}
 
 	}

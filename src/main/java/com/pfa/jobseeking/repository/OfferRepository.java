@@ -18,7 +18,7 @@ public interface OfferRepository extends CrudRepository<Offer, Integer> {
 			+ "WHERE o.title LIKE %?1% OR o.description LIKE %?1%")
 	List<Offer> findByKeyword(String keyword);
 	List<Offer> findByDomainName(String domainName);
-	List<Offer> findByCityName(String cityName);	
+	List<Offer> findByCityName(String cityName);
 	
 	
 	@Query("SELECT o FROM Offer o "
