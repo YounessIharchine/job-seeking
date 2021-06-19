@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.model.offer.InternshipType;
+import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.Response;
@@ -34,7 +35,7 @@ public class InternshipTypeController {
 	
 	
 	@PostMapping("/internshipTypes")
-	ResponseEntity<Response> addinternshipType(@RequestBody String internshipType) throws AlreadyExistsException {
+	ResponseEntity<Response> addinternshipType(@RequestBody NameDto internshipType) throws AlreadyExistsException {
 		
 		internshipTypeService.save(internshipType);
 		

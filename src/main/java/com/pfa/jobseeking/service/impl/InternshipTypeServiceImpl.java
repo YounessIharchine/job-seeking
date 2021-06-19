@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.offer.InternshipType;
 import com.pfa.jobseeking.repository.InternshipTypeRepository;
+import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.service.InternshipTypeService;
@@ -29,12 +30,12 @@ public class InternshipTypeServiceImpl implements InternshipTypeService {
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void save(String internshipTypeName) throws AlreadyExistsException {
+	public void save(NameDto internshipTypeName) throws AlreadyExistsException {
 		
-		if(internshipTypeRepository.findInternshipTypeByName(internshipTypeName) != null)
+		if(internshipTypeRepository.findInternshipTypeByName(internshipTypeName.getName()) != null)
 			throw new AlreadyExistsException("This Internship Type already exists in the database.");
 		
-		InternshipType internshipType = new InternshipType(internshipTypeName);
+		InternshipType internshipType = new InternshipType(internshipTypeName.getName());
 		
 		internshipTypeRepository.save(internshipType);
 	}

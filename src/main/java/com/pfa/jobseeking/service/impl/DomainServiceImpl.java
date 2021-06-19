@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.Domain;
 import com.pfa.jobseeking.repository.DomainRepository;
+import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.service.DomainService;
@@ -31,12 +32,12 @@ public class DomainServiceImpl implements DomainService {
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void save(String domainName) throws AlreadyExistsException {
+	public void save(NameDto domainName) throws AlreadyExistsException {
 		
-		if(domainRepository.findDomainByName(domainName) != null)
+		if(domainRepository.findDomainByName(domainName.getName()) != null)
 			throw new AlreadyExistsException("This domain already exists in the database.");
 		
-		Domain domain = new Domain(domainName);
+		Domain domain = new Domain(domainName.getName());
 		
 		domainRepository.save(domain);
 	}

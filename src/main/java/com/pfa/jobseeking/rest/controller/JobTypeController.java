@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.model.offer.JobType;
+import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.Response;
@@ -34,7 +35,7 @@ public class JobTypeController {
 	
 	
 	@PostMapping("/jobTypes")
-	ResponseEntity<Response> addjobType(@RequestBody String jobType) throws AlreadyExistsException {
+	ResponseEntity<Response> addjobType(@RequestBody NameDto jobType) throws AlreadyExistsException {
 		
 		jobTypeService.save(jobType);
 		

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.offer.JobType;
 import com.pfa.jobseeking.repository.JobTypeRepository;
+import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.service.JobTypeService;
@@ -28,12 +29,12 @@ public class JobTypeServiceImpl implements JobTypeService {
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void save(String jobTypeName) throws AlreadyExistsException {
+	public void save(NameDto jobTypeName) throws AlreadyExistsException {
 		
-		if(jobTypeRepository.findJobTypeByName(jobTypeName) != null)
+		if(jobTypeRepository.findJobTypeByName(jobTypeName.getName()) != null)
 			throw new AlreadyExistsException("This job type already exists in the database.");
 		
-		JobType jobType = new JobType(jobTypeName);
+		JobType jobType = new JobType(jobTypeName.getName());
 		
 		jobTypeRepository.save(jobType);
 		
