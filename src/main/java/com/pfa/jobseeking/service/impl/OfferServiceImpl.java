@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pfa.jobseeking.model.offer.InternshipOffer;
+import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.rest.response.OfferResponse;
@@ -70,6 +72,19 @@ public class OfferServiceImpl implements OfferService {
 			item.setCity(offer.getCity().getName());
 			item.setDomain(offer.getDomain().getName());
 			item.setCompanyName(offer.getCompany().getName());
+			if(offer instanceof InternshipOffer) {
+				InternshipOffer internshipOffer = (InternshipOffer) offer;
+				item.setInternshipOffer(true);
+				item.setType(internshipOffer.getInternshipType().getName());
+				item.setDuration(internshipOffer.getDuration().getDuration());
+			}
+			else if(offer instanceof JobOffer) {
+				JobOffer jobOffer = (JobOffer) offer;
+				item.setInternshipOffer(false);
+				item.setType(jobOffer.getJobType().getName());
+				item.setDuration(null);
+			}
+				
 			response.add(item);
 		}
 		return response;

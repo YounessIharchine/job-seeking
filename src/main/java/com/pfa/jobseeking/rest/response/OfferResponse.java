@@ -8,17 +8,23 @@ public class OfferResponse {
 	String city;
 	String domain;
 	String companyName;
+	boolean isInternshipOffer;
+	String type;
+	String duration;
 	
 	public OfferResponse() { }
 
 	public OfferResponse(String title, String description, String date, String city, String domain,
-			String companyName) {
+			String companyName, boolean isInternshipOffer, String type, String duration) {
 		this.title = title;
 		this.description = description;
 		this.date = date;
 		this.city = city;
 		this.domain = domain;
 		this.companyName = companyName;
+		this.isInternshipOffer = isInternshipOffer;
+		this.type = type;
+		this.duration = duration;
 	}
 	
 	
@@ -40,6 +46,15 @@ public class OfferResponse {
 	public String getCompanyName() {
 		return companyName;
 	}
+	public boolean isInternshipOffer() {
+		return isInternshipOffer;
+	}
+	public String getType() {
+		return type;
+	}
+	public String getDuration() {
+		return duration;
+	}
 
 	
 	public void setTitle(String title) {
@@ -60,6 +75,17 @@ public class OfferResponse {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
+	public void setInternshipOffer(boolean isInternshipOffer) {
+		this.isInternshipOffer = isInternshipOffer;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+	
+	
 	
 	
 }
