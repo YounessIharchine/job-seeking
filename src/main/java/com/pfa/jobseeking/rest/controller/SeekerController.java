@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.SeekerService;
 
@@ -21,9 +20,9 @@ public class SeekerController {
 	@Autowired
 	SeekerService seekerService;
 	
-	@PatchMapping("${rest.api.basePath}/users/{id}")
-	ResponseEntity<Response> patch(@RequestBody Map<String, String> map, @PathVariable int id) throws NotFoundException {
-		seekerService.update(map, id);
+	@PatchMapping("/updateInfo")
+	ResponseEntity<Response> patch(@RequestBody Map<String, String> map){
+		seekerService.update(map);
 		
 		Response response = new Response(HttpStatus.OK.value(), "Update Successful");
 		return new ResponseEntity<>(response, HttpStatus.OK);
