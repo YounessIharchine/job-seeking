@@ -13,5 +13,7 @@ public interface CreationRequestService {
 	List<OfferCreationRequestResponse> findAllOfferCreationRequests();
 
 	void acceptCompanyCreationOffer(String companyName);
+
+	void rejectCompanyCreationOffer(String companyName);
 	
 }

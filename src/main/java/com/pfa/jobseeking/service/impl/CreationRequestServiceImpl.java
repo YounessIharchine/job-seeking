@@ -84,7 +84,13 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 		company.setVerified(true);
 		company.setCompanyCreationRequest(null);
 		companyCreationRequestRepository.delete(companyCreationRequestRepository.findByCompanyName(companyName));
-		
+	}
+
+	
+	@Transactional
+	@Override
+	public void rejectCompanyCreationOffer(String companyName) {
+		companyRepository.delete(companyRepository.findCompanyByName(companyName));
 	}
 
 }

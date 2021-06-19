@@ -33,4 +33,9 @@ public class CreationRequestController {
 		creationRequestService.acceptCompanyCreationOffer(companyName);
 	}
 	
+	@GetMapping("/rejectCompanyCreationRequest")
+	void rejectCompanyCreationRequest(@RequestParam String companyName) {
+		creationRequestService.rejectCompanyCreationOffer(companyName);
+	}
+	
 }
