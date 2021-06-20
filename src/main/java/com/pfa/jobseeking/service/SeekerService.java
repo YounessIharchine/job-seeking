@@ -8,9 +8,7 @@ import com.pfa.jobseeking.rest.response.OfferResponse;
 
 public interface SeekerService {
 
-	void updateInfo(Map<String, String> map);
-	
-	void updateProfile(Map<String, String> map) throws IOException;
+	void updateInfo(Map<String, String> map) throws IOException;
 
 	void save(int id);
 

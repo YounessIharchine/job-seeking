@@ -44,7 +44,7 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public void updateInfo(Map<String, String> map){
+	public void updateInfo(Map<String, String> map) throws IOException {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 		
@@ -58,18 +58,8 @@ public class SeekerServiceImpl implements SeekerService {
 			seeker.setAddress(map.get("address"));
 		if(map.containsKey("birthDate"))
 			seeker.setBirthDate(map.get("birthDate"));
-	}
-	
-	
-	@PreAuthorize("hasRole('ROLE_SEEKER')")
-	@Transactional
-	@Override
-	public void updateProfile(Map<String, String> map) throws IOException{
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
-		
 //		if(map.containsKey("cv"))
-//			seeker.setFirstName(map.get("cv"));
+//		seeker.setFirstName(map.get("cv"));
 		if(map.containsKey("photo")) {
 			String photoPath = "\\profilePhotos\\photo-" + seeker.getId() + ".png";
 			byte[] imageBytes = Base64.getDecoder().decode(map.get("photo"));
@@ -83,6 +73,7 @@ public class SeekerServiceImpl implements SeekerService {
 		if(map.containsKey("portfolio"))
 			seeker.getProfile().setPortefolio(map.get("portfolio"));
 	}
+	
 	
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")

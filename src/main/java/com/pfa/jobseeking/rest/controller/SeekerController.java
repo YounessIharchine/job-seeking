@@ -24,21 +24,14 @@ public class SeekerController {
 	@Autowired
 	SeekerService seekerService;
 	
-	@PatchMapping("/updateInfo")
-	ResponseEntity<Response> updateInfo(@RequestBody Map<String, String> map){
+	@PatchMapping("/updateSeekerInfo")
+	ResponseEntity<Response> updateInfo(@RequestBody Map<String, String> map) throws IOException {
 		seekerService.updateInfo(map);
 		
 		Response response = new Response(HttpStatus.OK.value(), "Update Successful");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PatchMapping("/updateProfile")
-	ResponseEntity<Response> updateProfile(@RequestBody Map<String, String> map) throws IOException{
-		seekerService.updateProfile(map);
-		
-		Response response = new Response(HttpStatus.OK.value(), "Update Successful");
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
 	
 	@GetMapping("/saveOffer/{id}")
 	void saveOffer(@PathVariable(name = "id") int id) {
