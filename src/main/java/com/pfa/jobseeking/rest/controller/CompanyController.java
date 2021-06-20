@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.model.company.Paragraph;
+import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.rest.dto.CompanyMandatoryInfoDto;
+import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.TextDto;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.CompanyService;
@@ -59,5 +61,21 @@ public class CompanyController {
 	@DeleteMapping("/deleteParagraph/{id}")
 	void deleteParagraph(@PathVariable(name = "id") int id) {
 		companyService.deleteParagraph(id);
+	}
+	
+	
+	@PostMapping("/addPhoto")
+	void addPhoto(@RequestBody PhotoDto photoDto) throws IOException {
+		companyService.addPhoto(photoDto);
+	}
+	
+	@GetMapping("/fetchPhotos")
+	Set<Photo> findPhotos() {
+		return companyService.findPhotos();
+	}
+	
+	@DeleteMapping("/deletePhoto/{id}")
+	void deletePhoto(@PathVariable(name = "id") int id) {
+		companyService.deletePhoto(id);
 	}
 }

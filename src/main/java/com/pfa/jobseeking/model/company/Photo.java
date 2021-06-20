@@ -15,7 +15,40 @@ public class Photo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	
+	String photoPath;
+	
 	@ManyToOne
 	@JoinColumn(name = "company_profile_id")
 	CompanyProfile companyProfile;
+	
+	
+	public Photo() { }
+
+
+	public Photo(String photoPath) {
+		this.photoPath = photoPath;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+	public String getPhotoPath() {
+		return photoPath;
+	}
+	public CompanyProfile getCompanyProfile() {
+		return companyProfile;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
+	}
+	public void setCompanyProfile(CompanyProfile companyProfile) {
+		this.companyProfile = companyProfile;
+	}
+	
 }

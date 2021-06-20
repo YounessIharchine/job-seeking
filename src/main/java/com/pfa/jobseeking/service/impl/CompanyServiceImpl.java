@@ -15,12 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.company.Paragraph;
+import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.DomainRepository;
 import com.pfa.jobseeking.repository.ParagraphRepository;
+import com.pfa.jobseeking.repository.PhotoRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.CompanyMandatoryInfoDto;
+import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.TextDto;
 import com.pfa.jobseeking.service.CompanyService;
 
@@ -38,6 +41,9 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Autowired
 	ParagraphRepository paragraphRepository;
+	
+	@Autowired
+	PhotoRepository photoRepository;
 	
 	@Value("${storage.images.basePath}")
 	String path;
@@ -123,6 +129,39 @@ public class CompanyServiceImpl implements CompanyService {
 		//can check if this paragraph is really mapped to this company by adding equals()..... but too lazy to implement also not much time left
 		
 		paragraphRepository.deleteById(id);
+	}
+
+	@Override
+	public void addPhoto(PhotoDto photoDto) throws IOException {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+		
+		
+		
+		
+		Photo photo = new Photo();
+		photo.setCompanyProfile(company.getCompanyProfile());
+		
+		photo = photoRepository.save(photo);
+		
+		String photoPath = "\\companyPhotos\\photo-" + company.getId() + "-" + photo.getId() + ".png";
+		byte[] photoBytes = Base64.getDecoder().decode(photoDto.getPhoto());
+		FileUtils.writeByteArrayToFile(new File(path+photoPath), photoBytes);
+		photo.setPhotoPath(photoPath.replace("\\", "\\\\"));
+		
+		photo = photoRepository.save(photo);
+
+	}
+
+	@Override
+	public Set<Photo> findPhotos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deletePhoto(int id) {
+		photoRepository.deleteById(id);
 	}
 
 

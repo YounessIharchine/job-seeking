@@ -26,7 +26,7 @@ public class CompanyProfile {
 	String coverPhoto;
 	String webSite;
 	
-	@OneToMany(mappedBy = "companyProfile")
+	@OneToMany(mappedBy = "companyProfile", cascade = CascadeType.ALL)
 	Set<Photo> photos;
 	
 	@OneToMany(mappedBy = "companyProfile", cascade = CascadeType.ALL)
@@ -88,5 +88,8 @@ public class CompanyProfile {
 	
 	public void addParagraph(Paragraph paragraph) {
 		this.paragraphs.add(paragraph);
+	}
+	public void addPhoto(Photo photo) {
+		this.photos.add(photo);
 	}
 }
