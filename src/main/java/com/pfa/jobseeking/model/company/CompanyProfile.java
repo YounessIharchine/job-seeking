@@ -2,6 +2,7 @@ package com.pfa.jobseeking.model.company;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,7 +29,7 @@ public class CompanyProfile {
 	@OneToMany(mappedBy = "companyProfile")
 	Set<Photo> photos;
 	
-	@OneToMany(mappedBy = "companyProfile")
+	@OneToMany(mappedBy = "companyProfile", cascade = CascadeType.ALL)
 	Set<Paragraph> paragraphs;
 	
 	
@@ -81,5 +82,11 @@ public class CompanyProfile {
 	}
 	public void setParagraphs(Set<Paragraph> paragraphs) {
 		this.paragraphs = paragraphs;
+	}
+	
+	
+	
+	public void addParagraph(Paragraph paragraph) {
+		this.paragraphs.add(paragraph);
 	}
 }

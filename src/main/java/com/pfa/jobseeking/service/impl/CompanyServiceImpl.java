@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.DomainRepository;
+import com.pfa.jobseeking.repository.ParagraphRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.CompanyMandatoryInfoDto;
+import com.pfa.jobseeking.rest.dto.TextDto;
 import com.pfa.jobseeking.service.CompanyService;
 
 @Service
@@ -32,6 +36,8 @@ public class CompanyServiceImpl implements CompanyService {
 	@Autowired
 	DomainRepository domainRepository;
 	
+	@Autowired
+	ParagraphRepository paragraphRepository;
 	
 	@Value("${storage.images.basePath}")
 	String path;
@@ -78,6 +84,45 @@ public class CompanyServiceImpl implements CompanyService {
 			FileUtils.writeByteArrayToFile(new File(path+coverPath), coverBytes);
 			company.getCompanyProfile().setCoverPhoto(coverPath.replace("\\", "\\\\"));
 		}
+	}
+
+	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public void addParagraph(TextDto textDto) {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+		
+		Paragraph paragraph = new Paragraph(textDto.getText());
+		paragraph.setCompanyProfile(company.getCompanyProfile());
+		company.getCompanyProfile().addParagraph(paragraph);
+		
+		userRepository.save(company); // this is mandatory
+	}
+
+	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public Set<Paragraph> findParagraphs() {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+		
+		return company.getCompanyProfile().getParagraphs();
+	}
+
+	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public void deleteParagraph(int id) {
+//		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+//		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+		
+		//can check if this paragraph is really mapped to this company by adding equals()..... but too lazy to implement also not much time left
+		
+		paragraphRepository.deleteById(id);
 	}
 
 

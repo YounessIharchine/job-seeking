@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Paragraph {
 
@@ -14,7 +16,41 @@ public class Paragraph {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	
+	String text;
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "company_profile_id")
 	CompanyProfile companyProfile;
+	
+	
+	public Paragraph() { }
+
+	public Paragraph(String text) {
+		this.text = text;
+	}
+
+	
+	public int getId() {
+		return id;
+	}
+	public String getText() {
+		return text;
+	}
+	public CompanyProfile getCompanyProfile() {
+		return companyProfile;
+	}
+
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
+	public void setCompanyProfile(CompanyProfile companyProfile) {
+		this.companyProfile = companyProfile;
+	}
+	
+	
 }
