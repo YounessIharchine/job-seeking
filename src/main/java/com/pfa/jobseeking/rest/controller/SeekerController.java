@@ -1,5 +1,6 @@
 package com.pfa.jobseeking.rest.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -24,8 +25,16 @@ public class SeekerController {
 	SeekerService seekerService;
 	
 	@PatchMapping("/updateInfo")
-	ResponseEntity<Response> patch(@RequestBody Map<String, String> map){
-		seekerService.update(map);
+	ResponseEntity<Response> updateInfo(@RequestBody Map<String, String> map){
+		seekerService.updateInfo(map);
+		
+		Response response = new Response(HttpStatus.OK.value(), "Update Successful");
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@PatchMapping("/updateProfile")
+	ResponseEntity<Response> updateProfile(@RequestBody Map<String, String> map) throws IOException{
+		seekerService.updateProfile(map);
 		
 		Response response = new Response(HttpStatus.OK.value(), "Update Successful");
 		return new ResponseEntity<>(response, HttpStatus.OK);

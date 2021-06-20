@@ -1,11 +1,16 @@
 package com.pfa.jobseeking.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -33,11 +38,13 @@ public class SeekerServiceImpl implements SeekerService {
 	@Autowired
 	CompanyRepository companyRepository;
 	
+	@Value("${storage.images.basePath}")
+	String path;
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public void update(Map<String, String> map){
+	public void updateInfo(Map<String, String> map){
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 		
@@ -51,6 +58,30 @@ public class SeekerServiceImpl implements SeekerService {
 			seeker.setAddress(map.get("address"));
 		if(map.containsKey("birthDate"))
 			seeker.setBirthDate(map.get("birthDate"));
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public void updateProfile(Map<String, String> map) throws IOException{
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		
+//		if(map.containsKey("cv"))
+//			seeker.setFirstName(map.get("cv"));
+		if(map.containsKey("photo")) {
+			String photoPath = "\\profilePhotos\\photo-" + seeker.getId() + ".png";
+			byte[] imageBytes = Base64.getDecoder().decode(map.get("photo"));
+			FileUtils.writeByteArrayToFile(new File(path+photoPath), imageBytes);
+			seeker.getProfile().setPhoto(photoPath.replace("\\", "\\\\"));
+		}
+		if(map.containsKey("speciality"))
+			seeker.getProfile().setSpeciality(map.get("speciality"));
+		if(map.containsKey("github"))
+			seeker.getProfile().setGithub(map.get("github"));
+		if(map.containsKey("portfolio"))
+			seeker.getProfile().setPortefolio(map.get("portfolio"));
 	}
 	
 	
