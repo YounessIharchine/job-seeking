@@ -1,5 +1,6 @@
 package com.pfa.jobseeking.rest.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.SeekerService;
 
@@ -38,4 +40,10 @@ public class SeekerController {
 	void saveOffer(@RequestParam String companyName) {
 		seekerService.follow(companyName);
 	}
+	
+	@GetMapping("${rest.api.basePath}/savedOffers")
+	List<OfferResponse> showSavedOffers() {
+		return seekerService.findSavedOffers();
+	}
+	
 }
