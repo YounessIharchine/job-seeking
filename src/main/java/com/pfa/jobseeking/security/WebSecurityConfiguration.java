@@ -50,11 +50,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		
 		http
-		.cors()
-		.and()
 		.csrf().disable()
 		.authorizeRequests()
-			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+//			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 			//.antMatchers("/api/users").authenticated()
 			.antMatchers("/test", "/fill", "/api/**", "/register").permitAll()
 			.anyRequest().authenticated()
@@ -64,14 +62,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.addFilter(jwtAuthenticationFilter)
 		.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 		
-
-		//cors is activated for everything, security problem
-		//problem occured in : delete a city
 		
 	}
 	
 	
-	
+	//cors is activated for everything, security problem
+	//problem occured in : delete a city
 	
 //	@Autowired
 //    private CustomAuthenticationProvider authenticationProvider;
