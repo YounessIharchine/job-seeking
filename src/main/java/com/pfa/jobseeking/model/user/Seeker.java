@@ -171,5 +171,8 @@ public class Seeker extends User {
 	public void unsaveOffer(Offer offer) {
 		this.offers.remove(offer);
 	}
+	public void unfollowCompany(Company company) {
+		this.companies.remove(company);
+	}
 	
 }

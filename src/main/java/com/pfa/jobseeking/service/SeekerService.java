@@ -15,6 +15,8 @@ public interface SeekerService {
 	void unsave(int id);
 
 	void follow(String companyName);
+	
+	void unfollow(String companyName);
 
 	List<OfferResponse> findSavedOffers();
 

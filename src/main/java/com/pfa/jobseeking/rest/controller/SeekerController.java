@@ -44,8 +44,13 @@ public class SeekerController {
 	}
 	
 	@GetMapping("/followCompany")
-	void saveOffer(@RequestParam String companyName) {
+	void followCompany(@RequestParam String companyName) {
 		seekerService.follow(companyName);
+	}
+	
+	@GetMapping("/unfollowCompany")
+	void unfollowCompany(@RequestParam String companyName) {
+		seekerService.unfollow(companyName);
 	}
 	
 	@GetMapping("${rest.api.basePath}/savedOffers")

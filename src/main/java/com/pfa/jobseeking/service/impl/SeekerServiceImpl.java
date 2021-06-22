@@ -105,6 +105,16 @@ public class SeekerServiceImpl implements SeekerService {
 		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 		seeker.followCompany(companyRepository.findCompanyByName(companyName));
 	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public void unfollow(String companyName) {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		seeker.unfollowCompany(companyRepository.findCompanyByName(companyName));
+	}
 
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
