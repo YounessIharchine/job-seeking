@@ -24,6 +24,7 @@ import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.response.OfferResponse;
+import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
 @Service
@@ -40,6 +41,32 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Value("${storage.images.basePath}")
 	String path;
+	
+	
+	@Override
+	public SeekerResponse findSeeker(int id) {
+		SeekerResponse response = new SeekerResponse();
+		Seeker seeker = (Seeker)userRepository.findById(id);
+		
+		response.setFirstName(seeker.getFirstName());
+		response.setLastName(seeker.getLastName());
+		response.setPhone(seeker.getPhone());
+		response.setAddress(seeker.getAddress());
+		response.setBirthDate(seeker.getBirthDate());
+		if(seeker.getCity()!=null)
+			response.setCity(seeker.getCity().getName());
+		else
+			response.setCity(null);
+		response.setCv(null);
+		response.setPhoto(null);
+		response.setSpeciality(seeker.getProfile().getSpeciality());
+		response.setDescription(seeker.getProfile().getDescription());
+		response.setPortefolio(seeker.getProfile().getPortefolio());
+		response.setGithub(seeker.getProfile().getGithub());
+
+		return response;
+	}
+	
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional

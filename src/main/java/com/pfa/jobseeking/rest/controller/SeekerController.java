@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.Response;
+import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
 @RestController
@@ -23,6 +24,13 @@ public class SeekerController {
 
 	@Autowired
 	SeekerService seekerService;
+	
+	
+	@GetMapping("${rest.api.basePath}/seekers/{id}")
+	SeekerResponse getSeeker(@PathVariable(name = "id") int id) {
+		return seekerService.findSeeker(id);
+	}
+	
 	
 	@PatchMapping("/updateSeekerInfo")
 	ResponseEntity<Response> updateInfo(@RequestBody Map<String, String> map) throws IOException {
