@@ -15,7 +15,6 @@ import com.pfa.jobseeking.model.user.Company;
 @Entity
 public class Domain {
 
-	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
