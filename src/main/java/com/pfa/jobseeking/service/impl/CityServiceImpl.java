@@ -32,7 +32,7 @@ public class CityServiceImpl implements CityService {
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void save(NameDto cityName) throws AlreadyExistsException {
+	public List<City> save(NameDto cityName) throws AlreadyExistsException {
 		
 		if(cityRepository.findCityByName(cityName.getName()) != null)
 			throw new AlreadyExistsException("This city already exists in the database.");
@@ -41,18 +41,22 @@ public class CityServiceImpl implements CityService {
 		
 		cityRepository.save(city);
 		
+		return cityRepository.findAll();
+		
 	}
 
 
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void delete(String cityName) throws NotFoundException {
+	public List<City> delete(String cityName) throws NotFoundException {
 		
 		if(cityRepository.findCityByName(cityName) == null)
 			throw new NotFoundException("This city doesn't exist in the database.");
 		
 		cityRepository.deleteCityByName(cityName);
+		
+		return cityRepository.findAll();
 		
 	}
 	

@@ -3,8 +3,6 @@ package com.pfa.jobseeking.rest.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +15,6 @@ import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
-import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.CityService;
 
 @RestController
@@ -36,22 +33,18 @@ public class CityController {
 	
 	
 	@PostMapping("/cities")
-	ResponseEntity<Response> addCity(@RequestBody NameDto city) throws AlreadyExistsException {
+	List<City> addCity(@RequestBody NameDto city) throws AlreadyExistsException {
 		
-		cityService.save(city);
+		 return cityService.save(city);
 		
-		Response response = new Response(HttpStatus.OK.value(), "City successfully added");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 	
 	@DeleteMapping("/cities")
-	ResponseEntity<Response> removeCity(@RequestParam("name") String city) throws NotFoundException {
+	List<City> removeCity(@RequestParam("name") String city) throws NotFoundException {
 		
-		cityService.delete(city);
+		return cityService.delete(city);
 		
-		Response response = new Response(HttpStatus.OK.value(), "City successfully deleted");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 }

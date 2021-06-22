@@ -11,9 +11,9 @@ public interface CityService {
 	
 	List<City> findAll();
 
-	void save(NameDto city) throws AlreadyExistsException;
+	List<City> save(NameDto city) throws AlreadyExistsException;
 
-	void delete(String city) throws NotFoundException;
+	List<City> delete(String city) throws NotFoundException;
 	
 	
 	//for filling database
