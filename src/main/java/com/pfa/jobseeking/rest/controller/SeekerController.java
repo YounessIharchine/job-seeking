@@ -38,6 +38,11 @@ public class SeekerController {
 		seekerService.save(id);
 	}
 	
+	@GetMapping("/unsaveOffer/{id}")
+	void unsaveOffer(@PathVariable(name = "id") int id) {
+		seekerService.unsave(id);
+	}
+	
 	@GetMapping("/followCompany")
 	void saveOffer(@RequestParam String companyName) {
 		seekerService.follow(companyName);

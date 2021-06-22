@@ -11,6 +11,8 @@ public interface SeekerService {
 	void updateInfo(Map<String, String> map) throws IOException;
 
 	void save(int id);
+	
+	void unsave(int id);
 
 	void follow(String companyName);
 

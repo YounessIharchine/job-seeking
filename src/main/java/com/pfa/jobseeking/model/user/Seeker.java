@@ -168,5 +168,8 @@ public class Seeker extends User {
 		this.companies.add(company);
 	}
 	
+	public void unsaveOffer(Offer offer) {
+		this.offers.remove(offer);
+	}
 	
 }

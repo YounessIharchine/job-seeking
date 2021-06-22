@@ -89,6 +89,17 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
+	public void unsave(int id) {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		seeker.unsaveOffer(offerRepository.findById(id));
+	}
+	
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
 	public void follow(String companyName) {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
@@ -104,6 +115,7 @@ public class SeekerServiceImpl implements SeekerService {
 
 		return mapToResponse(seeker.getOffers());
 	}
+	
 	
 
 	private List<OfferResponse> mapToResponse(Set<Offer> offers) {
@@ -134,4 +146,6 @@ public class SeekerServiceImpl implements SeekerService {
 		}
 		return response;
 	}
+
+
 }
