@@ -1,5 +1,10 @@
 package com.pfa.jobseeking.security;
 
+import static com.pfa.jobseeking.security.SecurityConstants.EXPIRATION_TIME;
+import static com.pfa.jobseeking.security.SecurityConstants.HEADER_STRING;
+import static com.pfa.jobseeking.security.SecurityConstants.SECRET;
+import static com.pfa.jobseeking.security.SecurityConstants.TOKEN_PREFIX;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,10 +25,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import static com.pfa.jobseeking.security.SecurityConstants.*;
+import com.pfa.jobseeking.model.user.Company;
+import com.pfa.jobseeking.model.user.Seeker;
+import com.pfa.jobseeking.repository.UserRepository;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -60,8 +67,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			HttpServletRequest request, 
 			HttpServletResponse response, 
 			FilterChain chain,
-			Authentication authResult) throws IOException, ServletException 
-	{
+			Authentication authResult) throws IOException, ServletException {
+		UserRepository userRepository = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext()).getBean(UserRepository.class);
 		User springUser = (User) authResult.getPrincipal();
 		String jwtToken = Jwts.builder().setSubject(springUser.getUsername())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -81,6 +88,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		body.put("status", HttpServletResponse.SC_OK);
 		body.put("message", "Authentication Successful");
 		body.put("roles", roles);
+		if(roles.contains("ROLE_SEEKER")) {
+			Seeker seeker = (Seeker)userRepository.findUserByEmail(springUser.getUsername());
+			body.put("id", seeker.getId());
+			body.put("name", seeker.getFirstName() + " " + seeker.getLastName());
+		}
+		else if(roles.contains("ROLE_COMPANY")) {
+			Company company = (Company)userRepository.findUserByEmail(springUser.getUsername());
+			body.put("id", company.getId());
+			body.put("name", company.getName());
+		}
+
 		//fuck you rah makantch ghatle3
 		
 		final ObjectMapper mapper = new ObjectMapper();
