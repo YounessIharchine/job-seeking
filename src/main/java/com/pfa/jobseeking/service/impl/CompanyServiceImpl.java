@@ -25,6 +25,7 @@ import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.CompanyMandatoryInfoDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.TextDto;
+import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.service.CompanyService;
 
 @Service
@@ -47,6 +48,30 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Value("${storage.images.basePath}")
 	String path;
+	
+	
+	@Override
+	public CompanyResponse findCompany(int id) {
+		CompanyResponse response = new CompanyResponse();
+		Company company = (Company)userRepository.findById(id);
+		
+		response.setName(company.getName());
+		response.setPublicEmail(company.getPublicEmail());
+		response.setPhone(company.getPhone());
+		if(company.getCity() != null)
+			response.setCity(company.getCity().getName());
+		else 
+			response.setCity(null);
+		if(company.getDomain() != null)
+			response.setDomain(company.getDomain().getName());
+		else
+			response.setDomain(null);
+		response.setLogo(null);
+		response.setCoverPhoto(null);
+		response.setWebSite(company.getCompanyProfile().getWebSite());
+		
+		return response;
+	}
 	
 	
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
@@ -163,7 +188,6 @@ public class CompanyServiceImpl implements CompanyService {
 	public void deletePhoto(int id) {
 		photoRepository.deleteById(id);
 	}
-
 
 
 }

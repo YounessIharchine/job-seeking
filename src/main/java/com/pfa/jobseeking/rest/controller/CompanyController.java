@@ -20,6 +20,7 @@ import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.rest.dto.CompanyMandatoryInfoDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.TextDto;
+import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.CompanyService;
 
@@ -29,6 +30,10 @@ public class CompanyController {
 	@Autowired
 	CompanyService companyService;
 	
+	@GetMapping("${rest.api.basePath}/companies/{id}")
+	CompanyResponse getCompany(@PathVariable(name = "id") int id) {
+		return companyService.findCompany(id);
+	}
 	
 	@PostMapping("/setMandatoryCompanyInfo")
 	ResponseEntity<Response> setMandatoryCompanyInfo(@RequestBody CompanyMandatoryInfoDto companyMandatoryInfoDto) throws IOException {
