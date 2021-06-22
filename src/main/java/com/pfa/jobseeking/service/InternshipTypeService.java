@@ -11,8 +11,8 @@ public interface InternshipTypeService {
 
 	List<InternshipType> findAll();
 
-	void save(NameDto internshipType) throws AlreadyExistsException;
+	List<InternshipType> save(NameDto internshipType) throws AlreadyExistsException;
 
-	void delete(String internshipType) throws NotFoundException;
+	List<InternshipType> delete(String internshipType) throws NotFoundException;
 
 }

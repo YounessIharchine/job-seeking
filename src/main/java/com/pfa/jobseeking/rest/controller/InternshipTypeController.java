@@ -3,8 +3,6 @@ package com.pfa.jobseeking.rest.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +15,6 @@ import com.pfa.jobseeking.model.offer.InternshipType;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
-import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.InternshipTypeService;
 
 @RestController
@@ -35,21 +32,17 @@ public class InternshipTypeController {
 	
 	
 	@PostMapping("/internshipTypes")
-	ResponseEntity<Response> addinternshipType(@RequestBody NameDto internshipType) throws AlreadyExistsException {
+	List<InternshipType> addinternshipType(@RequestBody NameDto internshipType) throws AlreadyExistsException {
 		
-		internshipTypeService.save(internshipType);
+		return internshipTypeService.save(internshipType);
 		
-		Response response = new Response(HttpStatus.OK.value(), "Internship Type successfully added");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 	
 	@DeleteMapping("/internshipTypes")
-	ResponseEntity<Response> removeinternshipType(@RequestParam("name") String internshipType) throws NotFoundException {
+	List<InternshipType> removeinternshipType(@RequestParam("name") String internshipType) throws NotFoundException {
 		
-		internshipTypeService.delete(internshipType);
+		return internshipTypeService.delete(internshipType);
 		
-		Response response = new Response(HttpStatus.OK.value(), "Internship Type successfully deleted");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 }

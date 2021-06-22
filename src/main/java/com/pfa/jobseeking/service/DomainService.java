@@ -11,9 +11,9 @@ public interface DomainService {
 
 	List<Domain> findAll();
 		
-	void save(NameDto domain) throws AlreadyExistsException;
+	List<Domain> save(NameDto domain) throws AlreadyExistsException;
 
-	void delete(String domain) throws NotFoundException;
+	List<Domain> delete(String domain) throws NotFoundException;
 	
 	
 	//for filling database

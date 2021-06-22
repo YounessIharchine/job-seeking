@@ -30,7 +30,7 @@ public class InternshipTypeServiceImpl implements InternshipTypeService {
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void save(NameDto internshipTypeName) throws AlreadyExistsException {
+	public List<InternshipType> save(NameDto internshipTypeName) throws AlreadyExistsException {
 		
 		if(internshipTypeRepository.findInternshipTypeByName(internshipTypeName.getName()) != null)
 			throw new AlreadyExistsException("This Internship Type already exists in the database.");
@@ -38,18 +38,22 @@ public class InternshipTypeServiceImpl implements InternshipTypeService {
 		InternshipType internshipType = new InternshipType(internshipTypeName.getName());
 		
 		internshipTypeRepository.save(internshipType);
+		
+		return internshipTypeRepository.findAll();
 	}
 
 	
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void delete(String internshipTypeName) throws NotFoundException {
+	public List<InternshipType> delete(String internshipTypeName) throws NotFoundException {
 
 		if(internshipTypeRepository.findInternshipTypeByName(internshipTypeName) == null)
 			throw new NotFoundException("This Internship Type doesn't exist in the database.");
 		
 		internshipTypeRepository.deleteInternshipTypeByName(internshipTypeName);
+		
+		return internshipTypeRepository.findAll();
 		
 	}
 

@@ -11,8 +11,8 @@ public interface JobTypeService {
 
 	List<JobType> findAll();
 
-	void save(NameDto jobType) throws AlreadyExistsException;
+	List<JobType> save(NameDto jobType) throws AlreadyExistsException;
 
-	void delete(String jobType) throws NotFoundException;
+	List<JobType> delete(String jobType) throws NotFoundException;
 
 }

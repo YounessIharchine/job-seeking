@@ -3,8 +3,6 @@ package com.pfa.jobseeking.rest.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +15,6 @@ import com.pfa.jobseeking.model.Domain;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
-import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.DomainService;
 
 @RestController
@@ -34,22 +31,18 @@ public class DomainController {
 	}
 	
 	@PostMapping("/domains")
-	ResponseEntity<Response> addDomain(@RequestBody NameDto domain) throws AlreadyExistsException {
+	List<Domain> addDomain(@RequestBody NameDto domain) throws AlreadyExistsException {
 		
-		domainService.save(domain);
+		return domainService.save(domain);
 		
-		Response response = new Response(HttpStatus.OK.value(), "Domain successfully added");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 	
 	@DeleteMapping("/domains")
-	ResponseEntity<Response> removeDomain(@RequestParam("name") String domain) throws NotFoundException {
+	List<Domain> removeDomain(@RequestParam("name") String domain) throws NotFoundException {
 		
-		domainService.delete(domain);
+		return domainService.delete(domain);
 		
-		Response response = new Response(HttpStatus.OK.value(), "Domain successfully deleted");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 

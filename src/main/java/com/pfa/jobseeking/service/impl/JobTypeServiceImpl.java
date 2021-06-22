@@ -29,7 +29,7 @@ public class JobTypeServiceImpl implements JobTypeService {
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void save(NameDto jobTypeName) throws AlreadyExistsException {
+	public List<JobType> save(NameDto jobTypeName) throws AlreadyExistsException {
 		
 		if(jobTypeRepository.findJobTypeByName(jobTypeName.getName()) != null)
 			throw new AlreadyExistsException("This job type already exists in the database.");
@@ -38,18 +38,22 @@ public class JobTypeServiceImpl implements JobTypeService {
 		
 		jobTypeRepository.save(jobType);
 		
+		return jobTypeRepository.findAll();
+		
 	}
 
 	
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void delete(String jobTypeName) throws NotFoundException {
+	public List<JobType> delete(String jobTypeName) throws NotFoundException {
 
 		if(jobTypeRepository.findJobTypeByName(jobTypeName) == null)
 			throw new NotFoundException("This job type doesn't exist in the database.");
 		
 		jobTypeRepository.deleteJobTypeByName(jobTypeName);
+		
+		return jobTypeRepository.findAll();
 		
 	}
 

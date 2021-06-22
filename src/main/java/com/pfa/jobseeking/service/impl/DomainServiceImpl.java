@@ -32,7 +32,7 @@ public class DomainServiceImpl implements DomainService {
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void save(NameDto domainName) throws AlreadyExistsException {
+	public List<Domain> save(NameDto domainName) throws AlreadyExistsException {
 		
 		if(domainRepository.findDomainByName(domainName.getName()) != null)
 			throw new AlreadyExistsException("This domain already exists in the database.");
@@ -40,19 +40,22 @@ public class DomainServiceImpl implements DomainService {
 		Domain domain = new Domain(domainName.getName());
 		
 		domainRepository.save(domain);
+		
+		return domainRepository.findAll();
 	}
 
 	
 	@Transactional
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void delete(String domainName) throws NotFoundException {
+	public List<Domain> delete(String domainName) throws NotFoundException {
 
 		if(domainRepository.findDomainByName(domainName) == null)
 			throw new NotFoundException("This domain doesn't exist in the database.");
 		
 		domainRepository.deleteDomainByName(domainName);
 		
+		return domainRepository.findAll();
 	}
 	
 	
