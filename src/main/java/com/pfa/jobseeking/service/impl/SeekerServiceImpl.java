@@ -20,6 +20,7 @@ import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.user.Seeker;
+import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.UserRepository;
@@ -38,6 +39,9 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Autowired
 	CompanyRepository companyRepository;
+	
+	@Autowired
+	CityRepository cityRepository;
 	
 	@Value("${storage.images.basePath}")
 	String path;
@@ -86,6 +90,8 @@ public class SeekerServiceImpl implements SeekerService {
 			seeker.setAddress(map.get("address"));
 		if(map.containsKey("birthDate"))
 			seeker.setBirthDate(map.get("birthDate"));
+		if(map.containsKey("city"))
+			seeker.setCity(cityRepository.findCityByName(map.get("city")));
 //		if(map.containsKey("cv"))
 //		seeker.setFirstName(map.get("cv"));
 		if(map.containsKey("photo")) {
