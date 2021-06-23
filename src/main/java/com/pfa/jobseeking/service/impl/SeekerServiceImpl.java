@@ -25,6 +25,7 @@ import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.response.OfferResponse;
+import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
@@ -69,6 +70,27 @@ public class SeekerServiceImpl implements SeekerService {
 		response.setPortefolio(seeker.getProfile().getPortefolio());
 		response.setGithub(seeker.getProfile().getGithub());
 
+		return response;
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public SeekerAccountResponse fetchSeekerAccount() {
+		SeekerAccountResponse response = new SeekerAccountResponse();
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		
+		response.setEmail(seeker.getEmail());
+		response.setFirstName(seeker.getFirstName());
+		response.setLastName(seeker.getLastName());
+		response.setPhone(seeker.getPhone());
+		response.setAddress(seeker.getAddress());
+		response.setBirthDate(seeker.getBirthDate());
+		response.setCity(seeker.getCity().getName());
+		
+		
 		return response;
 	}
 	

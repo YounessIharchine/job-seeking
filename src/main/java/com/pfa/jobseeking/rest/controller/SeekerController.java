@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.Response;
+import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
@@ -29,6 +30,11 @@ public class SeekerController {
 	@GetMapping("${rest.api.basePath}/seekers/{id}")
 	SeekerProfileResponse getSeeker(@PathVariable(name = "id") int id) {
 		return seekerService.findSeeker(id);
+	}
+	
+	@GetMapping("${rest.api.basePath}/seekers/account")
+	SeekerAccountResponse getSeekerAccount() {
+		return seekerService.fetchSeekerAccount();
 	}
 	
 	
