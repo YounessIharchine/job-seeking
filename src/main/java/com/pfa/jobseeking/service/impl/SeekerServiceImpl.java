@@ -27,6 +27,7 @@ import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
+import com.pfa.jobseeking.rest.response.SeekerStepOneResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
 @Service
@@ -90,6 +91,25 @@ public class SeekerServiceImpl implements SeekerService {
 		response.setBirthDate(seeker.getBirthDate());
 		response.setCity(seeker.getCity().getName());
 		
+		
+		return response;
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public SeekerStepOneResponse fetchSeekerStepOne() {
+		SeekerStepOneResponse response = new SeekerStepOneResponse();
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		
+		response.setFirstName(seeker.getFirstName());
+		response.setLastName(seeker.getLastName());
+		response.setPhone(seeker.getPhone());
+		response.setAddress(seeker.getAddress());
+		response.setBirthDate(seeker.getBirthDate());
+		response.setCity(seeker.getCity().getName());
 		
 		return response;
 	}

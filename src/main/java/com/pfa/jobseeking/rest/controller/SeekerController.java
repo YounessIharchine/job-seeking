@@ -18,6 +18,7 @@ import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
+import com.pfa.jobseeking.rest.response.SeekerStepOneResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
 @RestController
@@ -35,6 +36,11 @@ public class SeekerController {
 	@GetMapping("${rest.api.basePath}/seekers/account")
 	SeekerAccountResponse getSeekerAccount() {
 		return seekerService.fetchSeekerAccount();
+	}
+	
+	@GetMapping("${rest.api.basePath}/seekers/stepOne")
+	SeekerStepOneResponse getSeekerStepOne() {
+		return seekerService.fetchSeekerStepOne();
 	}
 	
 	
