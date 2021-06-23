@@ -35,6 +35,46 @@ public class Preferences {
 	@JoinTable(name = "preference_job", joinColumns = @JoinColumn(name = "preference_id"), inverseJoinColumns = @JoinColumn(name = "job_type_id"))
 	Set<JobType> jobTypes;
 	
+	
+	
 	public Preferences() { }
+
+	
+	
+	public int getId() {
+		return id;
+	}
+	public Seeker getSeeker() {
+		return seeker;
+	}
+	public boolean isCanRelocate() {
+		return canRelocate;
+	}
+	public Set<InternshipType> getInternshipTypes() {
+		return internshipTypes;
+	}
+	public Set<JobType> getJobTypes() {
+		return jobTypes;
+	}
+
+	
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	public void setSeeker(Seeker seeker) {
+		this.seeker = seeker;
+	}
+	public void setCanRelocate(boolean canRelocate) {
+		this.canRelocate = canRelocate;
+	}
+	public void setInternshipTypes(Set<InternshipType> internshipTypes) {
+		this.internshipTypes = internshipTypes;
+	}
+	public void setJobTypes(Set<JobType> jobTypes) {
+		this.jobTypes = jobTypes;
+	}
+	
+	
 	
 }

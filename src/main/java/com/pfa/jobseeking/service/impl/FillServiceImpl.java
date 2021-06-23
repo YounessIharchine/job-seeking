@@ -7,11 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.model.Domain;
+import com.pfa.jobseeking.model.company.CompanyProfile;
 import com.pfa.jobseeking.model.offer.Duration;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.InternshipType;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.JobType;
+import com.pfa.jobseeking.model.seeker.Profile;
 import com.pfa.jobseeking.model.user.Admin;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Role;
@@ -88,11 +90,39 @@ public class FillServiceImpl implements FillService {
 		
 		Seeker seeker = new Seeker("seeker@gmail.com", passwordEncoder.encode("seeker"), "first", "last");
 		seeker.addRole(seekerRole);
+		seeker.setFirstName("First");
+		seeker.setLastName("Last");
+		seeker.setPhone("0624151985");
+		seeker.setAddress("This is an address");
+		seeker.setBirthDate("06/12/2012");
 		seeker.setCity(cityService.findByName("Agadir"));
+		Profile profile = new Profile();
+		profile.setCv("\\\\cv\\\\cv-1");
+		profile.setPhoto("\\\\profilePhotos\\\\photo-1");
+		profile.setSpeciality("Légumes du Front-end");
+		profile.setDescription("This is a description");
+		profile.setPortefolio("portefolio.com");
+		profile.setGithub("github.com/firstlast");
+		seeker.setProfile(profile);
+		
+		
+		
+		
 		Company company = new Company("company@gmail.com", passwordEncoder.encode("company"));
 		company.addRole(companyRole);
+		company.setName("Company Name");
+		company.setPublicEmail("public.company@gmail.com");
+		company.setDocumentPath("\\\\document\\\\document-2");
 		company.setCity(cityService.findByName("Agadir"));
 		company.setDomain(domainService.findByName("Industry"));
+		CompanyProfile companyProfile = new CompanyProfile();
+		companyProfile.setLogo("\\\\logos\\\\logo-2");
+		companyProfile.setCoverPhoto("\\\\coverPhotos\\\\cover-2");
+		companyProfile.setWebSite("company.com");
+		company.setCompanyProfile(companyProfile);
+		
+		
+		
 		Admin admin = new Admin("admin@gmail.com", passwordEncoder.encode("admin"));
 		admin.addRole(adminRole);
 		
