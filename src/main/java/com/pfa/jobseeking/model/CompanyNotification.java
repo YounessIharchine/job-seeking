@@ -33,5 +33,10 @@ public class CompanyNotification extends Notification {
 	}
 	
 	
-	
+	public void incrementNewFollowers() {
+		this.newFollowers++;
+	}
+	public void resetNewFollowers() {
+		this.newFollowers = 0;
+	}
 }

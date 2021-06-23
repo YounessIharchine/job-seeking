@@ -33,5 +33,11 @@ public class ApplicationNotification extends Notification {
 	}
 	
 	
+	public void incrementNewApplications() {
+		this.newApplications++;
+	}
+	public void resetNewApplications() {
+		this.newApplications = 0;
+	}
 	
 }

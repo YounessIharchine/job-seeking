@@ -1,43 +1,48 @@
-package com.pfa.jobseeking.model.offer;
+package com.pfa.jobseeking.model.seeker;
 
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class ApplicationKey implements Serializable {
+public class FollowKey implements Serializable {
 
 	private int seekerId;
-	private int offerId;
+	private int companyId;
 	
 	
-	public ApplicationKey() { }
+	
+	public FollowKey() { }
 
-
+	
+	
 	public int getSeekerId() {
 		return seekerId;
 	}
-	public int getOfferId() {
-		return offerId;
+	public int getCompanyId() {
+		return companyId;
 	}
 
-
+	
+	
 	public void setSeekerId(int seekerId) {
 		this.seekerId = seekerId;
 	}
-	public void setOfferId(int offerId) {
-		this.offerId = offerId;
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
+
 
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + offerId;
+		result = prime * result + companyId;
 		result = prime * result + seekerId;
 		return result;
 	}
+
 
 
 	@Override
@@ -48,8 +53,8 @@ public class ApplicationKey implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ApplicationKey other = (ApplicationKey) obj;
-		if (offerId != other.offerId)
+		FollowKey other = (FollowKey) obj;
+		if (companyId != other.companyId)
 			return false;
 		if (seekerId != other.seekerId)
 			return false;

@@ -16,6 +16,7 @@ public class Paragraph {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	
+	String title;
 	String text;
 	
 	@JsonIgnore
@@ -34,6 +35,9 @@ public class Paragraph {
 	public int getId() {
 		return id;
 	}
+	public String getTitle() {
+		return title;
+	}
 	public String getText() {
 		return text;
 	}
@@ -45,12 +49,16 @@ public class Paragraph {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	public void setText(String text) {
 		this.text = text;
 	}
 	public void setCompanyProfile(CompanyProfile companyProfile) {
 		this.companyProfile = companyProfile;
 	}
-	
+
+
 	
 }

@@ -7,7 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -19,6 +18,7 @@ import com.pfa.jobseeking.model.CompanyNotification;
 import com.pfa.jobseeking.model.Domain;
 import com.pfa.jobseeking.model.company.CompanyProfile;
 import com.pfa.jobseeking.model.offer.Offer;
+import com.pfa.jobseeking.model.seeker.Follow;
 
 @Entity
 @DiscriminatorValue("company")
@@ -51,8 +51,8 @@ public class Company extends User {
 	Set<Offer> offers = new HashSet<Offer>();
 	
 	@JsonIgnore
-	@ManyToMany(mappedBy = "companies")
-	Set<Seeker> seekers;
+	@OneToMany(mappedBy = "company", orphanRemoval = true, cascade = CascadeType.REMOVE)
+	Set<Follow> follows = new HashSet<Follow>();
 	
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
@@ -99,11 +99,11 @@ public class Company extends User {
 	public Set<Offer> getOffers() {
 		return offers;
 	}
-	public Set<Seeker> getSeekers() {
-		return seekers;
-	}
 	public CompanyNotification getCompanyNotification() {
 		return companyNotification;
+	}	
+	public Set<Follow> getFollows() {
+		return follows;
 	}
 
 
@@ -138,17 +138,23 @@ public class Company extends User {
 	public void setOffers(Set<Offer> offers) {
 		this.offers = offers;
 	}
-	public void setSeekers(Set<Seeker> seekers) {
-		this.seekers = seekers;
-	}
 	public void setCompanyNotification(CompanyNotification companyNotification) {
 		this.companyNotification = companyNotification;
+	}
+	public void setFollows(Set<Follow> follows) {
+		this.follows = follows;
 	}
 	
 	
 	public void addOffer(Offer offer) {
 		this.offers.add(offer);
 	}
+
+
+
+
+
+
 
 
 	

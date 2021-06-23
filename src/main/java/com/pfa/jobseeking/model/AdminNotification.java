@@ -11,14 +11,18 @@ public class AdminNotification extends Notification {
 	@OneToOne(mappedBy = "adminNotification")
 	Admin admin;
 	
-	int newRequests;
+	int newCompanyCreationRequests;
+	int newOfferCreationRequests;
 	
 	
 	public AdminNotification() { }
 
-
-	public int getNewRequests() {
-		return newRequests;
+	
+	public int getNewCompanyCreationRequests() {
+		return newCompanyCreationRequests;
+	}
+	public int getNewOfferCreationRequests() {
+		return newOfferCreationRequests;
 	}
 	public Admin getAdmin() {
 		return admin;
@@ -26,15 +30,28 @@ public class AdminNotification extends Notification {
 
 
 	
-	public void setNewRequests(int newRequests) {
-		this.newRequests = newRequests;
+	public void setNewCompanyCreationRequests(int newCompanyCreationRequests) {
+		this.newCompanyCreationRequests = newCompanyCreationRequests;
+	}
+	public void setNewOfferCreationRequests(int newOfferCreationRequests) {
+		this.newOfferCreationRequests = newOfferCreationRequests;
 	}
 	public void setAdmin(Admin admin) {
 		this.admin = admin;
 	}
+
 	
-	
-	
-	
+	public void incrementNewCompanyCreationRequests() {
+		this.newCompanyCreationRequests++;
+	}
+	public void incrementNewOfferCreationRequests() {
+		this.newOfferCreationRequests++;
+	}
+	public void resetNewCompanyCreationRequests() {
+		this.newCompanyCreationRequests = 0;
+	}
+	public void resetNewOfferCreationRequests() {
+		this.newOfferCreationRequests = 0;
+	}
 	
 }

@@ -15,10 +15,10 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pfa.jobseeking.model.City;
-import com.pfa.jobseeking.model.SeekerNotification;
 import com.pfa.jobseeking.model.offer.Application;
 import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.seeker.CoverLetter;
+import com.pfa.jobseeking.model.seeker.Follow;
 import com.pfa.jobseeking.model.seeker.Preferences;
 import com.pfa.jobseeking.model.seeker.Profile;
 
@@ -56,19 +56,14 @@ public class Seeker extends User {
 	Set<Application> applications;
 	
 	@JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "follow", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "company_id"))
-	Set<Company> companies;
+	@OneToMany(mappedBy = "seeker", orphanRemoval = true, cascade = CascadeType.REMOVE)
+	Set<Follow> follows;
 	
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "save", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "offer_id"))
 	Set<Offer> offers = new HashSet<>();
-	
-	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "seeker_notif_id")
-	SeekerNotification seekerNotification;
+
 	
 	
 	public Seeker() { }
@@ -111,14 +106,14 @@ public class Seeker extends User {
 	public Preferences getPreferences() {
 		return preferences;
 	}
-	public Set<Company> getCompanies() {
-		return companies;
-	}
 	public Set<Offer> getOffers() {
 		return offers;
+	}	
+	public Set<Application> getApplications() {
+		return applications;
 	}
-	public SeekerNotification getSeekerNotification() {
-		return seekerNotification;
+	public Set<Follow> getFollows() {
+		return follows;
 	}
 	
 	
@@ -150,29 +145,33 @@ public class Seeker extends User {
 	public void setPreferences(Preferences preferences) {
 		this.preferences = preferences;
 	}
-	public void setCompanies(Set<Company> companies) {
-		this.companies = companies;
-	}
 	public void setOffers(Set<Offer> offers) {
 		this.offers = offers;
 	}
-	public void setSeekerNotification(SeekerNotification seekerNotification) {
-		this.seekerNotification = seekerNotification;
+	public void setApplications(Set<Application> applications) {
+		this.applications = applications;
+	}
+	public void setFollows(Set<Follow> follows) {
+		this.follows = follows;
 	}
 	
 	
 	public void saveOffer(Offer offer) {
 		this.offers.add(offer);
 	}
-	public void followCompany(Company company) {
-		this.companies.add(company);
-	}
 	
 	public void unsaveOffer(Offer offer) {
 		this.offers.remove(offer);
 	}
-	public void unfollowCompany(Company company) {
-		this.companies.remove(company);
-	}
+
+
+
+
+
+
+
+
+	
+	
 	
 }
