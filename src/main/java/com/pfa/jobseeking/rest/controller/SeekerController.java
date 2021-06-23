@@ -32,7 +32,7 @@ public class SeekerController {
 	}
 	
 	
-	@PatchMapping("/updateSeekerInfo")
+	@PatchMapping("${rest.api.basePath}/seekers/profile")
 	ResponseEntity<Response> updateInfo(@RequestBody Map<String, String> map) throws IOException {
 		seekerService.updateInfo(map);
 		
@@ -41,27 +41,27 @@ public class SeekerController {
 	}
 	
 	
-	@GetMapping("/saveOffer/{id}")
+	@GetMapping("${rest.api.basePath}/seekers/saveOffer/{id}")
 	void saveOffer(@PathVariable(name = "id") int id) {
 		seekerService.save(id);
 	}
 	
-	@GetMapping("/unsaveOffer/{id}")
+	@GetMapping("${rest.api.basePath}/seekers/unsaveOffer/{id}")
 	void unsaveOffer(@PathVariable(name = "id") int id) {
 		seekerService.unsave(id);
 	}
 	
-	@GetMapping("/followCompany")
+	@GetMapping("${rest.api.basePath}/seekers/followCompany")
 	void followCompany(@RequestParam String companyName) {
 		seekerService.follow(companyName);
 	}
 	
-	@GetMapping("/unfollowCompany")
+	@GetMapping("${rest.api.basePath}/seekers/unfollowCompany")
 	void unfollowCompany(@RequestParam String companyName) {
 		seekerService.unfollow(companyName);
 	}
 	
-	@GetMapping("${rest.api.basePath}/savedOffers")
+	@GetMapping("${rest.api.basePath}/seekers/savedOffers")
 	List<OfferResponse> showSavedOffers() {
 		return seekerService.findSavedOffers();
 	}
