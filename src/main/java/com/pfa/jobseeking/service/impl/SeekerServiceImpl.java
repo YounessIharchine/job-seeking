@@ -89,7 +89,10 @@ public class SeekerServiceImpl implements SeekerService {
 		response.setPhone(seeker.getPhone());
 		response.setAddress(seeker.getAddress());
 		response.setBirthDate(seeker.getBirthDate());
-		response.setCity(seeker.getCity().getName());
+		if(seeker.getCity()!=null)
+			response.setCity(seeker.getCity().getName());
+		else
+			response.setCity(null);
 		
 		
 		return response;
@@ -109,7 +112,10 @@ public class SeekerServiceImpl implements SeekerService {
 		response.setPhone(seeker.getPhone());
 		response.setAddress(seeker.getAddress());
 		response.setBirthDate(seeker.getBirthDate());
-		response.setCity(seeker.getCity().getName());
+		if(seeker.getCity()!=null)
+			response.setCity(seeker.getCity().getName());
+		else
+			response.setCity(null);
 		
 		return response;
 	}
