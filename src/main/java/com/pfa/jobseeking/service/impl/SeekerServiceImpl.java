@@ -24,7 +24,7 @@ import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.response.OfferResponse;
-import com.pfa.jobseeking.rest.response.SeekerResponse;
+import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
 @Service
@@ -44,10 +44,11 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	@Override
-	public SeekerResponse findSeeker(int id) {
-		SeekerResponse response = new SeekerResponse();
+	public SeekerProfileResponse findSeeker(int id) {
+		SeekerProfileResponse response = new SeekerProfileResponse();
 		Seeker seeker = (Seeker)userRepository.findById(id);
 		
+		response.setEmail(seeker.getEmail());
 		response.setFirstName(seeker.getFirstName());
 		response.setLastName(seeker.getLastName());
 		response.setPhone(seeker.getPhone());

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.pfa.jobseeking.rest.response.OfferResponse;
-import com.pfa.jobseeking.rest.response.SeekerResponse;
+import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
 
 public interface SeekerService {
 
@@ -21,6 +21,7 @@ public interface SeekerService {
 
 	List<OfferResponse> findSavedOffers();
 
-	SeekerResponse findSeeker(int id);
+	SeekerProfileResponse findSeeker(int id);
+
 
 }

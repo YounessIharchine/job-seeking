@@ -1,7 +1,8 @@
 package com.pfa.jobseeking.rest.response;
 
-public class SeekerResponse {
+public class SeekerProfileResponse {
 	
+	String email;
 	String firstName;
 	String lastName;
 	String phone;
@@ -15,11 +16,12 @@ public class SeekerResponse {
 	String portefolio;
 	String github;
 	
-	public SeekerResponse() { }
+	public SeekerProfileResponse() { }
 
-	public SeekerResponse(String firstName, String lastName, String phone, String address, String birthDate,
+	public SeekerProfileResponse(String email, String firstName, String lastName, String phone, String address, String birthDate,
 			String city, String cv, String photo, String speciality, String description, String portefolio,
 			String github) {
+		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
@@ -35,6 +37,9 @@ public class SeekerResponse {
 	}
 
 	
+	public String getEmail() {
+		return email;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -74,6 +79,9 @@ public class SeekerResponse {
 	
 	
 	
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
