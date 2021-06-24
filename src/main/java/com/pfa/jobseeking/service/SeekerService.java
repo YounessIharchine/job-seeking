@@ -48,7 +48,7 @@ public interface SeekerService {
 
 	List<Experience> addExperience(ExperienceDto experienceDto);
 
-	List<Experience> deleteExperience(int id);
+	List<Experience> deleteExperience(int id) throws UnauthorizedException;
 	
 	
 	//*****************EDUCATIONS*****************
@@ -57,7 +57,7 @@ public interface SeekerService {
 
 	List<Education> addEducation(EducationDto educationDto);
 
-	List<Education> deleteEducation(int id);
+	List<Education> deleteEducation(int id) throws UnauthorizedException;
 	
 	
 	//*****************PROJECTS*****************
@@ -66,7 +66,7 @@ public interface SeekerService {
 
 	List<Project> addProject(ProjectDto projectDto);
 
-	List<Project> deleteProject(int id);
+	List<Project> deleteProject(int id) throws UnauthorizedException;
 	
 	
 	//*****************SKILLS*****************
@@ -75,7 +75,7 @@ public interface SeekerService {
 
 	List<Skill> addSkill(NameDto skillDto);
 
-	List<Skill> deleteSkill(int id);
+	List<Skill> deleteSkill(int id) throws UnauthorizedException;
 	
 	
 	//*****************TECHNOLOGIES*****************
@@ -93,7 +93,7 @@ public interface SeekerService {
 
 	List<Language> addLanguage(LanguageDto languageDto);
 
-	List<Language> deleteLanguage(int id);
+	List<Language> deleteLanguage(int id) throws UnauthorizedException;
 
 
 

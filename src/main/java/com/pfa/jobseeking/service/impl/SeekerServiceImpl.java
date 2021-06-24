@@ -274,8 +274,12 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Experience> deleteExperience(int id) {
+	public List<Experience> deleteExperience(int id) throws UnauthorizedException {
 		Seeker seeker = getAuthenticatedSeeker();
+		Experience experience = experienceRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, experience))
+			throw new UnauthorizedException("You are not the owner of this experience.");
 		
 		experienceRepository.deleteById(id);
 		
@@ -318,8 +322,13 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Education> deleteEducation(int id) {
+	public List<Education> deleteEducation(int id) throws UnauthorizedException {
 		Seeker seeker = getAuthenticatedSeeker();
+		
+		Education education = educationRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, education))
+			throw new UnauthorizedException("You are not the owner of this education.");
 		
 		educationRepository.deleteById(id);
 		
@@ -328,7 +337,7 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	
-	//*****************EDUCATIONS*****************
+	//*****************PROJECTS*****************
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
@@ -361,8 +370,13 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Project> deleteProject(int id) {
+	public List<Project> deleteProject(int id) throws UnauthorizedException {
 		Seeker seeker = getAuthenticatedSeeker();
+		
+		Project project = projectRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, project))
+			throw new UnauthorizedException("You are not the owner of this project.");
 		
 		projectRepository.deleteById(id);
 		
@@ -399,8 +413,13 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Skill> deleteSkill(int id) {
+	public List<Skill> deleteSkill(int id) throws UnauthorizedException {
 		Seeker seeker = getAuthenticatedSeeker();
+		
+		Skill skill = skillRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, skill))
+			throw new UnauthorizedException("You are not the owner of this skill.");
 		
 		skillRepository.deleteById(id);
 		
@@ -418,7 +437,7 @@ public class SeekerServiceImpl implements SeekerService {
 		Seeker seeker = getAuthenticatedSeeker();
 		Skill skill = skillRepository.findById(skillId);
 		
-		if(!isSkillOwner(seeker, skill))
+		if(!isInformationOwner(seeker, skill))
 			throw new UnauthorizedException("You are not the owner of this skill.");
 		
 		return skill.getTechnologies();
@@ -431,7 +450,7 @@ public class SeekerServiceImpl implements SeekerService {
 		Seeker seeker = getAuthenticatedSeeker();
 		Skill skill = skillRepository.findById(skillId);
 		
-		if(!isSkillOwner(seeker, skill))
+		if(!isInformationOwner(seeker, skill))
 			throw new UnauthorizedException("You are not the owner of this skill.");
 		
 		Technology technology = new Technology();
@@ -449,10 +468,15 @@ public class SeekerServiceImpl implements SeekerService {
 	public List<Technology> deleteTechnology(int skillId, int id) throws UnauthorizedException {
 		Seeker seeker = getAuthenticatedSeeker();
 		Skill skill = skillRepository.findById(skillId);
+		Technology technology = technologyRepository.findById(id);
 		
-		if(!isSkillOwner(seeker, skill))
+		if(!isInformationOwner(seeker, skill))
 			throw new UnauthorizedException("You are not the owner of this skill.");
 		
+		if(!isTechnologyOwner(skill, technology))
+			throw new UnauthorizedException("This technology does not belong to this skill.");
+		
+		skill.removeTechnology(technology);
 		technologyRepository.deleteById(id);
 		
 		return skill.getTechnologies();
@@ -492,8 +516,13 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Language> deleteLanguage(int id) {
+	public List<Language> deleteLanguage(int id) throws UnauthorizedException {
 		Seeker seeker = getAuthenticatedSeeker();
+		
+		Language language = languageRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, language))
+			throw new UnauthorizedException("You are not the owner of this language.");
 		
 		languageRepository.deleteById(id);
 //		seeker.getProfile().removeLanguage(languageRepository.findById(id));
@@ -539,28 +568,60 @@ public class SeekerServiceImpl implements SeekerService {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 	}
-	
-	private boolean isSkillOwner(Seeker seeker, Skill skill) {
-		boolean isOwner = false;
-		
-		for(Skill skillIteration : seeker.getProfile().getSkills())
-			if(skillIteration == skill)
-				isOwner = true;
-		
-		return isOwner;
-	}
-
-	
-//	private boolean isInformationOwner(Seeker seeker, Object information) {
+//	
+//	private boolean isSkillOwner(Seeker seeker, Skill skill) {
 //		boolean isOwner = false;
-//		
-//		if(information instanceof Experience)
 //		
 //		for(Skill skillIteration : seeker.getProfile().getSkills())
 //			if(skillIteration == skill)
 //				isOwner = true;
 //		
 //		return isOwner;
+//	}
 
+	
+	private boolean isInformationOwner(Seeker seeker, Object information) {
+		boolean isOwner = false;
+		
+		if(information instanceof Experience)
+			for(Experience experience : seeker.getProfile().getExperiences())
+				if(experience == information)
+					isOwner = true;
+		
+		if(information instanceof Education)
+			for(Education education : seeker.getProfile().getEducations())
+				if(education == information)
+					isOwner = true;
+		
+		if(information instanceof Project)
+			for(Project project : seeker.getProfile().getProjects())
+				if(project == information)
+					isOwner = true;
+		
+		if(information instanceof Skill)
+			for(Skill skill : seeker.getProfile().getSkills())
+				if(skill == information)
+					isOwner = true;
+	
+		
+		if(information instanceof Language)
+			for(Language language : seeker.getProfile().getLanguages())
+				if(language == information)
+					isOwner = true;
+
+		
+		return isOwner;
+	}
+	
+	
+	private boolean isTechnologyOwner(Skill skill, Technology technology) {
+		boolean isOwner = false;
+		
+		for(Technology technologyIteration : skill.getTechnologies())
+			if(technologyIteration == technology)
+				isOwner = true;
+		
+		return isOwner;
+	}
 	
 }

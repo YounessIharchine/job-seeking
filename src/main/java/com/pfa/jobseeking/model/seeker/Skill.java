@@ -62,4 +62,9 @@ public class Skill {
 	public void setProfile(Profile profile) {
 		this.profile = profile;
 	}
+	
+	
+	public void removeTechnology(Technology technology) {
+		this.technologies.remove(technology);
+	}
 }

@@ -106,7 +106,7 @@ public class SeekerController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/experiences/{id}")
-	List<Experience> removeExperience(@PathVariable int id) {
+	List<Experience> removeExperience(@PathVariable int id) throws UnauthorizedException {
 		return seekerService.deleteExperience(id);
 	}
 	
@@ -124,7 +124,7 @@ public class SeekerController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/educations/{id}")
-	List<Education> removeEducation(@PathVariable int id) {
+	List<Education> removeEducation(@PathVariable int id) throws UnauthorizedException {
 		return seekerService.deleteEducation(id);
 	}
 	
@@ -142,7 +142,7 @@ public class SeekerController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/projects/{id}")
-	List<Project> removeProject(@PathVariable int id) {
+	List<Project> removeProject(@PathVariable int id) throws UnauthorizedException {
 		return seekerService.deleteProject(id);
 	}
 	
@@ -178,7 +178,7 @@ public class SeekerController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/skills/{id}")
-	List<Skill> removeSkill(@PathVariable int id) {
+	List<Skill> removeSkill(@PathVariable int id) throws UnauthorizedException {
 		return seekerService.deleteSkill(id);
 	}
 	
@@ -196,7 +196,7 @@ public class SeekerController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/languages/{id}")
-	List<Language> removeLanguage(@PathVariable int id) {
+	List<Language> removeLanguage(@PathVariable int id) throws UnauthorizedException {
 		return seekerService.deleteLanguage(id);
 	}
 	
