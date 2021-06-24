@@ -17,7 +17,7 @@ import com.pfa.jobseeking.model.user.Seeker;
 public class Follow {
 
 	@EmbeddedId
-	FollowKey id;
+	FollowKey id = new FollowKey();
 	
 	@ManyToOne
 	@MapsId("seekerId")

@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pfa.jobseeking.model.City;
+import com.pfa.jobseeking.model.FollowNotification;
 import com.pfa.jobseeking.model.offer.Application;
 import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.seeker.CoverLetter;
@@ -56,7 +57,7 @@ public class Seeker extends User {
 	Set<Application> applications;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "seeker", orphanRemoval = true, cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "seeker", orphanRemoval = true, cascade = CascadeType.ALL)
 	Set<Follow> follows;
 	
 	@JsonIgnore
@@ -165,8 +166,21 @@ public class Seeker extends User {
 	}
 
 
+	public void followCompany(Company company) {
+		Follow follow = new Follow();
+		follow.setSeeker(this);
+		follow.setCompany(company);
+		FollowNotification followNotification = new FollowNotification();
+		followNotification.setFollow(follow);
+		follow.setFollowNotification(followNotification);
+		this.follows.add(follow);
+	}
 
-
+	public void unfollowCompany(Company company) {
+		for(Follow follow : this.follows)
+			if(follow.getCompany() == company)
+				this.follows.remove(follow);
+	}
 
 
 
