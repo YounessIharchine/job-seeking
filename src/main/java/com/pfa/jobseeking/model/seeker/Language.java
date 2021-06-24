@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Language {
 
@@ -17,6 +19,7 @@ public class Language {
 	String name;
 	String level;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "profile_id")
 	Profile profile;

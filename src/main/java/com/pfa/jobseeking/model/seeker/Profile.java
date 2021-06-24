@@ -128,4 +128,12 @@ public class Profile {
 		this.languages = languages;
 	}
 	
+	
+//	public void addLanguage(Language language) {
+//		this.languages.add(language);
+//	}
+//	public void removeLanguage(Language language) {
+//		this.languages.remove(language);
+//	}
+	
 }

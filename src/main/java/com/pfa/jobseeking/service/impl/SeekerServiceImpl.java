@@ -19,11 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
+import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.CompanyRepository;
+import com.pfa.jobseeking.repository.LanguageRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.UserRepository;
+import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
@@ -44,6 +47,9 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Autowired
 	CityRepository cityRepository;
+	
+	@Autowired
+	LanguageRepository languageRepository;
 	
 	@Value("${storage.images.basePath}")
 	String path;
@@ -80,8 +86,7 @@ public class SeekerServiceImpl implements SeekerService {
 	@Override
 	public SeekerAccountResponse fetchSeekerAccount() {
 		SeekerAccountResponse response = new SeekerAccountResponse();
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		Seeker seeker = getAuthenticatedSeeker();
 		
 		response.setEmail(seeker.getEmail());
 		response.setFirstName(seeker.getFirstName());
@@ -104,8 +109,7 @@ public class SeekerServiceImpl implements SeekerService {
 	@Override
 	public SeekerStepOneResponse fetchSeekerStepOne() {
 		SeekerStepOneResponse response = new SeekerStepOneResponse();
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		Seeker seeker = getAuthenticatedSeeker();
 		
 		response.setFirstName(seeker.getFirstName());
 		response.setLastName(seeker.getLastName());
@@ -125,8 +129,7 @@ public class SeekerServiceImpl implements SeekerService {
 	@Transactional
 	@Override
 	public void updateInfo(Map<String, String> map) throws IOException {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		Seeker seeker = getAuthenticatedSeeker();
 		
 		if(map.containsKey("firstName"))
 			seeker.setFirstName(map.get("firstName"));
@@ -162,8 +165,7 @@ public class SeekerServiceImpl implements SeekerService {
 	@Transactional
 	@Override
 	public void save(int id) {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		Seeker seeker = getAuthenticatedSeeker();
 		seeker.saveOffer(offerRepository.findById(id));
 	}
 	
@@ -172,8 +174,7 @@ public class SeekerServiceImpl implements SeekerService {
 	@Transactional
 	@Override
 	public void unsave(int id) {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		Seeker seeker = getAuthenticatedSeeker();
 		seeker.unsaveOffer(offerRepository.findById(id));
 	}
 	
@@ -183,8 +184,7 @@ public class SeekerServiceImpl implements SeekerService {
 	@Transactional
 	@Override
 	public void follow(String companyName) {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		Seeker seeker = getAuthenticatedSeeker();
 		seeker.followCompany(companyRepository.findCompanyByName(companyName));
 	}
 	
@@ -193,8 +193,7 @@ public class SeekerServiceImpl implements SeekerService {
 	@Transactional
 	@Override
 	public void unfollow(String companyName) {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		Seeker seeker = getAuthenticatedSeeker();
 		seeker.unfollowCompany(companyRepository.findCompanyByName(companyName));
 	}
 
@@ -202,12 +201,51 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Override
 	public List<OfferResponse> findSavedOffers() {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Seeker seeker = (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+		Seeker seeker = getAuthenticatedSeeker();
 
 		return mapToResponse(seeker.getOffers());
 	}
 	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public Set<Language> findLanguages() {
+		Seeker seeker = getAuthenticatedSeeker();
+		return seeker.getProfile().getLanguages();
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public Set<Language> addLanguage(LanguageDto languageDto) {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		Language language = new Language();
+		language.setName(languageDto.getName());
+		language.setLevel(languageDto.getLevel());
+		language.setProfile(seeker.getProfile());
+		
+		languageRepository.save(language);
+//		seeker.getProfile().addLanguage(language);
+		
+		return seeker.getProfile().getLanguages();
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public Set<Language> deleteLanguage(int id) {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		languageRepository.deleteById(id);
+//		seeker.getProfile().removeLanguage(languageRepository.findById(id));q
+//		userRepository.save(seeker);
+		
+		return seeker.getProfile().getLanguages();
+	}
 	
 
 	private List<OfferResponse> mapToResponse(Set<Offer> offers) {
@@ -240,4 +278,12 @@ public class SeekerServiceImpl implements SeekerService {
 	}
 
 
+	private Seeker getAuthenticatedSeeker() {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		return (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
+	}
+
+
+
+	
 }
