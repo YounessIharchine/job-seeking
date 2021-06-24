@@ -1,6 +1,6 @@
 package com.pfa.jobseeking.model.seeker;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,7 +24,7 @@ public class Skill {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "skill", cascade = CascadeType.ALL)
-	Set<Technology> technologies;
+	List<Technology> technologies;
 	
 	@JsonIgnore
 	@ManyToOne
@@ -41,7 +41,7 @@ public class Skill {
 	public String getName() {
 		return name;
 	}
-	public Set<Technology> getTechnologies() {
+	public List<Technology> getTechnologies() {
 		return technologies;
 	}
 	public Profile getProfile() {
@@ -56,7 +56,7 @@ public class Skill {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setTechnologies(Set<Technology> technologies) {
+	public void setTechnologies(List<Technology> technologies) {
 		this.technologies = technologies;
 	}
 	public void setProfile(Profile profile) {

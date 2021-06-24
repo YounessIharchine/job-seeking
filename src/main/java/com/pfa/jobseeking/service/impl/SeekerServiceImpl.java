@@ -24,6 +24,7 @@ import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.Skill;
+import com.pfa.jobseeking.model.seeker.Technology;
 import com.pfa.jobseeking.model.seeker.TimePeriod;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.repository.CityRepository;
@@ -34,12 +35,14 @@ import com.pfa.jobseeking.repository.LanguageRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.ProjectRepository;
 import com.pfa.jobseeking.repository.SkillRepository;
+import com.pfa.jobseeking.repository.TechnologyRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
+import com.pfa.jobseeking.rest.exception.UnauthorizedException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
@@ -72,6 +75,9 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Autowired
 	SkillRepository skillRepository;
+	
+	@Autowired
+	TechnologyRepository technologyRepository;
 	
 	@Autowired
 	LanguageRepository languageRepository;
@@ -402,6 +408,58 @@ public class SeekerServiceImpl implements SeekerService {
 	}
 	
 	
+	
+	//*****************SKILLS*****************
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Technology> findTechnologies(int skillId) throws UnauthorizedException {
+		Seeker seeker = getAuthenticatedSeeker();
+		Skill skill = skillRepository.findById(skillId);
+		
+		if(!isSkillOwner(seeker, skill))
+			throw new UnauthorizedException("You are not the owner of this skill.");
+		
+		return skill.getTechnologies();
+	}
+
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Technology> addTechnology(NameDto technologyDto, int skillId) throws UnauthorizedException {
+		Seeker seeker = getAuthenticatedSeeker();
+		Skill skill = skillRepository.findById(skillId);
+		
+		if(!isSkillOwner(seeker, skill))
+			throw new UnauthorizedException("You are not the owner of this skill.");
+		
+		Technology technology = new Technology();
+		technology.setSkill(skill);
+		technology.setName(technologyDto.getName());
+		
+		technologyRepository.save(technology);
+		
+		return skill.getTechnologies();
+	}
+
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Technology> deleteTechnology(int skillId, int id) throws UnauthorizedException {
+		Seeker seeker = getAuthenticatedSeeker();
+		Skill skill = skillRepository.findById(skillId);
+		
+		if(!isSkillOwner(seeker, skill))
+			throw new UnauthorizedException("You are not the owner of this skill.");
+		
+		technologyRepository.deleteById(id);
+		
+		return skill.getTechnologies();
+	}
+	
+	
+	
 	//*****************LANGUAGES*****************
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
@@ -481,7 +539,28 @@ public class SeekerServiceImpl implements SeekerService {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 	}
+	
+	private boolean isSkillOwner(Seeker seeker, Skill skill) {
+		boolean isOwner = false;
+		
+		for(Skill skillIteration : seeker.getProfile().getSkills())
+			if(skillIteration == skill)
+				isOwner = true;
+		
+		return isOwner;
+	}
 
+	
+//	private boolean isInformationOwner(Seeker seeker, Object information) {
+//		boolean isOwner = false;
+//		
+//		if(information instanceof Experience)
+//		
+//		for(Skill skillIteration : seeker.getProfile().getSkills())
+//			if(skillIteration == skill)
+//				isOwner = true;
+//		
+//		return isOwner;
 
 	
 }

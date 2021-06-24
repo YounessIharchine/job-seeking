@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.exception.UnauthorizedException;
 import com.pfa.jobseeking.rest.response.Response;
 
 @ControllerAdvice
@@ -27,6 +28,15 @@ public class ControllerExceptionHandler {
 		Response response = new Response(HttpStatus.BAD_REQUEST.value(), e.getMessage());
 		
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		
+	}
+	
+	@ExceptionHandler
+	ResponseEntity<Response> unauthorizedExceptionHandler(UnauthorizedException e) {
+		
+		Response response = new Response(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+		
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 		
 	}
 	

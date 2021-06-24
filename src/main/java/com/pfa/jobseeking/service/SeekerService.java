@@ -9,11 +9,13 @@ import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.Skill;
+import com.pfa.jobseeking.model.seeker.Technology;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
+import com.pfa.jobseeking.rest.exception.UnauthorizedException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
@@ -76,6 +78,15 @@ public interface SeekerService {
 	List<Skill> deleteSkill(int id);
 	
 	
+	//*****************TECHNOLOGIES*****************
+	
+	List<Technology> findTechnologies(int skillId) throws UnauthorizedException;
+
+	List<Technology> addTechnology(NameDto technologyDto, int skillId) throws UnauthorizedException;
+
+	List<Technology> deleteTechnology(int skillId, int id) throws UnauthorizedException;
+	
+	
 	//*****************LANGUAGES*****************
 	
 	List<Language> findLanguages();
@@ -83,6 +94,7 @@ public interface SeekerService {
 	List<Language> addLanguage(LanguageDto languageDto);
 
 	List<Language> deleteLanguage(int id);
+
 
 
 

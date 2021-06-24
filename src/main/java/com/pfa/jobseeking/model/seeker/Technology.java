@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Technology {
 
@@ -16,6 +18,7 @@ public class Technology {
 	
 	String name;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "skill_id")
 	Skill skill;

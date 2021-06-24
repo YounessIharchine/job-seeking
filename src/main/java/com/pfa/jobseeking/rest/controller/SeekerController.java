@@ -21,11 +21,13 @@ import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.Skill;
+import com.pfa.jobseeking.model.seeker.Technology;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
+import com.pfa.jobseeking.rest.exception.UnauthorizedException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
@@ -91,6 +93,7 @@ public class SeekerController {
 	}
 	
 	
+	
 	//*****************EXPERIENCES*****************
 	@GetMapping("${rest.api.basePath}/seekers/experiences")
 	List<Experience> getExperiences() {
@@ -106,6 +109,7 @@ public class SeekerController {
 	List<Experience> removeExperience(@PathVariable int id) {
 		return seekerService.deleteExperience(id);
 	}
+	
 	
 	
 	//*****************EDUCATIONS*****************
@@ -125,6 +129,7 @@ public class SeekerController {
 	}
 	
 	
+	
 	//*****************PROJECTS*****************
 	@GetMapping("${rest.api.basePath}/seekers/projects")
 	List<Project> getProjects() {
@@ -142,6 +147,25 @@ public class SeekerController {
 	}
 	
 	
+	
+	//*****************TECHNOLOGIES*****************
+	@GetMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies")
+	List<Technology> getTechnologies(@PathVariable int skillId) throws UnauthorizedException {
+		return seekerService.findTechnologies(skillId);
+	}
+	
+	@PostMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies")
+	List<Technology> addTechnology(@RequestBody NameDto technologyDto, @PathVariable int skillId) throws UnauthorizedException {
+		return seekerService.addTechnology(technologyDto, skillId);
+	}
+	
+	@DeleteMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies/{id}")
+	List<Technology> removeTechnology(@PathVariable int skillId, @PathVariable int id) throws UnauthorizedException {
+		return seekerService.deleteTechnology(skillId, id);
+	}
+	
+	
+	
 	//*****************SKILLS*****************
 	@GetMapping("${rest.api.basePath}/seekers/skills")
 	List<Skill> getSkills() {
@@ -157,6 +181,7 @@ public class SeekerController {
 	List<Skill> removeSkill(@PathVariable int id) {
 		return seekerService.deleteSkill(id);
 	}
+	
 	
 	
 	//*****************LANGUAGES*****************
