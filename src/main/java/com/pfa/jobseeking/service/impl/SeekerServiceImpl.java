@@ -22,6 +22,7 @@ import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
+import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.TimePeriod;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.repository.CityRepository;
@@ -30,10 +31,12 @@ import com.pfa.jobseeking.repository.EducationRepository;
 import com.pfa.jobseeking.repository.ExperienceRepository;
 import com.pfa.jobseeking.repository.LanguageRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
+import com.pfa.jobseeking.repository.ProjectRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
+import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
@@ -60,6 +63,9 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Autowired
 	EducationRepository educationRepository;
+	
+	@Autowired
+	ProjectRepository projectRepository;
 	
 	@Autowired
 	LanguageRepository languageRepository;
@@ -306,6 +312,49 @@ public class SeekerServiceImpl implements SeekerService {
 		educationRepository.deleteById(id);
 		
 		return seeker.getProfile().getEducations();
+	}
+	
+	
+	
+	//*****************EDUCATIONS*****************
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Project> findProjects() {
+		Seeker seeker = getAuthenticatedSeeker();
+		return seeker.getProfile().getProjects();
+	}
+
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Project> addProject(ProjectDto projectDto) {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		Project project = new Project();
+		project.setProfile(seeker.getProfile());
+		project.setTitle(projectDto.getTitle());
+		project.setDescription(projectDto.getDescription());
+		TimePeriod timePeriod = new TimePeriod();
+		timePeriod.setStartDate(projectDto.getStartDate());
+		timePeriod.setEndDate(projectDto.getEndDate());
+		project.setTimePeriod(timePeriod);
+		
+		projectRepository.save(project);
+		
+		return seeker.getProfile().getProjects();
+	}
+
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Project> deleteProject(int id) {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		projectRepository.deleteById(id);
+		
+		return seeker.getProfile().getProjects();
 	}
 	
 	

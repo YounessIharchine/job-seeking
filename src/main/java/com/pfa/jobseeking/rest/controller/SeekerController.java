@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
+import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
+import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
@@ -118,6 +120,23 @@ public class SeekerController {
 	@DeleteMapping("${rest.api.basePath}/seekers/educations/{id}")
 	List<Education> removeEducation(@PathVariable int id) {
 		return seekerService.deleteEducation(id);
+	}
+	
+	
+	//*****************projectS*****************
+	@GetMapping("${rest.api.basePath}/seekers/projects")
+	List<Project> getProjects() {
+		return seekerService.findProjects();
+	}
+	
+	@PostMapping("${rest.api.basePath}/seekers/projects")
+	List<Project> addProject(@RequestBody ProjectDto projectDto) {
+		return seekerService.addProject(projectDto);
+	}
+	
+	@DeleteMapping("${rest.api.basePath}/seekers/projects/{id}")
+	List<Project> removeProject(@PathVariable int id) {
+		return seekerService.deleteProject(id);
 	}
 	
 	

@@ -7,9 +7,11 @@ import java.util.Map;
 import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
+import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
+import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
@@ -45,13 +47,22 @@ public interface SeekerService {
 	List<Experience> deleteExperience(int id);
 	
 	
-	//*****************EXPERIENCES*****************
+	//*****************EDUCATIONS*****************
 
 	List<Education> findEducations();
 
 	List<Education> addEducation(EducationDto educationDto);
 
 	List<Education> deleteEducation(int id);
+	
+	
+	//*****************PROJECTS*****************
+	
+	List<Project> findProjects();
+
+	List<Project> addProject(ProjectDto projectDto);
+
+	List<Project> deleteProject(int id);
 	
 	
 	//*****************LANGUAGES*****************
@@ -61,6 +72,8 @@ public interface SeekerService {
 	List<Language> addLanguage(LanguageDto languageDto);
 
 	List<Language> deleteLanguage(int id);
+
+
 
 
 }
