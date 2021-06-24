@@ -3,7 +3,6 @@ package com.pfa.jobseeking.rest.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
+import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.Response;
@@ -83,19 +84,39 @@ public class SeekerController {
 		return seekerService.findSavedOffers();
 	}
 	
+	
+	//*****************EXPERIENCES*****************
+	@GetMapping("${rest.api.basePath}/seekers/experiences")
+	List<Experience> getExperiences() {
+		return seekerService.findExperiences();
+	}
+	
+	@PostMapping("${rest.api.basePath}/seekers/experiences")
+	List<Experience> addExperience(@RequestBody ExperienceDto experienceDto) {
+		return seekerService.addExperience(experienceDto);
+	}
+	
+	@DeleteMapping("${rest.api.basePath}/seekers/experiences/{id}")
+	List<Experience> removeExperience(@PathVariable int id) {
+		return seekerService.deleteExperience(id);
+	}
+	
+	
+	//*****************LANGUAGES*****************
 	@GetMapping("${rest.api.basePath}/seekers/languages")
-	Set<Language> getLanguages() {
+	List<Language> getLanguages() {
 		return seekerService.findLanguages();
 	}
 	
 	@PostMapping("${rest.api.basePath}/seekers/languages")
-	Set<Language> addLanguage(@RequestBody LanguageDto languageDto) {
+	List<Language> addLanguage(@RequestBody LanguageDto languageDto) {
 		return seekerService.addLanguage(languageDto);
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/languages/{id}")
-	Set<Language> addLanguage(@PathVariable int id) {
+	List<Language> removeLanguage(@PathVariable int id) {
 		return seekerService.deleteLanguage(id);
 	}
+	
 	
 }

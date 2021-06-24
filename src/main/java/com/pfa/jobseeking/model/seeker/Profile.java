@@ -1,6 +1,6 @@
 package com.pfa.jobseeking.model.seeker;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -30,15 +30,15 @@ public class Profile {
 	String github;
 	
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-	Set<Experience> experiences;
+	List<Experience> experiences;
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-	Set<Education> educations;
+	List<Education> educations;
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-	Set<Project> projects;
+	List<Project> projects;
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-	Set<Skill> skills;
+	List<Skill> skills;
 	@OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-	Set<Language> languages;
+	List<Language> languages;
 	
 	
 	
@@ -70,19 +70,19 @@ public class Profile {
 	public String getGithub() {
 		return github;
 	}
-	public Set<Experience> getExperiences() {
+	public List<Experience> getExperiences() {
 		return experiences;
 	}
-	public Set<Education> getEducations() {
+	public List<Education> getEducations() {
 		return educations;
 	}
-	public Set<Project> getProjects() {
+	public List<Project> getProjects() {
 		return projects;
 	}
-	public Set<Skill> getSkills() {
+	public List<Skill> getSkills() {
 		return skills;
 	}
-	public Set<Language> getLanguages() {
+	public List<Language> getLanguages() {
 		return languages;
 	}
 
@@ -112,19 +112,19 @@ public class Profile {
 	public void setGithub(String github) {
 		this.github = github;
 	}
-	public void setExperiences(Set<Experience> experiences) {
+	public void setExperiences(List<Experience> experiences) {
 		this.experiences = experiences;
 	}
-	public void setEducations(Set<Education> educations) {
+	public void setEducations(List<Education> educations) {
 		this.educations = educations;
 	}
-	public void setProjects(Set<Project> projects) {
+	public void setProjects(List<Project> projects) {
 		this.projects = projects;
 	}
-	public void setSkills(Set<Skill> skills) {
+	public void setSkills(List<Skill> skills) {
 		this.skills = skills;
 	}
-	public void setLanguages(Set<Language> languages) {
+	public void setLanguages(List<Language> languages) {
 		this.languages = languages;
 	}
 	

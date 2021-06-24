@@ -19,13 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
+import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
+import com.pfa.jobseeking.model.seeker.TimePeriod;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.CompanyRepository;
+import com.pfa.jobseeking.repository.ExperienceRepository;
 import com.pfa.jobseeking.repository.LanguageRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.UserRepository;
+import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
@@ -47,6 +51,9 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Autowired
 	CityRepository cityRepository;
+	
+	@Autowired
+	ExperienceRepository experienceRepository;
 	
 	@Autowired
 	LanguageRepository languageRepository;
@@ -207,10 +214,58 @@ public class SeekerServiceImpl implements SeekerService {
 	}
 	
 	
+	//*****************EXPERIENCES*****************
+	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public Set<Language> findLanguages() {
+	public List<Experience> findExperiences() {
+		Seeker seeker = getAuthenticatedSeeker();
+		return seeker.getProfile().getExperiences();
+	}
+
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Experience> addExperience(ExperienceDto experienceDto) {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		Experience experience = new Experience();
+		experience.setProfile(seeker.getProfile());
+		experience.setJobTitle(experienceDto.getJobTitle());
+		experience.setCompany(experienceDto.getCompany());
+		experience.setCity(experienceDto.getCity());
+		experience.setDescription(experienceDto.getDescription());
+		TimePeriod timePeriod = new TimePeriod();
+		timePeriod.setStartDate(experienceDto.getStartDate());
+		timePeriod.setEndDate(experienceDto.getEndDate());
+		experience.setTimePeriod(timePeriod);
+
+		
+		experienceRepository.save(experience);
+		
+		return seeker.getProfile().getExperiences();
+	}
+
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Experience> deleteExperience(int id) {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		experienceRepository.deleteById(id);
+		
+		return seeker.getProfile().getExperiences();
+	}
+	
+	
+	
+	//*****************LANGUAGES*****************
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Language> findLanguages() {
 		Seeker seeker = getAuthenticatedSeeker();
 		return seeker.getProfile().getLanguages();
 	}
@@ -219,7 +274,7 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public Set<Language> addLanguage(LanguageDto languageDto) {
+	public List<Language> addLanguage(LanguageDto languageDto) {
 		Seeker seeker = getAuthenticatedSeeker();
 		
 		Language language = new Language();
@@ -237,15 +292,17 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public Set<Language> deleteLanguage(int id) {
+	public List<Language> deleteLanguage(int id) {
 		Seeker seeker = getAuthenticatedSeeker();
 		
 		languageRepository.deleteById(id);
-//		seeker.getProfile().removeLanguage(languageRepository.findById(id));q
+//		seeker.getProfile().removeLanguage(languageRepository.findById(id));
 //		userRepository.save(seeker);
 		
 		return seeker.getProfile().getLanguages();
 	}
+	
+	
 	
 
 	private List<OfferResponse> mapToResponse(Set<Offer> offers) {
@@ -282,7 +339,6 @@ public class SeekerServiceImpl implements SeekerService {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 	}
-
 
 
 	

@@ -3,9 +3,10 @@ package com.pfa.jobseeking.service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
+import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
@@ -31,11 +32,23 @@ public interface SeekerService {
 	SeekerAccountResponse fetchSeekerAccount();
 
 	SeekerStepOneResponse fetchSeekerStepOne();
+	
+	
+	//*****************EXPERIENCES*****************
+	
+	List<Experience> findExperiences();
 
-	Set<Language> findLanguages();
+	List<Experience> addExperience(ExperienceDto experienceDto);
 
-	Set<Language> addLanguage(LanguageDto languageDto);
+	List<Experience> deleteExperience(int id);
 
-	Set<Language> deleteLanguage(int id);
+	
+	//*****************LANGUAGES*****************
+	
+	List<Language> findLanguages();
+
+	List<Language> addLanguage(LanguageDto languageDto);
+
+	List<Language> deleteLanguage(int id);
 
 }

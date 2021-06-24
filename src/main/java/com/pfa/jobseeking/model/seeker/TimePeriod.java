@@ -5,9 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class TimePeriod {
 
+	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
@@ -17,6 +20,28 @@ public class TimePeriod {
 	
 	
 	public TimePeriod() { }
+
+
+	public int getId() {
+		return id;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
 	
 	
 }
