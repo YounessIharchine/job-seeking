@@ -8,9 +8,11 @@ import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.Project;
+import com.pfa.jobseeking.model.seeker.Skill;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
+import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
@@ -65,6 +67,15 @@ public interface SeekerService {
 	List<Project> deleteProject(int id);
 	
 	
+	//*****************SKILLS*****************
+	
+	List<Skill> findSkills();
+
+	List<Skill> addSkill(NameDto skillDto);
+
+	List<Skill> deleteSkill(int id);
+	
+	
 	//*****************LANGUAGES*****************
 	
 	List<Language> findLanguages();
@@ -72,6 +83,8 @@ public interface SeekerService {
 	List<Language> addLanguage(LanguageDto languageDto);
 
 	List<Language> deleteLanguage(int id);
+
+
 
 
 

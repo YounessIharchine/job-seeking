@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Skill {
 
@@ -20,9 +22,11 @@ public class Skill {
 	
 	String name;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "skill", cascade = CascadeType.ALL)
 	Set<Technology> technologies;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "profile_id")
 	Profile profile;

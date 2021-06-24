@@ -23,6 +23,7 @@ import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.Project;
+import com.pfa.jobseeking.model.seeker.Skill;
 import com.pfa.jobseeking.model.seeker.TimePeriod;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.repository.CityRepository;
@@ -32,10 +33,12 @@ import com.pfa.jobseeking.repository.ExperienceRepository;
 import com.pfa.jobseeking.repository.LanguageRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.ProjectRepository;
+import com.pfa.jobseeking.repository.SkillRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
+import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
@@ -66,6 +69,9 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Autowired
 	ProjectRepository projectRepository;
+	
+	@Autowired
+	SkillRepository skillRepository;
 	
 	@Autowired
 	LanguageRepository languageRepository;
@@ -355,6 +361,44 @@ public class SeekerServiceImpl implements SeekerService {
 		projectRepository.deleteById(id);
 		
 		return seeker.getProfile().getProjects();
+	}
+	
+	
+	
+	//*****************SKILLS*****************
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Skill> findSkills() {
+		Seeker seeker = getAuthenticatedSeeker();
+		return seeker.getProfile().getSkills();
+	}
+
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Skill> addSkill(NameDto skillDto) {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		Skill skill = new Skill();
+		skill.setProfile(seeker.getProfile());
+		skill.setName(skillDto.getName());
+		
+		skillRepository.save(skill);
+		
+		return seeker.getProfile().getSkills();
+	}
+
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Skill> deleteSkill(int id) {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		skillRepository.deleteById(id);
+		
+		return seeker.getProfile().getSkills();
 	}
 	
 	

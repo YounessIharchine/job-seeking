@@ -20,9 +20,11 @@ import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.Project;
+import com.pfa.jobseeking.model.seeker.Skill;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
+import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.Response;
@@ -123,7 +125,7 @@ public class SeekerController {
 	}
 	
 	
-	//*****************projectS*****************
+	//*****************PROJECTS*****************
 	@GetMapping("${rest.api.basePath}/seekers/projects")
 	List<Project> getProjects() {
 		return seekerService.findProjects();
@@ -137,6 +139,23 @@ public class SeekerController {
 	@DeleteMapping("${rest.api.basePath}/seekers/projects/{id}")
 	List<Project> removeProject(@PathVariable int id) {
 		return seekerService.deleteProject(id);
+	}
+	
+	
+	//*****************SKILLS*****************
+	@GetMapping("${rest.api.basePath}/seekers/skills")
+	List<Skill> getSkills() {
+		return seekerService.findSkills();
+	}
+	
+	@PostMapping("${rest.api.basePath}/seekers/skills")
+	List<Skill> addSkill(@RequestBody NameDto skillDto) {
+		return seekerService.addSkill(skillDto);
+	}
+	
+	@DeleteMapping("${rest.api.basePath}/seekers/skills/{id}")
+	List<Skill> removeSkill(@PathVariable int id) {
+		return seekerService.deleteSkill(id);
 	}
 	
 	
