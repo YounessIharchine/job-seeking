@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
+import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
@@ -99,6 +101,23 @@ public class SeekerController {
 	@DeleteMapping("${rest.api.basePath}/seekers/experiences/{id}")
 	List<Experience> removeExperience(@PathVariable int id) {
 		return seekerService.deleteExperience(id);
+	}
+	
+	
+	//*****************EDUCATIONS*****************
+	@GetMapping("${rest.api.basePath}/seekers/educations")
+	List<Education> getEducations() {
+		return seekerService.findEducations();
+	}
+	
+	@PostMapping("${rest.api.basePath}/seekers/educations")
+	List<Education> addEducation(@RequestBody EducationDto educationDto) {
+		return seekerService.addEducation(educationDto);
+	}
+	
+	@DeleteMapping("${rest.api.basePath}/seekers/educations/{id}")
+	List<Education> removeEducation(@PathVariable int id) {
+		return seekerService.deleteEducation(id);
 	}
 	
 	

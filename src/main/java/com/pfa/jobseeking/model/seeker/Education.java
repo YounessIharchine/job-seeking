@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Education {
 
@@ -24,6 +26,7 @@ public class Education {
 	@JoinColumn(name = "time_period_id")
 	TimePeriod timePeriod;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "profile_id")
 	Profile profile;

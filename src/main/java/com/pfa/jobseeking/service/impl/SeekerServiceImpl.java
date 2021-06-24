@@ -19,16 +19,19 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
+import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.TimePeriod;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.CompanyRepository;
+import com.pfa.jobseeking.repository.EducationRepository;
 import com.pfa.jobseeking.repository.ExperienceRepository;
 import com.pfa.jobseeking.repository.LanguageRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.UserRepository;
+import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
@@ -54,6 +57,9 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Autowired
 	ExperienceRepository experienceRepository;
+	
+	@Autowired
+	EducationRepository educationRepository;
 	
 	@Autowired
 	LanguageRepository languageRepository;
@@ -258,6 +264,49 @@ public class SeekerServiceImpl implements SeekerService {
 		return seeker.getProfile().getExperiences();
 	}
 	
+	
+	
+	//*****************EDUCATIONS*****************
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Education> findEducations() {
+		Seeker seeker = getAuthenticatedSeeker();
+		return seeker.getProfile().getEducations();
+	}
+
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Education> addEducation(EducationDto educationDto) {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		Education education = new Education();
+		education.setProfile(seeker.getProfile());
+		education.setType(educationDto.getType());
+		education.setInstitution(educationDto.getInstitution());
+		education.setCity(educationDto.getCity());
+		TimePeriod timePeriod = new TimePeriod();
+		timePeriod.setStartDate(educationDto.getStartDate());
+		timePeriod.setEndDate(educationDto.getEndDate());
+		education.setTimePeriod(timePeriod);
+
+		educationRepository.save(education);
+		
+		return seeker.getProfile().getEducations();
+	}
+
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Education> deleteEducation(int id) {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		educationRepository.deleteById(id);
+		
+		return seeker.getProfile().getEducations();
+	}
 	
 	
 	//*****************LANGUAGES*****************
