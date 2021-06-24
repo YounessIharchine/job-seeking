@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.company.Photo;
-import com.pfa.jobseeking.rest.dto.CompanyMandatoryInfoDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.TextDto;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
@@ -35,16 +34,8 @@ public class CompanyController {
 		return companyService.findCompany(id);
 	}
 	
-	@PostMapping("/setMandatoryCompanyInfo")
-	ResponseEntity<Response> setMandatoryCompanyInfo(@RequestBody CompanyMandatoryInfoDto companyMandatoryInfoDto) throws IOException {
-		companyService.setMandatoryCompanyInfo(companyMandatoryInfoDto);
-		
-		Response response = new Response(HttpStatus.OK.value(), "Set Successful");
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-	
 
-	@PatchMapping("/updateCompanyInfo")
+	@PatchMapping("${rest.api.basePath}/companies/profile")
 	ResponseEntity<Response> updateCompanyInfo(@RequestBody Map<String, String> map) throws IOException {
 		companyService.updateInfo(map);
 		
@@ -53,33 +44,33 @@ public class CompanyController {
 	}
 	
 	
-	@PostMapping("/addParagraph")
+	@PostMapping("${rest.api.basePath}/companies/paragraphs")
 	void addParagraph(@RequestBody TextDto textDto) {
 		companyService.addParagraph(textDto);
 	}
 	
-	@GetMapping("/fetchParagraphs")
+	@GetMapping("${rest.api.basePath}/companies/paragraphs")
 	Set<Paragraph> findParagraphs() {
 		return companyService.findParagraphs();
 	}
 	
-	@DeleteMapping("/deleteParagraph/{id}")
+	@DeleteMapping("${rest.api.basePath}/companies/paragraphs")
 	void deleteParagraph(@PathVariable(name = "id") int id) {
 		companyService.deleteParagraph(id);
 	}
 	
 	
-	@PostMapping("/addPhoto")
+	@PostMapping("${rest.api.basePath}/companies/photos")
 	void addPhoto(@RequestBody PhotoDto photoDto) throws IOException {
 		companyService.addPhoto(photoDto);
 	}
 	
-	@GetMapping("/fetchPhotos")
+	@GetMapping("${rest.api.basePath}/companies/photos")
 	Set<Photo> findPhotos() {
 		return companyService.findPhotos();
 	}
 	
-	@DeleteMapping("/deletePhoto/{id}")
+	@DeleteMapping("${rest.api.basePath}/companies/photos/{id}")
 	void deletePhoto(@PathVariable(name = "id") int id) {
 		companyService.deletePhoto(id);
 	}

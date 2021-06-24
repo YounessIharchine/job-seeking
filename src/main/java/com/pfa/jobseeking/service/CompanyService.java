@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.company.Photo;
-import com.pfa.jobseeking.rest.dto.CompanyMandatoryInfoDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.TextDto;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
@@ -16,8 +15,6 @@ public interface CompanyService {
 	CompanyResponse findCompany(int id);
 
 	void updateInfo(Map<String, String> map) throws IOException;
-
-	void setMandatoryCompanyInfo(CompanyMandatoryInfoDto companyMandatoryInfoDto) throws IOException;
 
 	void addParagraph(TextDto textDto);
 

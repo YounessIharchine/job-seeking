@@ -22,7 +22,6 @@ import com.pfa.jobseeking.repository.DomainRepository;
 import com.pfa.jobseeking.repository.ParagraphRepository;
 import com.pfa.jobseeking.repository.PhotoRepository;
 import com.pfa.jobseeking.repository.UserRepository;
-import com.pfa.jobseeking.rest.dto.CompanyMandatoryInfoDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.TextDto;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
@@ -73,22 +72,7 @@ public class CompanyServiceImpl implements CompanyService {
 		return response;
 	}
 	
-	
-	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	@Transactional
-	@Override
-	public void setMandatoryCompanyInfo(CompanyMandatoryInfoDto companyMandatoryInfoDto) throws IOException {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
-		
-		company.setName(companyMandatoryInfoDto.getName());
-		company.setCity(cityRepository.findCityByName(companyMandatoryInfoDto.getCity()));
-		company.setDomain(domainRepository.findDomainByName(companyMandatoryInfoDto.getDomain()));
-		String documentPath = "\\documents\\document-" + company.getId() + ".pdf";
-		byte[] documentBytes = Base64.getDecoder().decode(companyMandatoryInfoDto.getDocument());
-		FileUtils.writeByteArrayToFile(new File(path+documentPath), documentBytes);
-		company.setDocumentPath(documentPath.replace("\\", "\\\\"));
-	}
+
 	
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
@@ -97,6 +81,18 @@ public class CompanyServiceImpl implements CompanyService {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
 		
+		if(map.containsKey("name"))
+			company.setName(map.get("name"));
+		if(map.containsKey("city"))
+			company.setCity(cityRepository.findCityByName(map.get("city")));
+		if(map.containsKey("domain"))
+			company.setDomain(domainRepository.findDomainByName(map.get("domain")));
+		if(map.containsKey("document")) {
+			String documentPath = "\\documents\\document-" + company.getId() + ".pdf";
+			byte[] documentBytes = Base64.getDecoder().decode(map.get("document"));
+			FileUtils.writeByteArrayToFile(new File(path+documentPath), documentBytes);
+			company.setDocumentPath(documentPath.replace("\\", "\\\\"));
+		}
 		if(map.containsKey("publicEmail"))
 			company.setPublicEmail(map.get("publicEmail"));
 		if(map.containsKey("phone"))
