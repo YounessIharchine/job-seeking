@@ -3,13 +3,16 @@ package com.pfa.jobseeking.rest.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.rest.dto.UserDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
+import com.pfa.jobseeking.rest.exception.UnauthorizedException;
 import com.pfa.jobseeking.rest.response.Response;
+import com.pfa.jobseeking.rest.response.UserResponse;
 import com.pfa.jobseeking.service.UserService;
 
 @RestController
@@ -27,7 +30,10 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	
+	@GetMapping("/getAuthenticatedUserInfo")
+	UserResponse getAuthenticatedUserInfo() throws UnauthorizedException {
+		return userService.getAuthenticatedUserInfo();
+	}
 	
 }
 

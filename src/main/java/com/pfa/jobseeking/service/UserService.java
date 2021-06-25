@@ -6,6 +6,8 @@ import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.rest.dto.UserDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.exception.UnauthorizedException;
+import com.pfa.jobseeking.rest.response.UserResponse;
 
 public interface UserService {
 
@@ -18,5 +20,7 @@ public interface UserService {
 	User save(User user);
 
 	void save(UserDto user) throws AlreadyExistsException;
+
+	UserResponse getAuthenticatedUserInfo() throws UnauthorizedException;
 
 }

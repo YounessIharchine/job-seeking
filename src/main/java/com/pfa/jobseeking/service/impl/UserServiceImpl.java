@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,8 @@ import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.UserDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.exception.UnauthorizedException;
+import com.pfa.jobseeking.rest.response.UserResponse;
 import com.pfa.jobseeking.service.UserService;
 
 @Service
@@ -42,44 +45,6 @@ public class UserServiceImpl implements UserService {
 	PasswordEncoder passwordEncoder;
 	
 	
-	
-	@Override
-	public List<User> findAll() {
-		return userRepository.findAll();
-	}
-	
-	
-	
-	@Override
-	public User findById(int id) throws NotFoundException {
-		User user = userRepository.findById(id);
-		
-		if(user == null)
-			throw new NotFoundException("The id does not correspond to any user");
-		
-		return user;
-	}
-	
-	
-	
-	@Override
-	public User findUserByEmail(String email) throws NotFoundException {
-		User user = userRepository.findUserByEmail(email);
-		
-		if(user == null)
-			throw new NotFoundException("There is no user with that email");
-		
-		return user;
-	}
-
-	
-	@Transactional
-	@Override
-	public User save(User user) {
-		return userRepository.save(user);
-	}
-
-
 	@Transactional
 	@Override
 	public void save(UserDto userDto) throws AlreadyExistsException {
@@ -123,6 +88,86 @@ public class UserServiceImpl implements UserService {
 
 
 	}
+	
+	
+	@Transactional
+	@Override
+	public UserResponse getAuthenticatedUserInfo() throws UnauthorizedException {
+		
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+
+		if(authenticatedUserEmail.equals("anonymousUser"))
+			throw new UnauthorizedException("You didn't include the token in the header");
+		
+		User user = userRepository.findUserByEmail(authenticatedUserEmail);
+		
+		if(user == null)
+			throw new UnauthorizedException("Requested User doesn't exist");
+		
+		String role = null;
+		for(Role iteratedRole : user.getRoles()) {
+			if(iteratedRole.getName().equals("ROLE_SEEKER"));
+				role = iteratedRole.getName();
+			if(iteratedRole.getName().equals("ROLE_COMPANY"));
+				role = iteratedRole.getName();
+			if(iteratedRole.getName().equals("ROLE_ADMIN"));
+				role = iteratedRole.getName();
+		}
+		
+		UserResponse response = new UserResponse();
+		response.setId(user.getId());
+		response.setRole(role);
+		
+		return response;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
+	
+	
+	
+	@Override
+	public User findById(int id) throws NotFoundException {
+		User user = userRepository.findById(id);
+		
+		if(user == null)
+			throw new NotFoundException("The id does not correspond to any user");
+		
+		return user;
+	}
+	
+	
+	
+	@Override
+	public User findUserByEmail(String email) throws NotFoundException {
+		User user = userRepository.findUserByEmail(email);
+		
+		if(user == null)
+			throw new NotFoundException("There is no user with that email");
+		
+		return user;
+	}
+
+	
+	@Transactional
+	@Override
+	public User save(User user) {
+		return userRepository.save(user);
+	}
+
 
 
 
