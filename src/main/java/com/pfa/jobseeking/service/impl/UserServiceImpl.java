@@ -1,12 +1,17 @@
 package com.pfa.jobseeking.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,10 +24,13 @@ import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Role;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.model.user.User;
+import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.CompanyCreationRequestRepository;
+import com.pfa.jobseeking.repository.DomainRepository;
 import com.pfa.jobseeking.repository.RoleRepository;
 import com.pfa.jobseeking.repository.UserRepository;
-import com.pfa.jobseeking.rest.dto.UserDto;
+import com.pfa.jobseeking.rest.dto.CompanyDto;
+import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.exception.UnauthorizedException;
@@ -39,55 +47,77 @@ public class UserServiceImpl implements UserService {
 	RoleRepository roleRepository;
 	
 	@Autowired
+	CityRepository cityRepository;
+	
+	@Autowired
+	DomainRepository domainRepository;
+	
+	@Autowired
 	CompanyCreationRequestRepository companyCreationRequestRepository;
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
+	@Value("${storage.images.basePath}")
+	String path;
 	
 	@Transactional
 	@Override
-	public void save(UserDto userDto) throws AlreadyExistsException {
+	public void saveSeeker(SeekerDto seekerDto) throws AlreadyExistsException {
 		
-		if(userRepository.findUserByEmail(userDto.getEmail()) != null)
+		if(userRepository.findUserByEmail(seekerDto.getEmail()) != null)
 			throw new AlreadyExistsException("There is already an account with that email.");
-
 		
-		if(userDto.getRole().equals("ROLE_SEEKER")) {
-			Seeker seeker = new Seeker();
-			seeker.setEmail(userDto.getEmail());
-			seeker.setPassword(passwordEncoder.encode(userDto.getPassword()));
-			Set<Role> role = new HashSet<>();
-			role.add(roleRepository.findRoleByName(userDto.getRole()));
-			seeker.setRoles(role);
-			
-			Profile seekerProfile = new Profile();
-			seeker.setProfile(seekerProfile);
-			
-			userRepository.save(seeker);
-		}
+		Seeker seeker = new Seeker();
+		seeker.setEmail(seekerDto.getEmail());
+		seeker.setPassword(passwordEncoder.encode(seekerDto.getPassword()));
+		Set<Role> role = new HashSet<>();
+		role.add(roleRepository.findRoleByName("ROLE_SEEKER"));
+		seeker.setRoles(role);
 		
-		else if(userDto.getRole().equals("ROLE_COMPANY")) {
-			Company company = new Company();
-			company.setEmail(userDto.getEmail());
-			company.setPassword(passwordEncoder.encode(userDto.getPassword()));
-			Set<Role> role = new HashSet<>();
-			role.add(roleRepository.findRoleByName(userDto.getRole()));
-			company.setRoles(role);
-			
-			CompanyProfile companyProfile = new CompanyProfile();
-			company.setCompanyProfile(companyProfile);
-			
-			userRepository.save(company);
-			
-			CompanyCreationRequest request = new CompanyCreationRequest();
-			request.setCompany((Company) userRepository.findUserByEmail(userDto.getEmail()));
-			request.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-			companyCreationRequestRepository.save(request);
-		}
-
-
+		Profile seekerProfile = new Profile();
+		seeker.setProfile(seekerProfile);
+		
+		userRepository.save(seeker);
 	}
+
+	@Transactional
+	@Override
+	public void saveCompany(CompanyDto companyDto) throws AlreadyExistsException, IOException {
+		
+		if(userRepository.findUserByEmail(companyDto.getEmail()) != null)
+			throw new AlreadyExistsException("There is already an account with that email.");
+		
+		Company company = new Company();
+		company.setEmail(companyDto.getEmail());
+		company.setPassword(passwordEncoder.encode(companyDto.getPassword()));
+		Set<Role> role = new HashSet<>();
+		role.add(roleRepository.findRoleByName("ROLE_COMPANY"));
+		company.setRoles(role);
+		company.setName(companyDto.getName());
+		company.setPublicEmail(companyDto.getPublicEmail());
+		company.setPhone(companyDto.getPhone());
+		company.setCity(cityRepository.findCityByName(companyDto.getCity()));
+		company.setDomain(domainRepository.findDomainByName(companyDto.getDomain()));
+		
+		company = (Company)userRepository.save(company);
+		
+		String documentPath = "\\documents\\document-" + company.getId() + ".pdf";
+		byte[] documentBytes = Base64.getDecoder().decode(companyDto.getDocument());
+		FileUtils.writeByteArrayToFile(new File(path+documentPath), documentBytes);
+		company.setDocumentPath(documentPath.replace("\\", "\\\\"));
+		
+		CompanyProfile companyProfile = new CompanyProfile();
+		company.setCompanyProfile(companyProfile);
+		
+		userRepository.save(company);
+		
+		CompanyCreationRequest request = new CompanyCreationRequest();
+		request.setCompany((Company) userRepository.findUserByEmail(companyDto.getEmail()));
+		request.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+		companyCreationRequestRepository.save(request);
+	}
+	
 	
 	
 	@Transactional
@@ -167,9 +197,6 @@ public class UserServiceImpl implements UserService {
 	public User save(User user) {
 		return userRepository.save(user);
 	}
-
-
-
 
 
 

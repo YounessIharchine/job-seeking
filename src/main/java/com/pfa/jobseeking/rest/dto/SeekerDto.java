@@ -1,20 +1,18 @@
 package com.pfa.jobseeking.rest.dto;
 
-public class UserDto {
+public class SeekerDto {
 
 	private String email;
 	private String password;
-	private String role;
 	
 	
-	public UserDto() { }
+	public SeekerDto() { }
 	
 	
-	public UserDto(String email, String password, String role) {
+	public SeekerDto(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
-		this.role = role;
 	}
 	
 	
@@ -34,11 +32,5 @@ public class UserDto {
 	}
 	
 	
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
-	}
 	
 }

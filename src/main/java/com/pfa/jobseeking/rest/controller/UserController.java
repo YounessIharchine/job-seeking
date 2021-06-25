@@ -1,5 +1,7 @@
 package com.pfa.jobseeking.rest.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pfa.jobseeking.rest.dto.UserDto;
+import com.pfa.jobseeking.rest.dto.CompanyDto;
+import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.UnauthorizedException;
 import com.pfa.jobseeking.rest.response.Response;
@@ -22,9 +25,17 @@ public class UserController {
 	UserService userService;
 	
 	
-	@PostMapping("/register")
-	ResponseEntity<Response> register(@RequestBody UserDto user) throws AlreadyExistsException {
-		userService.save(user);
+	@PostMapping("/registerSeeker")
+	ResponseEntity<Response> registerSeeker(@RequestBody SeekerDto seekerDto) throws AlreadyExistsException {
+		userService.saveSeeker(seekerDto);
+		
+		Response response = new Response(HttpStatus.OK.value(), "Registration Successful");
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@PostMapping("/registerCompany")
+	ResponseEntity<Response> registerCompany(@RequestBody CompanyDto companyDto) throws AlreadyExistsException, IOException {
+		userService.saveCompany(companyDto);
 		
 		Response response = new Response(HttpStatus.OK.value(), "Registration Successful");
 		return new ResponseEntity<>(response, HttpStatus.OK);
