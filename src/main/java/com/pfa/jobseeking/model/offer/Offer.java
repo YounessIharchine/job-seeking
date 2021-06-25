@@ -3,6 +3,7 @@ package com.pfa.jobseeking.model.offer;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -35,6 +36,7 @@ public class Offer {
 	int id;
 	
 	String title;
+	@Column(columnDefinition = "TEXT")
 	String description;
 	String date;
 	boolean isOpen;
