@@ -2,6 +2,7 @@ package com.pfa.jobseeking.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 
 import org.apache.commons.io.FileUtils;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.model.Domain;
 import com.pfa.jobseeking.model.company.CompanyProfile;
+import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.offer.Duration;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.InternshipType;
@@ -185,6 +187,52 @@ public class FillServiceImpl implements FillService {
 		FileUtils.writeByteArrayToFile(new File(path+oracleCoverPath), oracleCoverBytes);
 
 		
+		
+		//******************************PARAGRAPHS******************************
+		
+		Paragraph orangeParagraph1 = new Paragraph();
+		orangeParagraph1.setTitle("Orange");
+		orangeParagraph1.setText("Orange est l’un des principaux opérateurs de télécommunication dans le monde, avec un chiffre d’affaires de 42 milliards d’euros et 147 000 salariés au 31 décembre 2019, dont 87 000 en France. Le Groupe servait 266 millions de clients au 31 décembre 2019, dont 207 millions de clients mobile, 21 millions de clients haut débit fixe.<br>"
+				+ "<br>"
+				+ "Le Groupe est présent dans 26 pays. Orange est également l’un des leaders mondiaux des services de télécommunication aux entreprises multinationales sous la marque Orange Business Services. En décembre 2019, le Groupe a présenté son nouveau plan stratégique « Engage 2025 » qui, guidé par l’exemplarité sociale et environnementale, a pour but de réinventer son métier d’opérateur. Tout en accélérant sur les territoires et domaines porteurs de croissance et en plaçant la data et l’IA au cœur de son modèle d’innovation, le Groupe entend être un employeur attractif et responsable, adapté aux métiers émergents.");
+
+		
+		Paragraph danoneParagraph1 = new Paragraph();
+		danoneParagraph1.setTitle("Danone");
+		danoneParagraph1.setText("Danone is a global company with an inspiring mission, \"bringing health through food to as many people as possible\".<br>"
+				+ "With us, you could learn and develop yourself in a collaborative and empowering environment.<br>"
+				+ "Fulfilling both personal growth and professional development is part of our DNA.<br>"
+				+ "Join us and contribute to a meaningful Project.");
+		
+		
+		Paragraph oracleParagraph1 = new Paragraph();
+		oracleParagraph1.setTitle("Oracle");
+		oracleParagraph1.setText("Oracle is the world’s leading provider of business software. But you probably already knew that. With a presence in over 175 countries, we are one of the biggest technology companies on the planet. What you might not know is that we are leading a cloud revolution.<br>"
+				+ "<br>"
+				+ "We’re using emerging technologies like AI, machine learning, and blockchain to solve critical real-world problems. From advancing energy efficiency to reimagining online commerce, the work we do is not only transforming the world of business—it’s helping governments, powering nonprofits, and giving billions of people the tools they need to outpace change and make a difference.");
+		
+		
+		Paragraph oracleParagraph2 = new Paragraph();
+		oracleParagraph2.setTitle("Unlock endless possibilities");
+		oracleParagraph2.setText("For more than four decades, Oracle has delivered innovation upon which entire industries have been built. But we’re not interested in looking back—we’re always working on the next big thing. We’ve set a new standard by developing the world’s first Autonomous Database, freeing up people to focus on what we do best: dream, innovate, and build.");
+		
+		
+		Paragraph oracleParagraph3 = new Paragraph();
+		oracleParagraph3.setTitle("Change lives doing what you love");
+		oracleParagraph3.setText("All over the world, people’s lives are better because of the innovative thinking that happens right here. Whether we’re using Oracle Cloud to reduce the impact from natural disasters, or AI to connect cancer patients to life-saving clinical trials—we take pride in the knowledge that we’re making the world a better place.");
+		
+		
+		Paragraph oracleParagraph4 = new Paragraph();
+		oracleParagraph4.setTitle("Join a culture of changemakers");
+		oracleParagraph4.setText("We’re also committed to changing lives by advancing education, protecting the planet, and giving back to our communities. In fact, each year Oracle donates millions of dollars to deserving charities worldwide and gives free tech education to more than 3.5 million young people. Meanwhile, our Oracle Volunteers clock up more than 189,000 hours supporting the causes close to their hearts.");
+		
+		
+		Paragraph oracleParagraph5 = new Paragraph();
+		oracleParagraph5.setTitle("Be yourself here");
+		oracleParagraph5.setText("Our differences are what make us strong. We believe that different points of view are essential for innovation. At Oracle you’ll be part of an inclusive culture where individuality thrives.");
+
+		
+		
 		//******************************ORANGE******************************
 		Company orange = new Company("orange@gmail.com", passwordEncoder.encode("orange"));
 		orange.addRole(roleRepository.findRoleByName("ROLE_COMPANY"));
@@ -198,6 +246,9 @@ public class FillServiceImpl implements FillService {
 		orangeProfile.setLogo(orangeLogoPath.replace("\\", "\\\\"));
 		orangeProfile.setCoverPhoto(orangeCoverPath.replace("\\", "\\\\"));
 		orangeProfile.setWebSite("orange.com");
+		orangeParagraph1.setCompanyProfile(orangeProfile);
+		orangeProfile.setParagraphs(new ArrayList<>());
+		orangeProfile.addParagraph(orangeParagraph1);
 		orange.setCompanyProfile(orangeProfile);
 		userRepository.save(orange);
 		
@@ -287,6 +338,9 @@ public class FillServiceImpl implements FillService {
 		danoneProfile.setLogo(danoneLogoPath.replace("\\", "\\\\"));
 		danoneProfile.setCoverPhoto(danoneCoverPath.replace("\\", "\\\\"));
 		danoneProfile.setWebSite("danone.com");
+		danoneParagraph1.setCompanyProfile(danoneProfile);
+		danoneProfile.setParagraphs(new ArrayList<>());
+		danoneProfile.addParagraph(danoneParagraph1);
 		danone.setCompanyProfile(danoneProfile);
 		userRepository.save(danone);
 		
@@ -389,6 +443,17 @@ public class FillServiceImpl implements FillService {
 		oracleProfile.setLogo(oracleLogoPath.replace("\\", "\\\\"));
 		oracleProfile.setCoverPhoto(oracleCoverPath.replace("\\", "\\\\"));
 		oracleProfile.setWebSite("oracle.com");
+		oracleParagraph1.setCompanyProfile(oracleProfile);
+		oracleParagraph2.setCompanyProfile(oracleProfile);
+		oracleParagraph3.setCompanyProfile(oracleProfile);
+		oracleParagraph4.setCompanyProfile(oracleProfile);
+		oracleParagraph5.setCompanyProfile(oracleProfile);
+		oracleProfile.setParagraphs(new ArrayList<>());
+		oracleProfile.addParagraph(oracleParagraph1);
+		oracleProfile.addParagraph(oracleParagraph2);
+		oracleProfile.addParagraph(oracleParagraph3);
+		oracleProfile.addParagraph(oracleParagraph4);
+		oracleProfile.addParagraph(oracleParagraph5);
 		oracle.setCompanyProfile(oracleProfile);
 		userRepository.save(oracle);
 		
