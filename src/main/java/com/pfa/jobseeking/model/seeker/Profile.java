@@ -131,11 +131,39 @@ public class Profile {
 	}
 	
 	
-//	public void addLanguage(Language language) {
-//		this.languages.add(language);
-//	}
-//	public void removeLanguage(Language language) {
-//		this.languages.remove(language);
-//	}
+	public void addExperience(Experience experience) {
+		this.experiences.add(experience);
+	}
+	public void removeExperience(Experience experience) {
+		this.experiences.remove(experience);
+	}
+	
+	public void addEducation(Education education) {
+		this.educations.add(education);
+	}
+	public void removeEducation(Education education) {
+		this.educations.remove(education);
+	}
+	
+	public void addProject(Project project) {
+		this.projects.add(project);
+	}
+	public void removeProject(Project project) {
+		this.projects.remove(project);
+	}
+	
+	public void addSkill(Skill skill) {
+		this.skills.add(skill);
+	}
+	public void removeSkill(Skill skill) {
+		this.skills.remove(skill);
+	}
+	
+	public void addLanguage(Language language) {
+		this.languages.add(language);
+	}
+	public void removeLanguage(Language language) {
+		this.languages.remove(language);
+	}
 	
 }

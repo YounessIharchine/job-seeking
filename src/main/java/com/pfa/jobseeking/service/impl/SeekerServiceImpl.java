@@ -281,6 +281,8 @@ public class SeekerServiceImpl implements SeekerService {
 		if(!isInformationOwner(seeker, experience))
 			throw new AccessDeniedException("You are not the owner of this experience.");
 		
+		seeker.getProfile().removeExperience(experience);
+		
 		experienceRepository.deleteById(id);
 		
 		return seeker.getProfile().getExperiences();
@@ -330,6 +332,8 @@ public class SeekerServiceImpl implements SeekerService {
 		if(!isInformationOwner(seeker, education))
 			throw new AccessDeniedException("You are not the owner of this education.");
 		
+		seeker.getProfile().removeEducation(education);
+		
 		educationRepository.deleteById(id);
 		
 		return seeker.getProfile().getEducations();
@@ -378,6 +382,8 @@ public class SeekerServiceImpl implements SeekerService {
 		if(!isInformationOwner(seeker, project))
 			throw new AccessDeniedException("You are not the owner of this project.");
 		
+		seeker.getProfile().removeProject(project);
+		
 		projectRepository.deleteById(id);
 		
 		return seeker.getProfile().getProjects();
@@ -420,6 +426,8 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		if(!isInformationOwner(seeker, skill))
 			throw new AccessDeniedException("You are not the owner of this skill.");
+		
+		seeker.getProfile().removeSkill(skill);
 		
 		skillRepository.deleteById(id);
 		
