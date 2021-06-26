@@ -1,6 +1,7 @@
 package com.pfa.jobseeking.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public interface CompanyService {
 
 	void addParagraph(TextDto textDto);
 
-	Set<Paragraph> findParagraphs();
+	List<Paragraph> findParagraphs();
 
 	void deleteParagraph(int id);
 

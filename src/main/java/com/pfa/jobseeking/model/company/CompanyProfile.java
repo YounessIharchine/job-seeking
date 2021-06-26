@@ -1,6 +1,6 @@
 package com.pfa.jobseeking.model.company;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -27,10 +27,10 @@ public class CompanyProfile {
 	String webSite;
 	
 	@OneToMany(mappedBy = "companyProfile", cascade = CascadeType.ALL)
-	Set<Photo> photos;
+	List<Photo> photos;
 	
 	@OneToMany(mappedBy = "companyProfile", cascade = CascadeType.ALL)
-	Set<Paragraph> paragraphs;
+	List<Paragraph> paragraphs;
 	
 	
 	
@@ -53,10 +53,10 @@ public class CompanyProfile {
 	public String getWebSite() {
 		return webSite;
 	}
-	public Set<Photo> getPhotos() {
+	public List<Photo> getPhotos() {
 		return photos;
 	}
-	public Set<Paragraph> getParagraphs() {
+	public List<Paragraph> getParagraphs() {
 		return paragraphs;
 	}
 
@@ -77,10 +77,10 @@ public class CompanyProfile {
 	public void setWebSite(String webSite) {
 		this.webSite = webSite;
 	}
-	public void setPhotos(Set<Photo> photos) {
+	public void setPhotos(List<Photo> photos) {
 		this.photos = photos;
 	}
-	public void setParagraphs(Set<Paragraph> paragraphs) {
+	public void setParagraphs(List<Paragraph> paragraphs) {
 		this.paragraphs = paragraphs;
 	}
 	

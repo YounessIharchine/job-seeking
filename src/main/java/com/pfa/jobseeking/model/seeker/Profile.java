@@ -3,6 +3,7 @@ package com.pfa.jobseeking.model.seeker;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class Profile {
 	String cv;
 	String photo;
 	String speciality;
+	@Column(columnDefinition = "TEXT")
 	String description;
 	String portefolio;
 	String github;

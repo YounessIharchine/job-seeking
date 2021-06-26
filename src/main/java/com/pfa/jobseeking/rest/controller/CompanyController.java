@@ -1,6 +1,7 @@
 package com.pfa.jobseeking.rest.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,7 +51,7 @@ public class CompanyController {
 	}
 	
 	@GetMapping("${rest.api.basePath}/companies/paragraphs")
-	Set<Paragraph> findParagraphs() {
+	List<Paragraph> findParagraphs() {
 		return companyService.findParagraphs();
 	}
 	

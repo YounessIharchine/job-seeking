@@ -3,6 +3,7 @@ package com.pfa.jobseeking.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -132,7 +133,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
-	public Set<Paragraph> findParagraphs() {
+	public List<Paragraph> findParagraphs() {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
 		
@@ -159,7 +160,7 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		
 		
-		
+		//this gymnastics is to get the id for storage name
 		Photo photo = new Photo();
 		photo.setCompanyProfile(company.getCompanyProfile());
 		

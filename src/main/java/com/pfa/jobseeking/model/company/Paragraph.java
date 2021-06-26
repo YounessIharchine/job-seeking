@@ -1,5 +1,6 @@
 package com.pfa.jobseeking.model.company;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class Paragraph {
 	int id;
 	
 	String title;
+	@Column(columnDefinition = "TEXT")
 	String text;
 	
 	@JsonIgnore
