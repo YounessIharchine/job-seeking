@@ -108,7 +108,7 @@ public class TestController {
 	
 	
 	@GetMapping("/fill")
-	String fillDatabase() throws AlreadyExistsException, NotFoundException {
+	String fillDatabase() throws AlreadyExistsException, NotFoundException, IOException {
 		
 		fillService.fill();
 		
