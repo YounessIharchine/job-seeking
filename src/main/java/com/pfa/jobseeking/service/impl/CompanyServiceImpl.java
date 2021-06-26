@@ -59,14 +59,8 @@ public class CompanyServiceImpl implements CompanyService {
 		response.setName(company.getName());
 		response.setPublicEmail(company.getPublicEmail());
 		response.setPhone(company.getPhone());
-		if(company.getCity() != null)
-			response.setCity(company.getCity().getName());
-		else 
-			response.setCity(null);
-		if(company.getDomain() != null)
-			response.setDomain(company.getDomain().getName());
-		else
-			response.setDomain(null);
+		response.setCity(company.getCity().getName());
+		response.setDomain(company.getDomain().getName());
 		response.setLogo(null);
 		response.setCoverPhoto(null);
 		response.setWebSite(company.getCompanyProfile().getWebSite());
@@ -84,28 +78,36 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		if(map.containsKey("name"))
 			company.setName(map.get("name"));
+		
 		if(map.containsKey("city"))
 			company.setCity(cityRepository.findCityByName(map.get("city")));
+		
 		if(map.containsKey("domain"))
 			company.setDomain(domainRepository.findDomainByName(map.get("domain")));
+		
 		if(map.containsKey("document")) {
 			String documentPath = "\\documents\\document-" + company.getId() + ".pdf";
 			byte[] documentBytes = Base64.getDecoder().decode(map.get("document"));
 			FileUtils.writeByteArrayToFile(new File(path+documentPath), documentBytes);
 			company.setDocumentPath(documentPath.replace("\\", "\\\\"));
 		}
+		
 		if(map.containsKey("publicEmail"))
 			company.setPublicEmail(map.get("publicEmail"));
+		
 		if(map.containsKey("phone"))
 			company.setPhone(map.get("phone"));
+		
 		if(map.containsKey("webSite"))
 			company.getCompanyProfile().setWebSite(map.get("webSite"));
+		
 		if(map.containsKey("logo")) {
 			String logoPath = "\\logos\\logo-" + company.getId() + ".png";
 			byte[] logoBytes = Base64.getDecoder().decode(map.get("logo"));
 			FileUtils.writeByteArrayToFile(new File(path+logoPath), logoBytes);
 			company.getCompanyProfile().setLogo(logoPath.replace("\\", "\\\\"));
 		}
+		
 		if(map.containsKey("coverPhoto")) {
 			String coverPath = "\\coverPhotos\\cover-" + company.getId() + ".png";
 			byte[] coverBytes = Base64.getDecoder().decode(map.get("coverPhoto"));
@@ -142,9 +144,6 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		return company.getCompanyProfile().getParagraphs();
 		
-//		company.getCompanyProfile().addParagraph(paragraph);
-//		
-//		userRepository.save(company); // this is mandatory
 	}
 
 	
@@ -178,6 +177,9 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 	
 	
+	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
 	@Override
 	public void addPhoto(PhotoDto photoDto) throws IOException {
 		Company company = getAuthenticatedCompany();
@@ -199,7 +201,8 @@ public class CompanyServiceImpl implements CompanyService {
 
 	}
 	
-
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
 	@Override
 	public void deletePhoto(int id) throws AccessDeniedException {
 		Company company = getAuthenticatedCompany();
@@ -209,6 +212,7 @@ public class CompanyServiceImpl implements CompanyService {
 		if(!isPhotoOwner(company, photo))
 			throw new AccessDeniedException("You don't own this photo.");
 		
+		company.getCompanyProfile().removePhoto(photo);
 		
 		photoRepository.deleteById(id);
 	}
