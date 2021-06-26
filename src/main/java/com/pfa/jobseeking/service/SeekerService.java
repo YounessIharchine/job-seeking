@@ -15,7 +15,7 @@ import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
-import com.pfa.jobseeking.rest.exception.UnauthorizedException;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
@@ -48,7 +48,7 @@ public interface SeekerService {
 
 	List<Experience> addExperience(ExperienceDto experienceDto);
 
-	List<Experience> deleteExperience(int id) throws UnauthorizedException;
+	List<Experience> deleteExperience(int id) throws AccessDeniedException;
 	
 	
 	//*****************EDUCATIONS*****************
@@ -57,7 +57,7 @@ public interface SeekerService {
 
 	List<Education> addEducation(EducationDto educationDto);
 
-	List<Education> deleteEducation(int id) throws UnauthorizedException;
+	List<Education> deleteEducation(int id) throws AccessDeniedException;
 	
 	
 	//*****************PROJECTS*****************
@@ -66,7 +66,7 @@ public interface SeekerService {
 
 	List<Project> addProject(ProjectDto projectDto);
 
-	List<Project> deleteProject(int id) throws UnauthorizedException;
+	List<Project> deleteProject(int id) throws AccessDeniedException;
 	
 	
 	//*****************SKILLS*****************
@@ -75,16 +75,16 @@ public interface SeekerService {
 
 	List<Skill> addSkill(NameDto skillDto);
 
-	List<Skill> deleteSkill(int id) throws UnauthorizedException;
+	List<Skill> deleteSkill(int id) throws AccessDeniedException;
 	
 	
 	//*****************TECHNOLOGIES*****************
 	
-	List<Technology> findTechnologies(int skillId) throws UnauthorizedException;
+	List<Technology> findTechnologies(int skillId) throws AccessDeniedException;
 
-	List<Technology> addTechnology(NameDto technologyDto, int skillId) throws UnauthorizedException;
+	List<Technology> addTechnology(NameDto technologyDto, int skillId) throws AccessDeniedException;
 
-	List<Technology> deleteTechnology(int skillId, int id) throws UnauthorizedException;
+	List<Technology> deleteTechnology(int skillId, int id) throws AccessDeniedException;
 	
 	
 	//*****************LANGUAGES*****************
@@ -93,7 +93,7 @@ public interface SeekerService {
 
 	List<Language> addLanguage(LanguageDto languageDto);
 
-	List<Language> deleteLanguage(int id) throws UnauthorizedException;
+	List<Language> deleteLanguage(int id) throws AccessDeniedException;
 
 
 

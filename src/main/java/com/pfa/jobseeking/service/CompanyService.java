@@ -9,6 +9,7 @@ import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.TextDto;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 
 public interface CompanyService {
@@ -21,12 +22,12 @@ public interface CompanyService {
 
 	List<Paragraph> findParagraphs();
 
-	void deleteParagraph(int id);
+	void deleteParagraph(int id) throws AccessDeniedException;
 
 	void addPhoto(PhotoDto photoDto) throws IOException;
 
 	Set<Photo> findPhotos();
 
-	void deletePhoto(int id);
+	void deletePhoto(int id) throws AccessDeniedException;
 
 }

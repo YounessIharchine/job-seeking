@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pfa.jobseeking.rest.dto.CompanyDto;
 import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
-import com.pfa.jobseeking.rest.exception.UnauthorizedException;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.rest.response.UserResponse;
 import com.pfa.jobseeking.service.UserService;
@@ -42,7 +42,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/getAuthenticatedUserInfo")
-	UserResponse getAuthenticatedUserInfo() throws UnauthorizedException {
+	UserResponse getAuthenticatedUserInfo() throws AccessDeniedException {
 		return userService.getAuthenticatedUserInfo();
 	}
 	

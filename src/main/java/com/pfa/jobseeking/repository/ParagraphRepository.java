@@ -6,4 +6,6 @@ import com.pfa.jobseeking.model.company.Paragraph;
 
 public interface ParagraphRepository extends CrudRepository<Paragraph, Integer> {
 
+	Paragraph findById(int id);
+	
 }

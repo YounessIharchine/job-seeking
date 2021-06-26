@@ -20,6 +20,7 @@ import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.TextDto;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.CompanyService;
@@ -55,8 +56,8 @@ public class CompanyController {
 		return companyService.findParagraphs();
 	}
 	
-	@DeleteMapping("${rest.api.basePath}/companies/paragraphs")
-	void deleteParagraph(@PathVariable(name = "id") int id) {
+	@DeleteMapping("${rest.api.basePath}/companies/paragraphs/{id}")
+	void deleteParagraph(@PathVariable(name = "id") int id) throws AccessDeniedException {
 		companyService.deleteParagraph(id);
 	}
 	
@@ -72,7 +73,7 @@ public class CompanyController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/companies/photos/{id}")
-	void deletePhoto(@PathVariable(name = "id") int id) {
+	void deletePhoto(@PathVariable(name = "id") int id) throws AccessDeniedException {
 		companyService.deletePhoto(id);
 	}
 }

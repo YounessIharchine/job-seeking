@@ -33,7 +33,7 @@ import com.pfa.jobseeking.rest.dto.CompanyDto;
 import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
-import com.pfa.jobseeking.rest.exception.UnauthorizedException;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.UserResponse;
 import com.pfa.jobseeking.service.UserService;
 
@@ -122,17 +122,17 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
 	@Override
-	public UserResponse getAuthenticatedUserInfo() throws UnauthorizedException {
+	public UserResponse getAuthenticatedUserInfo() throws AccessDeniedException {
 		
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 
 		if(authenticatedUserEmail.equals("anonymousUser"))
-			throw new UnauthorizedException("You didn't include the token in the header");
+			throw new AccessDeniedException("You didn't include the token in the header");
 		
 		User user = userRepository.findUserByEmail(authenticatedUserEmail);
 		
 		if(user == null)
-			throw new UnauthorizedException("Requested User doesn't exist");
+			throw new AccessDeniedException("Requested User doesn't exist");
 		
 		String role = null;
 		for(Role iteratedRole : user.getRoles()) {

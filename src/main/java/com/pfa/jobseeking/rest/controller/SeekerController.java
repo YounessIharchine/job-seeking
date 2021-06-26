@@ -27,7 +27,7 @@ import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
-import com.pfa.jobseeking.rest.exception.UnauthorizedException;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
@@ -106,7 +106,7 @@ public class SeekerController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/experiences/{id}")
-	List<Experience> removeExperience(@PathVariable int id) throws UnauthorizedException {
+	List<Experience> removeExperience(@PathVariable int id) throws AccessDeniedException {
 		return seekerService.deleteExperience(id);
 	}
 	
@@ -124,7 +124,7 @@ public class SeekerController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/educations/{id}")
-	List<Education> removeEducation(@PathVariable int id) throws UnauthorizedException {
+	List<Education> removeEducation(@PathVariable int id) throws AccessDeniedException {
 		return seekerService.deleteEducation(id);
 	}
 	
@@ -142,7 +142,7 @@ public class SeekerController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/projects/{id}")
-	List<Project> removeProject(@PathVariable int id) throws UnauthorizedException {
+	List<Project> removeProject(@PathVariable int id) throws AccessDeniedException {
 		return seekerService.deleteProject(id);
 	}
 	
@@ -150,17 +150,17 @@ public class SeekerController {
 	
 	//*****************TECHNOLOGIES*****************
 	@GetMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies")
-	List<Technology> getTechnologies(@PathVariable int skillId) throws UnauthorizedException {
+	List<Technology> getTechnologies(@PathVariable int skillId) throws AccessDeniedException {
 		return seekerService.findTechnologies(skillId);
 	}
 	
 	@PostMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies")
-	List<Technology> addTechnology(@RequestBody NameDto technologyDto, @PathVariable int skillId) throws UnauthorizedException {
+	List<Technology> addTechnology(@RequestBody NameDto technologyDto, @PathVariable int skillId) throws AccessDeniedException {
 		return seekerService.addTechnology(technologyDto, skillId);
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies/{id}")
-	List<Technology> removeTechnology(@PathVariable int skillId, @PathVariable int id) throws UnauthorizedException {
+	List<Technology> removeTechnology(@PathVariable int skillId, @PathVariable int id) throws AccessDeniedException {
 		return seekerService.deleteTechnology(skillId, id);
 	}
 	
@@ -178,7 +178,7 @@ public class SeekerController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/skills/{id}")
-	List<Skill> removeSkill(@PathVariable int id) throws UnauthorizedException {
+	List<Skill> removeSkill(@PathVariable int id) throws AccessDeniedException {
 		return seekerService.deleteSkill(id);
 	}
 	
@@ -196,7 +196,7 @@ public class SeekerController {
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/languages/{id}")
-	List<Language> removeLanguage(@PathVariable int id) throws UnauthorizedException {
+	List<Language> removeLanguage(@PathVariable int id) throws AccessDeniedException {
 		return seekerService.deleteLanguage(id);
 	}
 	

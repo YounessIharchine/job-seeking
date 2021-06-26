@@ -42,7 +42,7 @@ import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
-import com.pfa.jobseeking.rest.exception.UnauthorizedException;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
@@ -274,12 +274,12 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Experience> deleteExperience(int id) throws UnauthorizedException {
+	public List<Experience> deleteExperience(int id) throws AccessDeniedException {
 		Seeker seeker = getAuthenticatedSeeker();
 		Experience experience = experienceRepository.findById(id);
 		
 		if(!isInformationOwner(seeker, experience))
-			throw new UnauthorizedException("You are not the owner of this experience.");
+			throw new AccessDeniedException("You are not the owner of this experience.");
 		
 		experienceRepository.deleteById(id);
 		
@@ -322,13 +322,13 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Education> deleteEducation(int id) throws UnauthorizedException {
+	public List<Education> deleteEducation(int id) throws AccessDeniedException {
 		Seeker seeker = getAuthenticatedSeeker();
 		
 		Education education = educationRepository.findById(id);
 		
 		if(!isInformationOwner(seeker, education))
-			throw new UnauthorizedException("You are not the owner of this education.");
+			throw new AccessDeniedException("You are not the owner of this education.");
 		
 		educationRepository.deleteById(id);
 		
@@ -370,13 +370,13 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Project> deleteProject(int id) throws UnauthorizedException {
+	public List<Project> deleteProject(int id) throws AccessDeniedException {
 		Seeker seeker = getAuthenticatedSeeker();
 		
 		Project project = projectRepository.findById(id);
 		
 		if(!isInformationOwner(seeker, project))
-			throw new UnauthorizedException("You are not the owner of this project.");
+			throw new AccessDeniedException("You are not the owner of this project.");
 		
 		projectRepository.deleteById(id);
 		
@@ -413,13 +413,13 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Skill> deleteSkill(int id) throws UnauthorizedException {
+	public List<Skill> deleteSkill(int id) throws AccessDeniedException {
 		Seeker seeker = getAuthenticatedSeeker();
 		
 		Skill skill = skillRepository.findById(id);
 		
 		if(!isInformationOwner(seeker, skill))
-			throw new UnauthorizedException("You are not the owner of this skill.");
+			throw new AccessDeniedException("You are not the owner of this skill.");
 		
 		skillRepository.deleteById(id);
 		
@@ -433,12 +433,12 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Technology> findTechnologies(int skillId) throws UnauthorizedException {
+	public List<Technology> findTechnologies(int skillId) throws AccessDeniedException {
 		Seeker seeker = getAuthenticatedSeeker();
 		Skill skill = skillRepository.findById(skillId);
 		
 		if(!isInformationOwner(seeker, skill))
-			throw new UnauthorizedException("You are not the owner of this skill.");
+			throw new AccessDeniedException("You are not the owner of this skill.");
 		
 		return skill.getTechnologies();
 	}
@@ -446,12 +446,12 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Technology> addTechnology(NameDto technologyDto, int skillId) throws UnauthorizedException {
+	public List<Technology> addTechnology(NameDto technologyDto, int skillId) throws AccessDeniedException {
 		Seeker seeker = getAuthenticatedSeeker();
 		Skill skill = skillRepository.findById(skillId);
 		
 		if(!isInformationOwner(seeker, skill))
-			throw new UnauthorizedException("You are not the owner of this skill.");
+			throw new AccessDeniedException("You are not the owner of this skill.");
 		
 		Technology technology = new Technology();
 		technology.setSkill(skill);
@@ -465,16 +465,16 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Technology> deleteTechnology(int skillId, int id) throws UnauthorizedException {
+	public List<Technology> deleteTechnology(int skillId, int id) throws AccessDeniedException {
 		Seeker seeker = getAuthenticatedSeeker();
 		Skill skill = skillRepository.findById(skillId);
 		Technology technology = technologyRepository.findById(id);
 		
 		if(!isInformationOwner(seeker, skill))
-			throw new UnauthorizedException("You are not the owner of this skill.");
+			throw new AccessDeniedException("You are not the owner of this skill.");
 		
 		if(!isTechnologyOwner(skill, technology))
-			throw new UnauthorizedException("This technology does not belong to this skill.");
+			throw new AccessDeniedException("This technology does not belong to this skill.");
 		
 		skill.removeTechnology(technology);
 		technologyRepository.deleteById(id);
@@ -516,13 +516,13 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public List<Language> deleteLanguage(int id) throws UnauthorizedException {
+	public List<Language> deleteLanguage(int id) throws AccessDeniedException {
 		Seeker seeker = getAuthenticatedSeeker();
 		
 		Language language = languageRepository.findById(id);
 		
 		if(!isInformationOwner(seeker, language))
-			throw new UnauthorizedException("You are not the owner of this language.");
+			throw new AccessDeniedException("You are not the owner of this language.");
 		
 		languageRepository.deleteById(id);
 //		seeker.getProfile().removeLanguage(languageRepository.findById(id));

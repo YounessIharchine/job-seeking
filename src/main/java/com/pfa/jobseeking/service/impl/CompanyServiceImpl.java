@@ -25,6 +25,7 @@ import com.pfa.jobseeking.repository.PhotoRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.TextDto;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.service.CompanyService;
 
@@ -79,8 +80,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Transactional
 	@Override
 	public void updateInfo(Map<String, String> map) throws IOException {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+		Company company = getAuthenticatedCompany();
 		
 		if(map.containsKey("name"))
 			company.setName(map.get("name"));
@@ -119,8 +119,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Transactional
 	@Override
 	public void addParagraph(TextDto textDto) {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+		Company company = getAuthenticatedCompany();
 		
 		Paragraph paragraph = new Paragraph(textDto.getText());
 		paragraph.setCompanyProfile(company.getCompanyProfile());
@@ -134,8 +133,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Transactional
 	@Override
 	public List<Paragraph> findParagraphs() {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+		Company company = getAuthenticatedCompany();
 		
 		return company.getCompanyProfile().getParagraphs();
 	}
@@ -144,19 +142,21 @@ public class CompanyServiceImpl implements CompanyService {
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
-	public void deleteParagraph(int id) {
-//		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-//		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+	public void deleteParagraph(int id) throws AccessDeniedException {
+		Company company = getAuthenticatedCompany();
+		Paragraph paragraph = paragraphRepository.findById(id);
 		
-		//can check if this paragraph is really mapped to this company by adding equals()..... but too lazy to implement also not much time left
+		
+		if(!isParagraphOwner(company, paragraph))
+			throw new AccessDeniedException("You don't own this paragraph.");
+		
 		
 		paragraphRepository.deleteById(id);
 	}
 
 	@Override
 	public void addPhoto(PhotoDto photoDto) throws IOException {
-		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		Company company = (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+		Company company = getAuthenticatedCompany();
 		
 		
 		
@@ -182,9 +182,47 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
-	public void deletePhoto(int id) {
+	public void deletePhoto(int id) throws AccessDeniedException {
+		Company company = getAuthenticatedCompany();
+		Photo photo = photoRepository.findById(id);
+		
+		
+		if(!isPhotoOwner(company, photo))
+			throw new AccessDeniedException("You don't own this photo.");
+		
+		
 		photoRepository.deleteById(id);
 	}
 
+	
+	
+	
+	
+	
+	private Company getAuthenticatedCompany() {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		return (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+	}
+	
+	
+	private boolean isParagraphOwner(Company company, Paragraph paragraph) {
+		boolean isOwner = false;
+		
+		for(Paragraph iteratedParagraph : company.getCompanyProfile().getParagraphs())
+			if(iteratedParagraph == paragraph)
+				isOwner = true;
+		
+		return isOwner;
+	}
+	
+	private boolean isPhotoOwner(Company company, Photo photo) {
+		boolean isOwner = false;
+		
+		for(Photo iteratedPhoto : company.getCompanyProfile().getPhotos())
+			if(iteratedPhoto == photo)
+				isOwner = true;
+		
+		return isOwner;
+	}
 
 }
