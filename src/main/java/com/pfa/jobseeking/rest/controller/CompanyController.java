@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
-import com.pfa.jobseeking.rest.dto.TextDto;
+import com.pfa.jobseeking.rest.dto.ParagraphDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.Response;
@@ -46,19 +46,19 @@ public class CompanyController {
 	}
 	
 	
-	@PostMapping("${rest.api.basePath}/companies/paragraphs")
-	void addParagraph(@RequestBody TextDto textDto) {
-		companyService.addParagraph(textDto);
-	}
-	
 	@GetMapping("${rest.api.basePath}/companies/paragraphs")
 	List<Paragraph> findParagraphs() {
 		return companyService.findParagraphs();
 	}
 	
+	@PostMapping("${rest.api.basePath}/companies/paragraphs")
+	List<Paragraph> addParagraph(@RequestBody ParagraphDto paragraphDto) {
+		return companyService.addParagraph(paragraphDto);
+	}
+	
 	@DeleteMapping("${rest.api.basePath}/companies/paragraphs/{id}")
-	void deleteParagraph(@PathVariable(name = "id") int id) throws AccessDeniedException {
-		companyService.deleteParagraph(id);
+	List<Paragraph> deleteParagraph(@PathVariable(name = "id") int id) throws AccessDeniedException {
+		return companyService.deleteParagraph(id);
 	}
 	
 	

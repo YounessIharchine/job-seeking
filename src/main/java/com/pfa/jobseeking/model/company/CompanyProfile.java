@@ -92,4 +92,10 @@ public class CompanyProfile {
 	public void addPhoto(Photo photo) {
 		this.photos.add(photo);
 	}
+	public void removeParagraph(Paragraph paragraph) {
+		this.paragraphs.remove(paragraph);
+	}
+	public void removePhoto(Photo photo) {
+		this.photos.remove(photo);
+	}
 }

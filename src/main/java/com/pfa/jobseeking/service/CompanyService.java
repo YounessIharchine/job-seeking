@@ -8,7 +8,7 @@ import java.util.Set;
 import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
-import com.pfa.jobseeking.rest.dto.TextDto;
+import com.pfa.jobseeking.rest.dto.ParagraphDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 
@@ -17,12 +17,12 @@ public interface CompanyService {
 	CompanyResponse findCompany(int id);
 
 	void updateInfo(Map<String, String> map) throws IOException;
-
-	void addParagraph(TextDto textDto);
-
+	
 	List<Paragraph> findParagraphs();
 
-	void deleteParagraph(int id) throws AccessDeniedException;
+	List<Paragraph> addParagraph(ParagraphDto paragraphDto);
+
+	List<Paragraph> deleteParagraph(int id) throws AccessDeniedException;
 
 	void addPhoto(PhotoDto photoDto) throws IOException;
 

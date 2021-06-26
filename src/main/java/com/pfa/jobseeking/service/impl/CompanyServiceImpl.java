@@ -24,7 +24,7 @@ import com.pfa.jobseeking.repository.ParagraphRepository;
 import com.pfa.jobseeking.repository.PhotoRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
-import com.pfa.jobseeking.rest.dto.TextDto;
+import com.pfa.jobseeking.rest.dto.ParagraphDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.service.CompanyService;
@@ -115,19 +115,6 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	
-	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	@Transactional
-	@Override
-	public void addParagraph(TextDto textDto) {
-		Company company = getAuthenticatedCompany();
-		
-		Paragraph paragraph = new Paragraph(textDto.getText());
-		paragraph.setCompanyProfile(company.getCompanyProfile());
-		company.getCompanyProfile().addParagraph(paragraph);
-		
-		userRepository.save(company); // this is mandatory
-	}
-
 	
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
@@ -137,12 +124,34 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		return company.getCompanyProfile().getParagraphs();
 	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public List<Paragraph> addParagraph(ParagraphDto paragraphDto) {
+		Company company = getAuthenticatedCompany();
+		
+		Paragraph paragraph = new Paragraph();
+		paragraph.setTitle(paragraphDto.getTitle());
+		paragraph.setText(paragraphDto.getText());
+		paragraph.setCompanyProfile(company.getCompanyProfile());
+		
+		paragraphRepository.save(paragraph);
+		
+		
+		return company.getCompanyProfile().getParagraphs();
+		
+//		company.getCompanyProfile().addParagraph(paragraph);
+//		
+//		userRepository.save(company); // this is mandatory
+	}
 
 	
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
-	public void deleteParagraph(int id) throws AccessDeniedException {
+	public List<Paragraph> deleteParagraph(int id) throws AccessDeniedException {
 		Company company = getAuthenticatedCompany();
 		Paragraph paragraph = paragraphRepository.findById(id);
 		
@@ -151,9 +160,24 @@ public class CompanyServiceImpl implements CompanyService {
 			throw new AccessDeniedException("You don't own this paragraph.");
 		
 		
+		company.getCompanyProfile().removeParagraph(paragraph);
 		paragraphRepository.deleteById(id);
+		
+		
+		return company.getCompanyProfile().getParagraphs();
 	}
 
+	
+	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public Set<Photo> findPhotos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	@Override
 	public void addPhoto(PhotoDto photoDto) throws IOException {
 		Company company = getAuthenticatedCompany();
@@ -174,12 +198,7 @@ public class CompanyServiceImpl implements CompanyService {
 		photo = photoRepository.save(photo);
 
 	}
-
-	@Override
-	public Set<Photo> findPhotos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public void deletePhoto(int id) throws AccessDeniedException {
