@@ -3,10 +3,9 @@ package com.pfa.jobseeking.rest.controller;
 import java.io.IOException;
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,12 +40,12 @@ public class CreationRequestController {
 	}
 	
 	@GetMapping("/acceptOfferCreationRequest/{id}")
-	void acceptOfferCreationRequest(@PathParam(value = "id") int id) {
+	void acceptOfferCreationRequest(@PathVariable int id) {
 		creationRequestService.acceptOfferCreationOffer(id);
 	}
 	
 	@GetMapping("/rejectOfferCreationRequest/{id}")
-	void rejectOfferCreationRequest(@PathParam(value = "id") int id) {
+	void rejectOfferCreationRequest(@PathVariable int id) {
 		creationRequestService.rejectOfferCreationOffer(id);
 	}
 	
