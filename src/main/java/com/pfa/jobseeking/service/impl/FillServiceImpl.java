@@ -24,6 +24,7 @@ import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.JobType;
 import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
+import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.Profile;
 import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.Skill;
@@ -282,6 +283,21 @@ public class FillServiceImpl implements FillService {
 		skill13.addTechnology(technology133);
 		
 		
+		//******************************LANGUAGESS******************************
+		
+		Language language11 = new Language();
+		language11.setName("English");
+		language11.setLevel("Begineer");
+		
+		Language language12 = new Language();
+		language12.setName("French");
+		language12.setLevel("Medium");
+		
+		Language language13 = new Language();
+		language13.setName("Arabic");
+		language13.setLevel("Advanced");
+		
+		
 		//******************************SEEKER1******************************
 		
 		Seeker seeker1 = new Seeker("seeker1@gmail.com", passwordEncoder.encode("seeker1"), "first", "last");
@@ -312,6 +328,9 @@ public class FillServiceImpl implements FillService {
 		skill11.setProfile(profile1);
 		skill12.setProfile(profile1);
 		skill13.setProfile(profile1);
+		language11.setProfile(profile1);
+		language12.setProfile(profile1);
+		language13.setProfile(profile1);
 		
 		profile1.setExperiences(new ArrayList<>());
 		profile1.getExperiences().add(experience11);
@@ -332,6 +351,11 @@ public class FillServiceImpl implements FillService {
 		profile1.getSkills().add(skill11);
 		profile1.getSkills().add(skill12);
 		profile1.getSkills().add(skill13);
+		
+		profile1.setLanguages(new ArrayList<>());
+		profile1.getLanguages().add(language11);
+		profile1.getLanguages().add(language12);
+		profile1.getLanguages().add(language13);
 		
 		seeker1.setProfile(profile1);
 		
