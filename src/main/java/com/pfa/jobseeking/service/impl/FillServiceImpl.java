@@ -222,63 +222,63 @@ public class FillServiceImpl implements FillService {
 		//******************************SKILLS******************************
 		
 		Skill skill11 = new Skill();
-		skill11.setName("Skill 1");
+		skill11.setName("Front-End");
 		skill11.setTechnologies(new ArrayList<>());
 		
 		Skill skill12 = new Skill();
-		skill12.setName("Skill 2");
+		skill12.setName("Back-End");
 		skill12.setTechnologies(new ArrayList<>());
 		
 		Skill skill13 = new Skill();
-		skill13.setName("Skill 3");
+		skill13.setName("Design");
 		skill13.setTechnologies(new ArrayList<>());
 		
 		
 		//******************************TECHNOLOGIES******************************
 
 		Technology technology111 = new Technology();
-		technology111.setName("Technology 1");
+		technology111.setName("HTML5");
 		technology111.setSkill(skill11);
 		skill11.addTechnology(technology111);
 		
 		Technology technology112 = new Technology();
-		technology112.setName("Technology 2");
+		technology112.setName("CSS3");
 		technology112.setSkill(skill11);
 		skill11.addTechnology(technology112);
 		
 		Technology technology113 = new Technology();
-		technology113.setName("Technology 3");
+		technology113.setName("React JS");
 		technology113.setSkill(skill11);
 		skill11.addTechnology(technology113);
 		
 		
 		Technology technology121 = new Technology();
-		technology121.setName("Technology 1");
+		technology121.setName("Spring");
 		technology121.setSkill(skill12);
 		skill12.addTechnology(technology121);
 		
 		Technology technology122 = new Technology();
-		technology122.setName("Technology 2");
+		technology122.setName("Node JS");
 		technology122.setSkill(skill12);
 		skill12.addTechnology(technology122);
 		
 		Technology technology123 = new Technology();
-		technology123.setName("Technology 3");
+		technology123.setName("MongoDB");
 		technology123.setSkill(skill12);
 		skill12.addTechnology(technology123);
 		
 		Technology technology131 = new Technology();
-		technology131.setName("Technology 1");
+		technology131.setName("Adobe Photoshop");
 		technology131.setSkill(skill13);
 		skill13.addTechnology(technology131);
 		
 		Technology technology132 = new Technology();
-		technology132.setName("Technology 2");
+		technology132.setName("Adobe XD");
 		technology132.setSkill(skill13);
 		skill13.addTechnology(technology132);
 		
 		Technology technology133 = new Technology();
-		technology133.setName("Technology 3");
+		technology133.setName("Adobe Illustrator");
 		technology133.setSkill(skill13);
 		skill13.addTechnology(technology133);
 		
