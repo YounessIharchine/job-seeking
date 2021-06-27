@@ -1,6 +1,8 @@
 package com.pfa.jobseeking.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pfa.jobseeking.model.OfferCreationRequest;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
+import com.pfa.jobseeking.model.user.Admin;
 import com.pfa.jobseeking.model.user.Company;
+import com.pfa.jobseeking.repository.AdminRepository;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.DomainRepository;
 import com.pfa.jobseeking.repository.DurationRepository;
@@ -56,6 +61,9 @@ public class OfferServiceImpl implements OfferService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	AdminRepository adminRepository;
 	
 	@Override
 	public List<OfferResponse> findAll(String domain, String keyword, String city, String internshipType, String jobType) {
@@ -221,13 +229,15 @@ public class OfferServiceImpl implements OfferService {
 	@Override
 	public void addInternshipOffer(OfferDto offerDto) {
 		Company company = getAuthenticatedCompany();
-		
-		System.out.println(offerDto.getTitle());
-		
+				
 		InternshipOffer internshipOffer = (InternshipOffer)mapOfferDto(offerDto, true);
 		internshipOffer.setInternshipType(internshipTypeRepository.findInternshipTypeByName(offerDto.getType()));
 		internshipOffer.setDuration(durationRepository.findByDuration(offerDto.getDuration()));
 		internshipOffer.setCompany(company);
+		
+		generateOfferCreationRequest(internshipOffer);
+		
+		incrementAdminNotif();
 		
 		offerRepository.save(internshipOffer);
 	}
@@ -242,6 +252,10 @@ public class OfferServiceImpl implements OfferService {
 		JobOffer jobOffer = (JobOffer)mapOfferDto(offerDto, false);
 		jobOffer.setJobType(jobTypeRepository.findJobTypeByName(offerDto.getType()));
 		jobOffer.setCompany(company);
+		
+		generateOfferCreationRequest(jobOffer);
+		
+		incrementAdminNotif();
 		
 		offerRepository.save(jobOffer);
 	}
@@ -297,9 +311,21 @@ public class OfferServiceImpl implements OfferService {
 		offer.setDate(offerDto.getDate());
 		offer.setCity(cityRepository.findCityByName(offerDto.getCity()));
 		offer.setDomain(domainRepository.findDomainByName(offerDto.getDomain()));
+		offer.setOpen(true);
 		return offer;
 	}
+	
+	private void generateOfferCreationRequest(Offer offer) {
+		OfferCreationRequest request = new OfferCreationRequest();
+		request.setOffer(offer);
+		request.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+		offer.setOfferCreationRequest(request);
+	}
 
+	private void incrementAdminNotif() {
+		for(Admin admin : adminRepository.findAll())
+			admin.getAdminNotification().incrementNewCompanyCreationRequests();
+	}
 	
 	private Company getAuthenticatedCompany() {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
