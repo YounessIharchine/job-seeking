@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.AdminNotification;
 import com.pfa.jobseeking.model.City;
+import com.pfa.jobseeking.model.CompanyNotification;
 import com.pfa.jobseeking.model.Domain;
 import com.pfa.jobseeking.model.company.CompanyProfile;
 import com.pfa.jobseeking.model.company.Paragraph;
@@ -496,7 +497,12 @@ public class FillServiceImpl implements FillService {
 		
 		
 		//******************************ORANGE******************************
+		
+		CompanyNotification orangeNotification = new CompanyNotification();
+
 		Company orange = new Company("orange@gmail.com", passwordEncoder.encode("orange"));
+		orangeNotification.setCompany(orange);
+		orange.setCompanyNotification(orangeNotification);
 		orange.addRole(roleRepository.findRoleByName("ROLE_COMPANY"));
 		orange.setName("Orange");
 		orange.setPhone("0652968335");
@@ -588,7 +594,11 @@ public class FillServiceImpl implements FillService {
 		
 		
 		//******************************DANONE******************************
+		CompanyNotification danoneNotification = new CompanyNotification();
+		
 		Company danone = new Company("danone@gmail.com", passwordEncoder.encode("danone"));
+		danoneNotification.setCompany(danone);
+		danone.setCompanyNotification(danoneNotification);
 		danone.addRole(roleRepository.findRoleByName("ROLE_COMPANY"));
 		danone.setName("Danone");
 		danone.setPhone("0614635593");
@@ -693,7 +703,12 @@ public class FillServiceImpl implements FillService {
 		
 		
 		//******************************ORACLE******************************
+		
+		CompanyNotification oracleNotification = new CompanyNotification();
+		
 		Company oracle = new Company("oracle@gmail.com", passwordEncoder.encode("oracle"));
+		oracleNotification.setCompany(oracle);
+		oracle.setCompanyNotification(oracleNotification);
 		oracle.addRole(roleRepository.findRoleByName("ROLE_COMPANY"));
 		oracle.setName("Oracle");
 		oracle.setPhone("0614635593");

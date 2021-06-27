@@ -26,6 +26,7 @@ import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.Skill;
 import com.pfa.jobseeking.model.seeker.Technology;
 import com.pfa.jobseeking.model.seeker.TimePeriod;
+import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.repository.CityRepository;
@@ -231,7 +232,9 @@ public class SeekerServiceImpl implements SeekerService {
 	@Override
 	public void follow(String companyName) {
 		Seeker seeker = getAuthenticatedSeeker();
-		seeker.followCompany(companyRepository.findCompanyByName(companyName));
+		Company company = companyRepository.findCompanyByName(companyName);
+		seeker.followCompany(company);
+		company.getCompanyNotification().incrementNewFollowers();
 	}
 	
 	
