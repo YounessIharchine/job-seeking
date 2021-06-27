@@ -4,15 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
+import com.pfa.jobseeking.model.user.Company;
+import com.pfa.jobseeking.repository.CityRepository;
+import com.pfa.jobseeking.repository.DomainRepository;
+import com.pfa.jobseeking.repository.DurationRepository;
 import com.pfa.jobseeking.repository.InternshipOfferRepository;
+import com.pfa.jobseeking.repository.InternshipTypeRepository;
 import com.pfa.jobseeking.repository.JobOfferRepository;
+import com.pfa.jobseeking.repository.JobTypeRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.UserRepository;
+import com.pfa.jobseeking.rest.dto.OfferDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.service.OfferService;
 
@@ -28,6 +38,21 @@ public class OfferServiceImpl implements OfferService {
 	
 	@Autowired
 	JobOfferRepository jobOfferRepository;
+	
+	@Autowired
+	InternshipTypeRepository internshipTypeRepository;
+	
+	@Autowired
+	JobTypeRepository jobTypeRepository;
+	
+	@Autowired
+	DurationRepository durationRepository;
+	
+	@Autowired
+	CityRepository cityRepository;
+	
+	@Autowired
+	DomainRepository domainRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -189,8 +214,45 @@ public class OfferServiceImpl implements OfferService {
 
 	}
 	
+
+	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public void addInternshipOffer(OfferDto offerDto) {
+		Company company = getAuthenticatedCompany();
+		
+		System.out.println(offerDto.getTitle());
+		
+		InternshipOffer internshipOffer = (InternshipOffer)mapOfferDto(offerDto, true);
+		internshipOffer.setInternshipType(internshipTypeRepository.findInternshipTypeByName(offerDto.getType()));
+		internshipOffer.setDuration(durationRepository.findByDuration(offerDto.getDuration()));
+		internshipOffer.setCompany(company);
+		
+		offerRepository.save(internshipOffer);
+	}
 	
 	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public void addJobOffer(OfferDto offerDto) {
+		Company company = getAuthenticatedCompany();
+
+		JobOffer jobOffer = (JobOffer)mapOfferDto(offerDto, false);
+		jobOffer.setJobType(jobTypeRepository.findJobTypeByName(offerDto.getType()));
+		jobOffer.setCompany(company);
+		
+		offerRepository.save(jobOffer);
+	}
+	
+	
+	
+	
+	
+	
+	
+
 	private List<OfferResponse> mapToResponse(List<Offer> offers) {
 		List<OfferResponse> response = new ArrayList<>();
 		for(Offer offer : offers) {
@@ -220,8 +282,29 @@ public class OfferServiceImpl implements OfferService {
 		return response;
 	}
 
+	
+	private Offer mapOfferDto(OfferDto offerDto, boolean isInternship) {
+		
+		Offer offer;
+		
+		if(isInternship)
+			offer = new InternshipOffer();
+		else
+			offer = new JobOffer();
+		
+		offer.setTitle(offerDto.getTitle());
+		offer.setDescription(offerDto.getDescription());
+		offer.setDate(offerDto.getDate());
+		offer.setCity(cityRepository.findCityByName(offerDto.getCity()));
+		offer.setDomain(domainRepository.findDomainByName(offerDto.getDomain()));
+		return offer;
+	}
 
-
+	
+	private Company getAuthenticatedCompany() {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		return (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+	}
 
 }
 

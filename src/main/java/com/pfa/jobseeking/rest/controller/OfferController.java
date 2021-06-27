@@ -4,11 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pfa.jobseeking.rest.dto.OfferDto;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.service.OfferService;
+
 
 @RestController
 public class OfferController {
@@ -28,6 +32,17 @@ public class OfferController {
 		return offerService.findAll(domain, keyword, city, internshipType, jobType);
 		
 	}
+	
+	@PostMapping("${rest.api.basePath}/internshipOffers")
+	void addInternshipOffer(@RequestBody OfferDto offerDto) {
+		offerService.addInternshipOffer(offerDto);
+	}
+	
+	@PostMapping("${rest.api.basePath}/jobOffers")
+	void addJobOffer(@RequestBody OfferDto offerDto) {
+		offerService.addJobOffer(offerDto);
+	}
+	
 	
 	
 }
