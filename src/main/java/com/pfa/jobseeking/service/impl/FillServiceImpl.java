@@ -166,64 +166,74 @@ public class FillServiceImpl implements FillService {
 		//******************************EXPERIENCES******************************
 
 		Experience experience11 = new Experience();
-		experience11.setJobTitle("Job Title 1");
-		experience11.setDescription("Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 ");
-		experience11.setCompany("Company 1");
-		experience11.setCity("City 1");
-		experience11.setTimePeriod(new TimePeriod("Start Date 1", "End Date 1"));
+		experience11.setJobTitle("Full Stack Developer");
+		experience11.setDescription("Developed full-stack web applications which processed, analyzed, and rendered data visually.<br>"
+				+ "Liaised with back end developers, front end developers, quality assurance testers, and CTO as needed.<br>"
+				+ "Managed time-sensitive updates, including content changes and database upgrades.<br>"
+				+ "Planned, wrote, and debugged web applications and software with complete accuracy.");
+		experience11.setCompany("Bagdor");
+		experience11.setCity("Rabat");
+		experience11.setTimePeriod(new TimePeriod("January 2020", "Present"));
 		
 		Experience experience12 = new Experience();
-		experience12.setJobTitle("Job Title 2");
-		experience12.setDescription("Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 ");
-		experience12.setCompany("Company 2");
-		experience12.setCity("City 2");
-		experience12.setTimePeriod(new TimePeriod("Start Date 2", "End Date 2"));
+		experience12.setJobTitle("Junior Full Stack Developer");
+		experience12.setDescription("Maximized applications’ efficiency, data quality, scope, operability, and flexibility.<br>"
+				+ "Used various ideas from distributed computing, large-scale design, real-time data processing, data storage, ML, and AI to solve challenging dataset problems.<br>"
+				+ "Managed, optimized, and updated PHP databases as necessary.<br>"
+				+ "Developed app integration with REST / SOAP and other APIs for Google Maps, social media logins, payment processors, and other services.");
+		experience12.setCompany("Go Informatique");
+		experience12.setCity("Casablanca");
+		experience12.setTimePeriod(new TimePeriod("September 2017", "January 2020"));
 		
 		Experience experience13 = new Experience();
-		experience13.setJobTitle("Job Title 3");
-		experience13.setDescription("Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 ");
-		experience13.setCompany("Company 3");
-		experience13.setCity("City 3");
-		experience13.setTimePeriod(new TimePeriod("Start Date 3", "End Date 3"));
+		experience13.setJobTitle("Front-End Developer");
+		experience13.setDescription("Implemented websites, mobile applications, and landing pages from concept through deployment.<br>"
+				+ "Standardized all output with a new, responsive, mobile-first approach and strategy.<br>"
+				+ "Assessed UX and UI designs for technical feasibility.<br>"
+				+ "Developed standard and ad hoc reports in graph format as required.<br>"
+				+ "Collaborated with product team members to implement new feature developments.");
+		experience13.setCompany("Storino");
+		experience13.setCity("Agadir");
+		experience13.setTimePeriod(new TimePeriod("July 2016", "August 2017"));
 		
 		
 		//******************************EDUCATIONS******************************
 		
 		Education education11 = new Education();
-		education11.setType("Type 1");
-		education11.setInstitution("Institution 1");
-		education11.setCity("City 1");
-		education11.setTimePeriod(new TimePeriod("Start Date 1", "End Date 1"));
+		education11.setType("Majoring in Web Development");
+		education11.setInstitution("Harvard");
+		education11.setCity("Harvard");
+		education11.setTimePeriod(new TimePeriod("October 2050", "July 2055"));
 		
 		Education education12 = new Education();
-		education12.setType("Type 2");
-		education12.setInstitution("Institution 2");
-		education12.setCity("City 2");
-		education12.setTimePeriod(new TimePeriod("Start Date 2", "End Date 2"));
+		education12.setType("Software Engineering Degree");
+		education12.setInstitution("ENSA");
+		education12.setCity("Agadir");
+		education12.setTimePeriod(new TimePeriod("September 2017", "Present"));
 
 		Education education13 = new Education();
-		education13.setType("Type 3");
-		education13.setInstitution("Institution 3");
-		education13.setCity("City 3");
-		education13.setTimePeriod(new TimePeriod("Start Date 3", "End Date 3"));
+		education13.setType("Bachelor of Science");
+		education13.setInstitution("Azrou l3alima");
+		education13.setCity("Azrou");
+		education13.setTimePeriod(new TimePeriod("", "June 2016"));
 		
 		
 		//******************************PROJECTS******************************
 		
 		Project project11 = new Project();
-		project11.setTitle("Title 1");
-		project11.setDescription("Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 ");
-		project11.setTimePeriod(new TimePeriod("Start Date 1", "End Date 1"));
+		project11.setTitle("Coding a Chat Application in Java");
+		project11.setDescription("Created a group chat application using MulticastSocket (Java Platform SE 7) with additional capabilities for joining “groups” of other multicast hosts on the internet. Used Java’s RMI (Remote Method Invocation) to achieve encryption-decryption.");
+		project11.setTimePeriod(new TimePeriod("March 2017", "Mai 2017"));
 	
 		Project project12 = new Project();
-		project12.setTitle("Title 2");
-		project12.setDescription("Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 ");
-		project12.setTimePeriod(new TimePeriod("Start Date 2", "End Date 2"));
+		project12.setTitle("Developed a language learning app");
+		project12.setDescription("using spaced repetition and a linked list data structure. React was used to create the front end components while Node and Mongo were used to create a backend that stores user data.");
+		project12.setTimePeriod(new TimePeriod("October 2018", "December 2018"));
 		
 		Project project13 = new Project();
-		project13.setTitle("Title 3");
-		project13.setDescription("Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 ");
-		project13.setTimePeriod(new TimePeriod("Start Date 3", "End Date 3"));
+		project13.setTitle("Developed a concierge app");
+		project13.setDescription("for individuals looking for curated suggestions when visiting a new place. React was used to develop the front end which includes real-time chat, drag and drop and variety of advanced features. The backend, built using Node, Express, and Mongo, takes advantage of well-developed RESTful API, Geospatial searching, and user authentication with JWT.\"");
+		project13.setTimePeriod(new TimePeriod("November 2019", "February 2020"));
 		
 		
 		//******************************SKILLS******************************
