@@ -15,6 +15,7 @@ import com.pfa.jobseeking.model.OfferCreationRequest;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
+import com.pfa.jobseeking.model.seeker.Follow;
 import com.pfa.jobseeking.model.user.Admin;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.repository.AdminRepository;
@@ -239,6 +240,8 @@ public class OfferServiceImpl implements OfferService {
 		
 		incrementAdminNotif();
 		
+		incrementFollowNotif(internshipOffer);
+		
 		offerRepository.save(internshipOffer);
 	}
 	
@@ -256,6 +259,8 @@ public class OfferServiceImpl implements OfferService {
 		generateOfferCreationRequest(jobOffer);
 		
 		incrementAdminNotif();
+		
+		incrementFollowNotif(jobOffer);
 		
 		offerRepository.save(jobOffer);
 	}
@@ -325,6 +330,12 @@ public class OfferServiceImpl implements OfferService {
 	private void incrementAdminNotif() {
 		for(Admin admin : adminRepository.findAll())
 			admin.getAdminNotification().incrementNewCompanyCreationRequests();
+	}
+	
+	private void incrementFollowNotif(Offer offer) {
+		Company company = offer.getCompany();
+		for(Follow follow : company.getFollows())
+			follow.getFollowNotification().incrementNewOffers();
 	}
 	
 	private Company getAuthenticatedCompany() {
