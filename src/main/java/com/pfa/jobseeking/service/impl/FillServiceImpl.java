@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pfa.jobseeking.model.AdminNotification;
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.model.Domain;
 import com.pfa.jobseeking.model.company.CompanyProfile;
@@ -150,8 +151,13 @@ public class FillServiceImpl implements FillService {
 		
 		//******************************ADMINISTRATEUR******************************
 		
+		AdminNotification adminNotification = new AdminNotification();
+		
 		Admin admin = new Admin("admin@gmail.com", passwordEncoder.encode("admin"));
 		admin.addRole(roleRepository.findRoleByName("ROLE_ADMIN"));
+		adminNotification.setAdmin(admin);
+		admin.setAdminNotification(adminNotification);
+		
 		
 		userRepository.save(admin);
 		

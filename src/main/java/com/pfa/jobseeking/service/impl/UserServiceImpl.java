@@ -20,10 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pfa.jobseeking.model.CompanyCreationRequest;
 import com.pfa.jobseeking.model.company.CompanyProfile;
 import com.pfa.jobseeking.model.seeker.Profile;
+import com.pfa.jobseeking.model.user.Admin;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Role;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.model.user.User;
+import com.pfa.jobseeking.repository.AdminRepository;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.CompanyCreationRequestRepository;
 import com.pfa.jobseeking.repository.DomainRepository;
@@ -31,9 +33,9 @@ import com.pfa.jobseeking.repository.RoleRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.CompanyDto;
 import com.pfa.jobseeking.rest.dto.SeekerDto;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
-import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.UserResponse;
 import com.pfa.jobseeking.service.UserService;
 
@@ -42,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	AdminRepository adminRepository;
 	
 	@Autowired
 	RoleRepository roleRepository;
@@ -116,6 +121,10 @@ public class UserServiceImpl implements UserService {
 		request.setCompany((Company) userRepository.findUserByEmail(companyDto.getEmail()));
 		request.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
 		companyCreationRequestRepository.save(request);
+		
+		for(Admin admin : adminRepository.findAll())
+			admin.getAdminNotification().incrementNewCompanyCreationRequests();
+		
 	}
 	
 	
