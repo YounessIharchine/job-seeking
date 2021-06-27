@@ -21,6 +21,7 @@ import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.ParagraphDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
+import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.CompanyService;
@@ -32,7 +33,7 @@ public class CompanyController {
 	CompanyService companyService;
 	
 	@GetMapping("${rest.api.basePath}/companies/{id}")
-	CompanyResponse getCompany(@PathVariable(name = "id") int id) {
+	CompanyResponse getCompany(@PathVariable(name = "id") int id) throws IOException, NotFoundException {
 		return companyService.findCompany(id);
 	}
 	

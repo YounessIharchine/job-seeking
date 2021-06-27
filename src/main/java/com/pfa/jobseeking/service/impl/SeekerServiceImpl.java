@@ -102,7 +102,6 @@ public class SeekerServiceImpl implements SeekerService {
 		seeker = (Seeker)user;
 		
 		String photo;
-		
 		if(seeker.getProfile().getPhoto() == null)
 			photo = null;
 		else {

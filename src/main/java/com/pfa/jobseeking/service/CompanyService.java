@@ -10,11 +10,12 @@ import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.ParagraphDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
+import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 
 public interface CompanyService {
 	
-	CompanyResponse findCompany(int id);
+	CompanyResponse findCompany(int id) throws IOException, NotFoundException;
 
 	void updateInfo(Map<String, String> map) throws IOException;
 	

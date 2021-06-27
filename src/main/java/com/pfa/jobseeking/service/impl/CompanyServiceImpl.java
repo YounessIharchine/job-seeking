@@ -18,14 +18,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.model.user.Company;
+import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.DomainRepository;
 import com.pfa.jobseeking.repository.ParagraphRepository;
 import com.pfa.jobseeking.repository.PhotoRepository;
 import com.pfa.jobseeking.repository.UserRepository;
-import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.ParagraphDto;
+import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
+import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.service.CompanyService;
 
@@ -52,17 +54,43 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	
 	@Override
-	public CompanyResponse findCompany(int id) {
+	public CompanyResponse findCompany(int id) throws IOException, NotFoundException {
 		CompanyResponse response = new CompanyResponse();
-		Company company = (Company)userRepository.findById(id);
+
+		User user = userRepository.findById(id);
+		Company company = null;
+		if(user instanceof Company)
+			company = (Company)user;
+		else
+			throw new NotFoundException("There is no company with that id.");
+		
+		company = (Company)user;
+		
+		
+		
+		String logo;
+		if(company.getCompanyProfile().getLogo() == null)
+			logo = null;
+		else {
+			byte[] logoBytes = FileUtils.readFileToByteArray(new File(path+company.getCompanyProfile().getLogo()));
+			logo = Base64.getEncoder().encodeToString(logoBytes);
+		}
+		
+		String coverPhoto;
+		if(company.getCompanyProfile().getCoverPhoto() == null)
+			coverPhoto = null;
+		else {
+			byte[] coverPhotoBytes = FileUtils.readFileToByteArray(new File(path+company.getCompanyProfile().getCoverPhoto()));
+			coverPhoto = Base64.getEncoder().encodeToString(coverPhotoBytes);
+		}
 		
 		response.setName(company.getName());
 		response.setPublicEmail(company.getPublicEmail());
 		response.setPhone(company.getPhone());
 		response.setCity(company.getCity().getName());
 		response.setDomain(company.getDomain().getName());
-		response.setLogo(null);
-		response.setCoverPhoto(null);
+		response.setLogo(logo);
+		response.setCoverPhoto(coverPhoto);
 		response.setWebSite(company.getCompanyProfile().getWebSite());
 		
 		return response;
