@@ -36,7 +36,7 @@ public interface SeekerService {
 
 	List<OfferResponse> findSavedOffers();
 
-	SeekerProfileResponse findSeeker(int id);
+	SeekerProfileResponse findSeeker(int id) throws IOException;
 
 	SeekerAccountResponse fetchSeekerAccount();
 

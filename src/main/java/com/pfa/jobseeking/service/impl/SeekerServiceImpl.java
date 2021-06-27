@@ -89,9 +89,18 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	@Override
-	public SeekerProfileResponse findSeeker(int id) {
+	public SeekerProfileResponse findSeeker(int id) throws IOException {
 		SeekerProfileResponse response = new SeekerProfileResponse();
 		Seeker seeker = (Seeker)userRepository.findById(id);
+		
+		String photo;
+		
+		if(seeker.getProfile().getPhoto() == null)
+			photo = null;
+		else {
+			byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+seeker.getProfile().getPhoto()));
+			photo = Base64.getEncoder().encodeToString(photoBytes);
+		}
 		
 		response.setEmail(seeker.getEmail());
 		response.setFirstName(seeker.getFirstName());
@@ -99,12 +108,9 @@ public class SeekerServiceImpl implements SeekerService {
 		response.setPhone(seeker.getPhone());
 		response.setAddress(seeker.getAddress());
 		response.setBirthDate(seeker.getBirthDate());
-		if(seeker.getCity()!=null)
-			response.setCity(seeker.getCity().getName());
-		else
-			response.setCity(null);
+		response.setCity(seeker.getCity().getName());
 		response.setCv(null);
-		response.setPhoto(null);
+		response.setPhoto(photo);
 		response.setSpeciality(seeker.getProfile().getSpeciality());
 		response.setDescription(seeker.getProfile().getDescription());
 		response.setPortefolio(seeker.getProfile().getPortefolio());
