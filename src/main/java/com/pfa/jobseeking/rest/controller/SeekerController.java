@@ -44,7 +44,7 @@ public class SeekerController {
 	
 	
 	@GetMapping("${rest.api.basePath}/seekers/{id}")
-	SeekerProfileResponse getSeeker(@PathVariable int id) throws IOException {
+	SeekerProfileResponse getSeeker(@PathVariable int id) throws IOException, NotFoundException {
 		return seekerService.findSeeker(id);
 	}
 	

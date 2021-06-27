@@ -89,9 +89,17 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	@Override
-	public SeekerProfileResponse findSeeker(int id) throws IOException {
+	public SeekerProfileResponse findSeeker(int id) throws IOException, NotFoundException {
 		SeekerProfileResponse response = new SeekerProfileResponse();
-		Seeker seeker = (Seeker)userRepository.findById(id);
+		
+		User user = userRepository.findById(id);
+		Seeker seeker = null;
+		if(user instanceof Seeker)
+			seeker = (Seeker)user;
+		else
+			throw new NotFoundException("There is no seeker with that id.");
+		
+		seeker = (Seeker)user;
 		
 		String photo;
 		
