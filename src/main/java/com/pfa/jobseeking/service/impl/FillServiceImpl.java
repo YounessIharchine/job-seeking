@@ -22,7 +22,13 @@ import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.InternshipType;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.JobType;
+import com.pfa.jobseeking.model.seeker.Education;
+import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Profile;
+import com.pfa.jobseeking.model.seeker.Project;
+import com.pfa.jobseeking.model.seeker.Skill;
+import com.pfa.jobseeking.model.seeker.Technology;
+import com.pfa.jobseeking.model.seeker.TimePeriod;
 import com.pfa.jobseeking.model.user.Admin;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Role;
@@ -80,16 +86,27 @@ public class FillServiceImpl implements FillService {
 	@Override
 	public void fill() throws NotFoundException, AlreadyExistsException, IOException {
 
+		
+		//******************************ROLES******************************
+
 		roleRepository.save(new Role("ROLE_SEEKER"));
 		roleRepository.save(new Role("ROLE_COMPANY"));
 		roleRepository.save(new Role("ROLE_ADMIN"));
 		
+		
+		
+		//******************************CITIES******************************
+
 		cityService.save(new City("Agadir"));
 		cityService.save(new City("Marrakech"));
 		cityService.save(new City("Casablanca"));
 		cityService.save(new City("Rabat"));
 		cityService.save(new City("Meknes"));
 		
+		
+		
+		//******************************DOMAINS******************************
+
 		Domain domain1 = new Domain("Information Technology");
 		Domain domain2 = new Domain("Finance");
 		Domain domain3 = new Domain("Industry");
@@ -104,34 +121,7 @@ public class FillServiceImpl implements FillService {
 		domainService.save(domain6);
 
 		
-		
-		
-		Seeker seeker = new Seeker("seeker@gmail.com", passwordEncoder.encode("seeker"), "first", "last");
-		seeker.addRole(roleRepository.findRoleByName("ROLE_SEEKER"));
-		seeker.setFirstName("First");
-		seeker.setLastName("Last");
-		seeker.setPhone("0624151985");
-		seeker.setAddress("This is an address");
-		seeker.setBirthDate("06/12/2012");
-		seeker.setCity(cityService.findByName("Agadir"));
-		Profile profile = new Profile();
-		profile.setCv("\\\\cv\\\\cv-1");
-		profile.setPhoto("\\\\profilePhotos\\\\photo-1");
-		profile.setSpeciality("Légumes du Front-end");
-		profile.setDescription("This is a description");
-		profile.setPortefolio("portefolio.com");
-		profile.setGithub("github.com/firstlast");
-		seeker.setProfile(profile);
-		
-		
-		
-		Admin admin = new Admin("admin@gmail.com", passwordEncoder.encode("admin"));
-		admin.addRole(roleRepository.findRoleByName("ROLE_ADMIN"));
-		
-		userRepository.save(seeker);
-		userRepository.save(admin);
-		
-		
+		//******************************INTERNSHIP TYPES******************************
 		
 		internshipTypeRepository.save(new InternshipType("End of Year Project"));
 		internshipTypeRepository.save(new InternshipType("End of Study Project"));
@@ -139,18 +129,214 @@ public class FillServiceImpl implements FillService {
 		internshipTypeRepository.save(new InternshipType("Pre-employment"));
 		
 		
+		//******************************JOB TYPES******************************
+
 		jobTypeRepository.save(new JobType("Part-Time"));
 		jobTypeRepository.save(new JobType("Permanent Employment"));
 		jobTypeRepository.save(new JobType("Temporary Employment"));
 		jobTypeRepository.save(new JobType("Regular"));
 		
 		
+		//******************************DURATIONS******************************
+
 		durationRepository.save(new Duration("1 Month"));
 		durationRepository.save(new Duration("2 Months"));
 		durationRepository.save(new Duration("3 Months"));
 		durationRepository.save(new Duration("4 Months"));
 		durationRepository.save(new Duration("5 Months"));
 		durationRepository.save(new Duration("6 Months"));
+		
+		
+		//******************************ADMINISTRATEUR******************************
+		
+		Admin admin = new Admin("admin@gmail.com", passwordEncoder.encode("admin"));
+		admin.addRole(roleRepository.findRoleByName("ROLE_ADMIN"));
+		
+		userRepository.save(admin);
+		
+		
+		//******************************EXPERIENCES******************************
+
+		Experience experience11 = new Experience();
+		experience11.setJobTitle("Job Title 1");
+		experience11.setDescription("Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 Job Description 1 ");
+		experience11.setCompany("Company 1");
+		experience11.setCity("City 1");
+		experience11.setTimePeriod(new TimePeriod("Start Date 1", "End Date 1"));
+		
+		Experience experience12 = new Experience();
+		experience12.setJobTitle("Job Title 2");
+		experience12.setDescription("Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 Job Description 2 ");
+		experience12.setCompany("Company 2");
+		experience12.setCity("City 2");
+		experience12.setTimePeriod(new TimePeriod("Start Date 2", "End Date 2"));
+		
+		Experience experience13 = new Experience();
+		experience13.setJobTitle("Job Title 3");
+		experience13.setDescription("Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 Job Description 3 ");
+		experience13.setCompany("Company 3");
+		experience13.setCity("City 3");
+		experience13.setTimePeriod(new TimePeriod("Start Date 3", "End Date 3"));
+		
+		
+		//******************************EDUCATIONS******************************
+		
+		Education education11 = new Education();
+		education11.setType("Type 1");
+		education11.setInstitution("Institution 1");
+		education11.setCity("City 1");
+		education11.setTimePeriod(new TimePeriod("Start Date 1", "End Date 1"));
+		
+		Education education12 = new Education();
+		education12.setType("Type 2");
+		education12.setInstitution("Institution 2");
+		education12.setCity("City 2");
+		education12.setTimePeriod(new TimePeriod("Start Date 2", "End Date 2"));
+
+		Education education13 = new Education();
+		education13.setType("Type 3");
+		education13.setInstitution("Institution 3");
+		education13.setCity("City 3");
+		education13.setTimePeriod(new TimePeriod("Start Date 3", "End Date 3"));
+		
+		
+		//******************************PROJECTS******************************
+		
+		Project project11 = new Project();
+		project11.setTitle("Title 1");
+		project11.setDescription("Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 Project Description 1 ");
+		project11.setTimePeriod(new TimePeriod("Start Date 1", "End Date 1"));
+	
+		Project project12 = new Project();
+		project12.setTitle("Title 2");
+		project12.setDescription("Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 Project Description 2 ");
+		project12.setTimePeriod(new TimePeriod("Start Date 2", "End Date 2"));
+		
+		Project project13 = new Project();
+		project13.setTitle("Title 3");
+		project13.setDescription("Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 Project Description 3 ");
+		project13.setTimePeriod(new TimePeriod("Start Date 3", "End Date 3"));
+		
+		
+		//******************************SKILLS******************************
+		
+		Skill skill11 = new Skill();
+		skill11.setName("Skill 1");
+		skill11.setTechnologies(new ArrayList<>());
+		
+		Skill skill12 = new Skill();
+		skill12.setName("Skill 2");
+		skill12.setTechnologies(new ArrayList<>());
+		
+		Skill skill13 = new Skill();
+		skill13.setName("Skill 3");
+		skill13.setTechnologies(new ArrayList<>());
+		
+		
+		//******************************TECHNOLOGIES******************************
+
+		Technology technology111 = new Technology();
+		technology111.setName("Technology 1");
+		technology111.setSkill(skill11);
+		skill11.addTechnology(technology111);
+		
+		Technology technology112 = new Technology();
+		technology112.setName("Technology 2");
+		technology112.setSkill(skill11);
+		skill11.addTechnology(technology112);
+		
+		Technology technology113 = new Technology();
+		technology113.setName("Technology 3");
+		technology113.setSkill(skill11);
+		skill11.addTechnology(technology113);
+		
+		
+		Technology technology121 = new Technology();
+		technology121.setName("Technology 1");
+		technology121.setSkill(skill12);
+		skill12.addTechnology(technology121);
+		
+		Technology technology122 = new Technology();
+		technology122.setName("Technology 2");
+		technology122.setSkill(skill12);
+		skill12.addTechnology(technology122);
+		
+		Technology technology123 = new Technology();
+		technology123.setName("Technology 3");
+		technology123.setSkill(skill12);
+		skill12.addTechnology(technology123);
+		
+		Technology technology131 = new Technology();
+		technology131.setName("Technology 1");
+		technology131.setSkill(skill13);
+		skill13.addTechnology(technology131);
+		
+		Technology technology132 = new Technology();
+		technology132.setName("Technology 2");
+		technology132.setSkill(skill13);
+		skill13.addTechnology(technology132);
+		
+		Technology technology133 = new Technology();
+		technology133.setName("Technology 3");
+		technology133.setSkill(skill13);
+		skill13.addTechnology(technology133);
+		
+		
+		//******************************SEEKER1******************************
+		
+		Seeker seeker1 = new Seeker("seeker1@gmail.com", passwordEncoder.encode("seeker1"), "first", "last");
+		seeker1.addRole(roleRepository.findRoleByName("ROLE_SEEKER"));
+		seeker1.setFirstName("First");
+		seeker1.setLastName("Last");
+		seeker1.setPhone("0624151985");
+		seeker1.setAddress("This is an address");
+		seeker1.setBirthDate("06/12/2012");
+		seeker1.setCity(cityService.findByName("Agadir"));
+		Profile profile1 = new Profile();
+		profile1.setCv("\\\\cv\\\\cv-1");
+		profile1.setPhoto("\\\\profile1Photos\\\\photo-1");
+		profile1.setSpeciality("Légumes du Front-end");
+		profile1.setDescription("This is a description");
+		profile1.setPortefolio("portefolio.com");
+		profile1.setGithub("github.com/firstlast");
+		
+		experience11.setProfile(profile1);
+		experience12.setProfile(profile1);
+		experience13.setProfile(profile1);
+		education11.setProfile(profile1);
+		education12.setProfile(profile1);
+		education13.setProfile(profile1);
+		project11.setProfile(profile1);
+		project12.setProfile(profile1);
+		project13.setProfile(profile1);
+		skill11.setProfile(profile1);
+		skill12.setProfile(profile1);
+		skill13.setProfile(profile1);
+		
+		profile1.setExperiences(new ArrayList<>());
+		profile1.getExperiences().add(experience11);
+		profile1.getExperiences().add(experience12);
+		profile1.getExperiences().add(experience13);
+		
+		profile1.setEducations(new ArrayList<>());
+		profile1.getEducations().add(education11);
+		profile1.getEducations().add(education12);
+		profile1.getEducations().add(education13);
+		
+		profile1.setProjects(new ArrayList<>());
+		profile1.getProjects().add(project11);
+		profile1.getProjects().add(project12);
+		profile1.getProjects().add(project13);
+		
+		profile1.setSkills(new ArrayList<>());
+		profile1.getSkills().add(skill11);
+		profile1.getSkills().add(skill12);
+		profile1.getSkills().add(skill13);
+		
+		seeker1.setProfile(profile1);
+		
+		
+		userRepository.save(seeker1);
 		
 		
 		

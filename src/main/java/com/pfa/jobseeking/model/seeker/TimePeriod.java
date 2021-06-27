@@ -22,6 +22,12 @@ public class TimePeriod {
 	public TimePeriod() { }
 
 
+	public TimePeriod(String startDate, String endDate) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+
+
 	public int getId() {
 		return id;
 	}
