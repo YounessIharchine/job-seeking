@@ -1,5 +1,8 @@
 package com.pfa.jobseeking.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -7,12 +10,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.AdminNotification;
+import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.seeker.Follow;
 import com.pfa.jobseeking.model.user.Admin;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.repository.AdminRepository;
 import com.pfa.jobseeking.repository.UserRepository;
+import com.pfa.jobseeking.rest.response.ApplicationNotificationResponse;
+import com.pfa.jobseeking.rest.response.CompanyNotificationResponse;
+import com.pfa.jobseeking.rest.response.FollowNotificationResponse;
 import com.pfa.jobseeking.service.NotificationService;
 
 
@@ -44,14 +51,54 @@ public class NotificationServiceImpl implements NotificationService {
 
 	
 	
+	
+	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public CompanyNotificationResponse getCompanyNotifications() {
+		CompanyNotificationResponse response = new CompanyNotificationResponse();
+		response.setNewFollowers(getAuthenticatedCompany().getCompanyNotification().getNewFollowers());
+		
+		for(Offer offer : getAuthenticatedCompany().getOffers()) {
+			ApplicationNotificationResponse item = new ApplicationNotificationResponse();
+			item.setOfferTitle(offer.getTitle());
+			item.setNewApplications(offer.getApplicationNotification().getNewApplications());
+			response.addApplicationNotification(item);
+		}
+		
+		return response;
+	}
+	
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
 	public void resetCompanyNotifications() {
 		getAuthenticatedCompany().getCompanyNotification().resetNewFollowers();
+		
+		for(Offer offer : getAuthenticatedCompany().getOffers())
+			offer.getApplicationNotification().resetNewApplications();
 	}
 
 	
+	
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<FollowNotificationResponse> getFollowNotifications() {
+		List<FollowNotificationResponse> response = new ArrayList<FollowNotificationResponse>();
+		
+		for(Follow follow : getAuthenticatedSeeker().getFollows()) {
+			FollowNotificationResponse item = new FollowNotificationResponse();
+			item.setCompanyName(follow.getCompany().getName());
+			item.setNewOffers(follow.getFollowNotification().getNewOffers());
+			response.add(item);
+		}
+		
+		return response;
+	}
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
