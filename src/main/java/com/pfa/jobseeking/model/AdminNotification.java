@@ -3,11 +3,13 @@ package com.pfa.jobseeking.model;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pfa.jobseeking.model.user.Admin;
 
 @Entity
 public class AdminNotification extends Notification {
 
+	@JsonIgnore
 	@OneToOne(mappedBy = "adminNotification")
 	Admin admin;
 	

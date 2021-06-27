@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pfa.jobseeking.model.AdminNotification;
 import com.pfa.jobseeking.model.seeker.Follow;
 import com.pfa.jobseeking.model.user.Admin;
 import com.pfa.jobseeking.model.user.Company;
@@ -27,6 +28,13 @@ public class NotificationServiceImpl implements NotificationService {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional
 	@Override
+	public AdminNotification getAdminNotifications() {
+		return getAuthenticatedAdmin().getAdminNotification();
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Transactional
+	@Override
 	public void resetAdminNotifications() {
 		for(Admin admin : adminRepository.findAll()) {
 			admin.getAdminNotification().resetNewCompanyCreationRequests();
@@ -34,6 +42,8 @@ public class NotificationServiceImpl implements NotificationService {
 		}	
 	}
 
+	
+	
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
@@ -41,12 +51,23 @@ public class NotificationServiceImpl implements NotificationService {
 		getAuthenticatedCompany().getCompanyNotification().resetNewFollowers();
 	}
 
+	
+	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
 	public void resetFollowNotifications() {
 		for(Follow follow : getAuthenticatedSeeker().getFollows())
 			follow.getFollowNotification().resetNewOffers();
+	}
+	
+	
+	
+	
+	
+	private Admin getAuthenticatedAdmin() {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		return (Admin)userRepository.findUserByEmail(authenticatedUserEmail);
 	}
 	
 	
@@ -60,5 +81,7 @@ public class NotificationServiceImpl implements NotificationService {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 	}
+
+
 
 }
