@@ -16,6 +16,7 @@ import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
+import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
@@ -44,6 +45,8 @@ public interface SeekerService {
 	
 	//*****************EXPERIENCES*****************
 	
+	List<Experience> findExperiencesById(int id) throws NotFoundException;
+
 	List<Experience> findExperiences();
 
 	List<Experience> addExperience(ExperienceDto experienceDto);
@@ -52,6 +55,8 @@ public interface SeekerService {
 	
 	
 	//*****************EDUCATIONS*****************
+	
+	List<Education> findEducationsById(int id) throws NotFoundException;
 
 	List<Education> findEducations();
 
@@ -62,6 +67,8 @@ public interface SeekerService {
 	
 	//*****************PROJECTS*****************
 	
+	List<Project> findProjectsById(int id) throws NotFoundException;
+	
 	List<Project> findProjects();
 
 	List<Project> addProject(ProjectDto projectDto);
@@ -70,6 +77,8 @@ public interface SeekerService {
 	
 	
 	//*****************SKILLS*****************
+	
+	List<Skill> findSkillsById(int id) throws NotFoundException;
 	
 	List<Skill> findSkills();
 
@@ -80,6 +89,8 @@ public interface SeekerService {
 	
 	//*****************TECHNOLOGIES*****************
 	
+	List<Technology> findTechnologiesById(int id, int skillId) throws NotFoundException, AccessDeniedException;
+	
 	List<Technology> findTechnologies(int skillId) throws AccessDeniedException;
 
 	List<Technology> addTechnology(NameDto technologyDto, int skillId) throws AccessDeniedException;
@@ -89,15 +100,13 @@ public interface SeekerService {
 	
 	//*****************LANGUAGES*****************
 	
+	List<Language> findLanguagesById(int id) throws NotFoundException;
+	
 	List<Language> findLanguages();
 
 	List<Language> addLanguage(LanguageDto languageDto);
 
 	List<Language> deleteLanguage(int id) throws AccessDeniedException;
-
-
-
-
 
 
 

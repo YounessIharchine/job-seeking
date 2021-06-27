@@ -27,6 +27,7 @@ import com.pfa.jobseeking.model.seeker.Skill;
 import com.pfa.jobseeking.model.seeker.Technology;
 import com.pfa.jobseeking.model.seeker.TimePeriod;
 import com.pfa.jobseeking.model.user.Seeker;
+import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.EducationRepository;
@@ -43,6 +44,7 @@ import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
+import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
 import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
@@ -240,6 +242,20 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	//*****************EXPERIENCES*****************
 	
+	@Transactional
+	@Override
+	public List<Experience> findExperiencesById(int id) throws NotFoundException {
+		User user = userRepository.findById(id);
+		Seeker seeker = null;
+		if(user instanceof Seeker)
+			seeker = (Seeker)user;
+		else
+			throw new NotFoundException("There is no seeker with that id.");
+			
+		return seeker.getProfile().getExperiences();
+	}
+	
+	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
@@ -292,6 +308,19 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	//*****************EDUCATIONS*****************
 	
+	@Transactional
+	@Override
+	public List<Education> findEducationsById(int id) throws NotFoundException {
+		User user = userRepository.findById(id);
+		Seeker seeker = null;
+		if(user instanceof Seeker)
+			seeker = (Seeker)user;
+		else
+			throw new NotFoundException("There is no seeker with that id.");
+			
+		return seeker.getProfile().getEducations();
+	}
+	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
@@ -343,6 +372,19 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	//*****************PROJECTS*****************
 	
+	@Transactional
+	@Override
+	public List<Project> findProjectsById(int id) throws NotFoundException {
+		User user = userRepository.findById(id);
+		Seeker seeker = null;
+		if(user instanceof Seeker)
+			seeker = (Seeker)user;
+		else
+			throw new NotFoundException("There is no seeker with that id.");
+			
+		return seeker.getProfile().getProjects();
+	}
+	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
@@ -393,6 +435,19 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	//*****************SKILLS*****************
 	
+	@Transactional
+	@Override
+	public List<Skill> findSkillsById(int id) throws NotFoundException {
+		User user = userRepository.findById(id);
+		Seeker seeker = null;
+		if(user instanceof Seeker)
+			seeker = (Seeker)user;
+		else
+			throw new NotFoundException("There is no seeker with that id.");
+			
+		return seeker.getProfile().getSkills();
+	}
+	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
@@ -436,7 +491,26 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	
-	//*****************SKILLS*****************
+	//*****************TECHNOLOGIES*****************
+	
+	@Transactional
+	@Override
+	public List<Technology> findTechnologiesById(int id, int skillId) throws NotFoundException, AccessDeniedException {
+		User user = userRepository.findById(id);
+		Seeker seeker = null;
+		if(user instanceof Seeker)
+			seeker = (Seeker)user;
+		else
+			throw new NotFoundException("There is no seeker with that id.");
+		
+		
+		Skill skill = skillRepository.findById(skillId);
+		
+		if(!isInformationOwner(seeker, skill))
+			throw new AccessDeniedException("That seeker is not the owner of this skill.");
+		
+		return skill.getTechnologies();
+	}
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
@@ -493,6 +567,19 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	//*****************LANGUAGES*****************
+	
+	@Transactional
+	@Override
+	public List<Language> findLanguagesById(int id) throws NotFoundException {
+		User user = userRepository.findById(id);
+		Seeker seeker = null;
+		if(user instanceof Seeker)
+			seeker = (Seeker)user;
+		else
+			throw new NotFoundException("There is no seeker with that id.");
+			
+		return seeker.getProfile().getLanguages();
+	}
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional

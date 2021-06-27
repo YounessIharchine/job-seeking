@@ -28,6 +28,7 @@ import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
+import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
@@ -95,6 +96,11 @@ public class SeekerController {
 	
 	
 	//*****************EXPERIENCES*****************
+	@GetMapping("${rest.api.basePath}/seekers/{id}/experiences")
+	List<Experience> getExperiencesById(@PathVariable int id) throws NotFoundException {
+		return seekerService.findExperiencesById(id);
+	}
+	
 	@GetMapping("${rest.api.basePath}/seekers/experiences")
 	List<Experience> getExperiences() {
 		return seekerService.findExperiences();
@@ -113,6 +119,11 @@ public class SeekerController {
 	
 	
 	//*****************EDUCATIONS*****************
+	@GetMapping("${rest.api.basePath}/seekers/{id}/educations")
+	List<Education> getEducationsById(@PathVariable int id) throws NotFoundException {
+		return seekerService.findEducationsById(id);
+	}
+	
 	@GetMapping("${rest.api.basePath}/seekers/educations")
 	List<Education> getEducations() {
 		return seekerService.findEducations();
@@ -131,6 +142,11 @@ public class SeekerController {
 	
 	
 	//*****************PROJECTS*****************
+	@GetMapping("${rest.api.basePath}/seekers/{id}/projects")
+	List<Project> getProjectsById(@PathVariable int id) throws NotFoundException {
+		return seekerService.findProjectsById(id);
+	}
+	
 	@GetMapping("${rest.api.basePath}/seekers/projects")
 	List<Project> getProjects() {
 		return seekerService.findProjects();
@@ -144,29 +160,16 @@ public class SeekerController {
 	@DeleteMapping("${rest.api.basePath}/seekers/projects/{id}")
 	List<Project> removeProject(@PathVariable int id) throws AccessDeniedException {
 		return seekerService.deleteProject(id);
-	}
-	
-	
-	
-	//*****************TECHNOLOGIES*****************
-	@GetMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies")
-	List<Technology> getTechnologies(@PathVariable int skillId) throws AccessDeniedException {
-		return seekerService.findTechnologies(skillId);
-	}
-	
-	@PostMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies")
-	List<Technology> addTechnology(@RequestBody NameDto technologyDto, @PathVariable int skillId) throws AccessDeniedException {
-		return seekerService.addTechnology(technologyDto, skillId);
-	}
-	
-	@DeleteMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies/{id}")
-	List<Technology> removeTechnology(@PathVariable int skillId, @PathVariable int id) throws AccessDeniedException {
-		return seekerService.deleteTechnology(skillId, id);
-	}
+	}	
 	
 	
 	
 	//*****************SKILLS*****************
+	@GetMapping("${rest.api.basePath}/seekers/{id}/skills")
+	List<Skill> getSkillsById(@PathVariable int id) throws NotFoundException {
+		return seekerService.findSkillsById(id);
+	}
+	
 	@GetMapping("${rest.api.basePath}/seekers/skills")
 	List<Skill> getSkills() {
 		return seekerService.findSkills();
@@ -184,7 +187,35 @@ public class SeekerController {
 	
 	
 	
+	//*****************TECHNOLOGIES*****************
+	@GetMapping("${rest.api.basePath}/seekers/{id}/skills/{skillId}/technologies")
+	List<Technology> getTechnologiesById(@PathVariable int id, @PathVariable int skillId) throws AccessDeniedException, NotFoundException {
+		return seekerService.findTechnologiesById(id, skillId);
+	}
+	
+	@GetMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies")
+	List<Technology> getTechnologies(@PathVariable int skillId) throws AccessDeniedException {
+		return seekerService.findTechnologies(skillId);
+	}
+	
+	@PostMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies")
+	List<Technology> addTechnology(@RequestBody NameDto technologyDto, @PathVariable int skillId) throws AccessDeniedException {
+		return seekerService.addTechnology(technologyDto, skillId);
+	}
+	
+	@DeleteMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies/{id}")
+	List<Technology> removeTechnology(@PathVariable int skillId, @PathVariable int id) throws AccessDeniedException {
+		return seekerService.deleteTechnology(skillId, id);
+	}
+	
+	
+	
 	//*****************LANGUAGES*****************
+	@GetMapping("${rest.api.basePath}/seekers/{id}/languages")
+	List<Language> getLanguagesById(@PathVariable int id) throws NotFoundException {
+		return seekerService.findLanguagesById(id);
+	}
+	
 	@GetMapping("${rest.api.basePath}/seekers/languages")
 	List<Language> getLanguages() {
 		return seekerService.findLanguages();
