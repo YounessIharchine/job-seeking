@@ -1,10 +1,13 @@
 package com.pfa.jobseeking.service.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,6 +42,7 @@ import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
+import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
@@ -114,6 +118,60 @@ public class SeekerServiceImpl implements SeekerService {
 	}
 	
 	
+	@Override
+	public PhotoDto findSeekerPhoto(int id) throws NotFoundException, IOException {
+		PhotoDto response = new PhotoDto();
+		
+		User user = userRepository.findById(id);
+		Seeker seeker = null;
+		if(user instanceof Seeker)
+			seeker = (Seeker)user;
+		else
+			throw new NotFoundException("There is no seeker with that id.");
+		
+		seeker = (Seeker)user;
+		
+		byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+seeker.getProfile().getPhoto()));
+		response.setPhoto(Base64.getEncoder().encodeToString(photoBytes));
+		
+		return response;
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public SeekerDto updateInfo(SeekerDto seekerDto) throws IOException {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		seekerDto.setEmail(seeker.getEmail());
+		seeker.setFirstName(seekerDto.getFirstName());
+		seeker.setLastName(seekerDto.getLastName());
+		seeker.setPhone(seekerDto.getPhone());
+		seeker.setAddress(seekerDto.getAddress());
+		seeker.setBirthDate(seekerDto.getBirthDate());
+		seeker.setCity(cityRepository.findCityByName(seekerDto.getCity()));
+		seeker.getProfile().setSpeciality(seekerDto.getSpeciality());
+		seeker.getProfile().setGithub(seekerDto.getGithub());
+		seeker.getProfile().setPortefolio(seekerDto.getPortefolio());
+		
+		return seekerDto;
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public PhotoDto updatePhoto(PhotoDto photoDto) throws IOException {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		byte[] photoBytes = Base64.getDecoder().decode(photoDto.getPhoto());
+		FileUtils.writeByteArrayToFile(new File(path+seeker.getProfile().getPhoto()), photoBytes);
+		
+		return photoDto;
+	}
+	
+	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
@@ -158,25 +216,7 @@ public class SeekerServiceImpl implements SeekerService {
 	}
 	
 	
-	@PreAuthorize("hasRole('ROLE_SEEKER')")
-	@Transactional
-	@Override
-	public SeekerDto updateInfo(SeekerDto seekerDto) throws IOException {
-		Seeker seeker = getAuthenticatedSeeker();
-		
-		seekerDto.setEmail(seeker.getEmail());
-		seeker.setFirstName(seekerDto.getFirstName());
-		seeker.setLastName(seekerDto.getLastName());
-		seeker.setPhone(seekerDto.getPhone());
-		seeker.setAddress(seekerDto.getAddress());
-		seeker.setBirthDate(seekerDto.getBirthDate());
-		seeker.setCity(cityRepository.findCityByName(seekerDto.getCity()));
-		seeker.getProfile().setSpeciality(seekerDto.getSpeciality());
-		seeker.getProfile().setGithub(seekerDto.getGithub());
-		seeker.getProfile().setPortefolio(seekerDto.getPortefolio());
-		
-		return seekerDto;
-	}
+
 	
 	
 	
@@ -706,5 +746,9 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		return isOwner;
 	}
+
+
+
+
 	
 }

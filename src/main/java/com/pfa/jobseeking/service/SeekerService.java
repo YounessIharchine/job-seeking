@@ -13,6 +13,7 @@ import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
+import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
@@ -25,7 +26,15 @@ public interface SeekerService {
 	
 	SeekerDto findSeeker(int id) throws IOException, NotFoundException;
 	
+	PhotoDto findSeekerPhoto(int id) throws NotFoundException, IOException;
+	
 	SeekerDto updateInfo(SeekerDto seekerDto) throws IOException;
+	
+	PhotoDto updatePhoto(PhotoDto photoDto) throws IOException;
+	
+	SeekerAccountResponse fetchSeekerAccount();
+
+	SeekerStepOneResponse fetchSeekerStepOne();
 
 	void save(int id);
 	
@@ -37,9 +46,6 @@ public interface SeekerService {
 
 	List<OfferResponse> findSavedOffers();
 
-	SeekerAccountResponse fetchSeekerAccount();
-
-	SeekerStepOneResponse fetchSeekerStepOne();
 	
 	
 	//*****************EXPERIENCES*****************

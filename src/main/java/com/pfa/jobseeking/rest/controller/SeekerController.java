@@ -23,6 +23,7 @@ import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
+import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
 import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
@@ -44,6 +45,21 @@ public class SeekerController {
 		return seekerService.findSeeker(id);
 	}
 	
+	@GetMapping("${rest.api.basePath}/seekers/{id}/photo")
+	PhotoDto getSeekerPhoto(@PathVariable int id) throws IOException, NotFoundException {
+		return seekerService.findSeekerPhoto(id);
+	}
+	
+	@PatchMapping("${rest.api.basePath}/seekers/profile")
+	SeekerDto updateInfo(@RequestBody SeekerDto seekerDto) throws IOException {
+		return seekerService.updateInfo(seekerDto);
+	}
+	
+	@PatchMapping("${rest.api.basePath}/seekers/profile/photo")
+	PhotoDto updatePhoto(@RequestBody PhotoDto photoDto) throws IOException {
+		return seekerService.updatePhoto(photoDto);
+	}
+	
 	@GetMapping("${rest.api.basePath}/seekers/account")
 	SeekerAccountResponse getSeekerAccount() {
 		return seekerService.fetchSeekerAccount();
@@ -55,10 +71,9 @@ public class SeekerController {
 	}
 	
 	
-	@PatchMapping("${rest.api.basePath}/seekers/profile")
-	SeekerDto updateInfo(@RequestBody SeekerDto seekerDto) throws IOException {
-		return seekerService.updateInfo(seekerDto);
-	}
+	
+
+	
 	
 	
 	@GetMapping("${rest.api.basePath}/seekers/saveOffer/{id}")
@@ -70,6 +85,8 @@ public class SeekerController {
 	void unsaveOffer(@PathVariable int id) {
 		seekerService.unsave(id);
 	}
+	
+	
 	
 	@GetMapping("${rest.api.basePath}/seekers/followCompany")
 	void followCompany(@RequestParam String companyName) {
