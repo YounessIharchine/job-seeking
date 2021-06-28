@@ -15,12 +15,12 @@ import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
+import com.pfa.jobseeking.rest.dto.SeekerAccountDto;
 import com.pfa.jobseeking.rest.dto.SeekerDto;
+import com.pfa.jobseeking.rest.dto.SeekerStepOneDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
-import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
-import com.pfa.jobseeking.rest.response.SeekerStepOneResponse;
 
 public interface SeekerService {
 	
@@ -32,9 +32,13 @@ public interface SeekerService {
 	
 	PhotoDto updatePhoto(PhotoDto photoDto) throws IOException;
 	
-	SeekerAccountResponse fetchSeekerAccount();
+	SeekerAccountDto fetchSeekerAccount();
+	
+	SeekerAccountDto updateSeekerAccount(SeekerAccountDto seekerAccountDto);
 
-	SeekerStepOneResponse fetchSeekerStepOne();
+	SeekerStepOneDto fetchSeekerStepOne();
+	
+	SeekerStepOneDto updateSeekerStepOne(SeekerStepOneDto seekerStepOneDto);
 	
 	List<OfferResponse> findSavedOffers();
 
@@ -124,7 +128,6 @@ public interface SeekerService {
 	List<Language> updateLanguage(int id, LanguageDto languageDto) throws AccessDeniedException;
 
 	List<Language> deleteLanguage(int id) throws AccessDeniedException;
-
 
 
 }

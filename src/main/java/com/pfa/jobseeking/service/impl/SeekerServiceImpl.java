@@ -44,12 +44,12 @@ import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
+import com.pfa.jobseeking.rest.dto.SeekerAccountDto;
 import com.pfa.jobseeking.rest.dto.SeekerDto;
+import com.pfa.jobseeking.rest.dto.SeekerStepOneDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
-import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
-import com.pfa.jobseeking.rest.response.SeekerStepOneResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
 @Service
@@ -175,8 +175,8 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public SeekerAccountResponse fetchSeekerAccount() {
-		SeekerAccountResponse response = new SeekerAccountResponse();
+	public SeekerAccountDto fetchSeekerAccount() {
+		SeekerAccountDto response = new SeekerAccountDto();
 		Seeker seeker = getAuthenticatedSeeker();
 		
 		response.setEmail(seeker.getEmail());
@@ -198,8 +198,27 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public SeekerStepOneResponse fetchSeekerStepOne() {
-		SeekerStepOneResponse response = new SeekerStepOneResponse();
+	public SeekerAccountDto updateSeekerAccount(SeekerAccountDto seekerAccountDto) {
+		SeekerAccountDto response = seekerAccountDto;
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		seeker.setEmail(response.getEmail());
+		seeker.setFirstName(response.getFirstName());
+		seeker.setLastName(response.getLastName());
+		seeker.setPhone(response.getPhone());
+		seeker.setAddress(response.getAddress());
+		seeker.setBirthDate(response.getBirthDate());
+		seeker.setCity(cityRepository.findCityByName(response.getCity()));
+		
+		return response;
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public SeekerStepOneDto fetchSeekerStepOne() {
+		SeekerStepOneDto response = new SeekerStepOneDto();
 		Seeker seeker = getAuthenticatedSeeker();
 		
 		response.setFirstName(seeker.getFirstName());
@@ -215,7 +234,22 @@ public class SeekerServiceImpl implements SeekerService {
 		return response;
 	}
 	
-	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public SeekerStepOneDto updateSeekerStepOne(SeekerStepOneDto seekerStepOneDto) {
+		SeekerStepOneDto response = seekerStepOneDto;
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		seeker.setFirstName(response.getFirstName());
+		seeker.setLastName(response.getLastName());
+		seeker.setPhone(response.getPhone());
+		seeker.setAddress(response.getAddress());
+		seeker.setBirthDate(response.getBirthDate());
+		seeker.setCity(cityRepository.findCityByName(response.getCity()));
+		
+		return seekerStepOneDto;
+	}
 
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Override

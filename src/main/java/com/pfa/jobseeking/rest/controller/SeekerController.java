@@ -25,12 +25,12 @@ import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
+import com.pfa.jobseeking.rest.dto.SeekerAccountDto;
 import com.pfa.jobseeking.rest.dto.SeekerDto;
+import com.pfa.jobseeking.rest.dto.SeekerStepOneDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
-import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
-import com.pfa.jobseeking.rest.response.SeekerStepOneResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
 @RestController
@@ -61,16 +61,24 @@ public class SeekerController {
 	}
 	
 	@GetMapping("${rest.api.basePath}/seekers/account")
-	SeekerAccountResponse getSeekerAccount() {
+	SeekerAccountDto getSeekerAccount() {
 		return seekerService.fetchSeekerAccount();
 	}
 	
+	@PostMapping("${rest.api.basePath}/seekers/account")
+	SeekerAccountDto updateSeekerAccount(@RequestBody SeekerAccountDto seekerAccountDto) {
+		return seekerService.updateSeekerAccount(seekerAccountDto);
+	}
+	
 	@GetMapping("${rest.api.basePath}/seekers/stepOne")
-	SeekerStepOneResponse getSeekerStepOne() {
+	SeekerStepOneDto getSeekerStepOne() {
 		return seekerService.fetchSeekerStepOne();
 	}
 	
-	
+	@PatchMapping("${rest.api.basePath}/seekers/stepOne")
+	SeekerStepOneDto updateSeekerStepOne(@RequestBody SeekerStepOneDto seekerStepOneDto) {
+		return seekerService.updateSeekerStepOne(seekerStepOneDto);
+	}
 	
 	
 

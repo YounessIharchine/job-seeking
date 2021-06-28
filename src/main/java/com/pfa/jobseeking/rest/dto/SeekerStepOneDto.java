@@ -1,8 +1,7 @@
-package com.pfa.jobseeking.rest.response;
+package com.pfa.jobseeking.rest.dto;
 
-public class SeekerAccountResponse {
-
-	String email;
+public class SeekerStepOneDto {
+	
 	String firstName;
 	String lastName;
 	String phone;
@@ -12,13 +11,12 @@ public class SeekerAccountResponse {
 	
 	
 	
-	public SeekerAccountResponse() { }
+	public SeekerStepOneDto() { }
 	
 	
 
-	public SeekerAccountResponse(String email, String firstName, String lastName, String phone, String address,
+	public SeekerStepOneDto(String firstName, String lastName, String phone, String address,
 			String birthDate, String city) {
-		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
@@ -29,9 +27,6 @@ public class SeekerAccountResponse {
 
 	
 	
-	public String getEmail() {
-		return email;
-	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -53,9 +48,6 @@ public class SeekerAccountResponse {
 
 	
 	
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
@@ -74,7 +66,6 @@ public class SeekerAccountResponse {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
 	
 	
 }
