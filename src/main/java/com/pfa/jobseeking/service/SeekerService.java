@@ -9,6 +9,7 @@ import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.Skill;
 import com.pfa.jobseeking.model.seeker.Technology;
+import com.pfa.jobseeking.rest.dto.ApplicationDto;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
@@ -70,6 +71,7 @@ public interface SeekerService {
 	
 	//***************************APPLICATION***************************
 	
+	void applyOffer(int id, ApplicationDto applicationDto) throws IOException;
 	
 	
 	//***************************EXPERIENCES***************************

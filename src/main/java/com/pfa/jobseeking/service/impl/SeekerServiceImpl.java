@@ -2,8 +2,10 @@ package com.pfa.jobseeking.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pfa.jobseeking.model.offer.Application;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
@@ -28,6 +31,7 @@ import com.pfa.jobseeking.model.seeker.TimePeriod;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.model.user.User;
+import com.pfa.jobseeking.repository.ApplicationRepository;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.EducationRepository;
@@ -38,6 +42,7 @@ import com.pfa.jobseeking.repository.ProjectRepository;
 import com.pfa.jobseeking.repository.SkillRepository;
 import com.pfa.jobseeking.repository.TechnologyRepository;
 import com.pfa.jobseeking.repository.UserRepository;
+import com.pfa.jobseeking.rest.dto.ApplicationDto;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
@@ -66,6 +71,9 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Autowired
 	CityRepository cityRepository;
+	
+	@Autowired
+	ApplicationRepository applicationRepository;
 	
 	@Autowired
 	ExperienceRepository experienceRepository;
@@ -324,7 +332,35 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	//**********************************APPLICATION**********************************
 
-
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public void applyOffer(int id, ApplicationDto applicationDto) throws IOException {
+		Seeker seeker = getAuthenticatedSeeker();
+		Offer offer = offerRepository.findById(id);
+		Application application = new Application();
+		
+		application.setSeeker(seeker);
+		application.setOffer(offer);
+		application.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+		
+		application = applicationRepository.save(application);
+		
+		String cvPath = "\\cv\\cv-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
+		byte[] cvBytes = Base64.getDecoder().decode(applicationDto.getCv());
+		FileUtils.writeByteArrayToFile(new File(path+cvPath), cvBytes);
+		
+		String coverLetterPath = "\\coverLetters\\coverLetter-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
+		byte[] coverLetterBytes = Base64.getDecoder().decode(applicationDto.getCoverLetter());
+		FileUtils.writeByteArrayToFile(new File(path+coverLetterPath), coverLetterBytes);
+		
+		application.setCv(cvPath.replace("\\", "\\\\"));
+		application.setCoverLetter(coverLetterPath.replace("\\", "\\\\"));
+		
+		applicationRepository.save(application);
+	}
+	
+	
 	
 	
 	//**********************************EXPERIENCES**********************************
@@ -922,7 +958,6 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		return isOwner;
 	}
-
 
 
 }

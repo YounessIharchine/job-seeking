@@ -19,6 +19,7 @@ import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.Skill;
 import com.pfa.jobseeking.model.seeker.Technology;
+import com.pfa.jobseeking.rest.dto.ApplicationDto;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
@@ -125,7 +126,10 @@ public class SeekerController {
 	
 
 	//**********************************APPLYING**********************************
-	
+	@PostMapping("${rest.api.basePath}/seekers/applyOffer/{id}")
+	void applyOffer(@PathVariable int id, @RequestBody ApplicationDto applicationDto) throws IOException {
+		seekerService.applyOffer(id, applicationDto);
+	}
 	
 	
 	//**********************************EXPERIENCES**********************************
