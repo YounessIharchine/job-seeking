@@ -40,16 +40,21 @@ public class SeekerController {
 	SeekerService seekerService;
 	
 	
+	
+	//**********************************PUBLIC PROFILE**********************************
 	@GetMapping("${rest.api.basePath}/seekers/{id}")
 	SeekerDto getSeeker(@PathVariable int id) throws IOException, NotFoundException {
 		return seekerService.findSeeker(id);
 	}
-	
+
 	@GetMapping("${rest.api.basePath}/seekers/{id}/photo")
 	PhotoDto getSeekerPhoto(@PathVariable int id) throws IOException, NotFoundException {
 		return seekerService.findSeekerPhoto(id);
 	}
 	
+	
+	
+	//**********************************OWN PROFILE**********************************
 	@PatchMapping("${rest.api.basePath}/seekers/profile")
 	SeekerDto updateInfo(@RequestBody SeekerDto seekerDto) throws IOException {
 		return seekerService.updateInfo(seekerDto);
@@ -60,6 +65,9 @@ public class SeekerController {
 		return seekerService.updatePhoto(photoDto);
 	}
 	
+	
+	
+	//**********************************ACCOUNT**********************************
 	@GetMapping("${rest.api.basePath}/seekers/account")
 	SeekerAccountDto getSeekerAccount() {
 		return seekerService.fetchSeekerAccount();
@@ -70,6 +78,9 @@ public class SeekerController {
 		return seekerService.updateSeekerAccount(seekerAccountDto);
 	}
 	
+	
+	
+	//**********************************STEP ONE**********************************
 	@GetMapping("${rest.api.basePath}/seekers/stepOne")
 	SeekerStepOneDto getSeekerStepOne() {
 		return seekerService.fetchSeekerStepOne();
@@ -81,7 +92,8 @@ public class SeekerController {
 	}
 	
 	
-
+	
+	//**********************************SAVING**********************************
 	@GetMapping("${rest.api.basePath}/seekers/savedOffers")
 	List<OfferResponse> showSavedOffers() {
 		return seekerService.findSavedOffers();
@@ -99,7 +111,7 @@ public class SeekerController {
 	
 	
 	
-	
+	//**********************************FOLLOWING**********************************
 	@GetMapping("${rest.api.basePath}/seekers/followCompany")
 	void followCompany(@RequestParam String companyName) {
 		seekerService.follow(companyName);
@@ -110,11 +122,13 @@ public class SeekerController {
 		seekerService.unfollow(companyName);
 	}
 	
+	
 
+	//**********************************APPLYING**********************************
 	
 	
 	
-	//*****************EXPERIENCES*****************
+	//**********************************EXPERIENCES**********************************
 	@GetMapping("${rest.api.basePath}/seekers/{id}/experiences")
 	List<Experience> getExperiencesById(@PathVariable int id) throws NotFoundException {
 		return seekerService.findExperiencesById(id);
@@ -142,7 +156,7 @@ public class SeekerController {
 	
 	
 	
-	//*****************EDUCATIONS*****************
+	//**********************************EDUCATIONS**********************************
 	@GetMapping("${rest.api.basePath}/seekers/{id}/educations")
 	List<Education> getEducationsById(@PathVariable int id) throws NotFoundException {
 		return seekerService.findEducationsById(id);
@@ -170,7 +184,7 @@ public class SeekerController {
 	
 	
 	
-	//*****************PROJECTS*****************
+	//**********************************PROJECTS**********************************
 	@GetMapping("${rest.api.basePath}/seekers/{id}/projects")
 	List<Project> getProjectsById(@PathVariable int id) throws NotFoundException {
 		return seekerService.findProjectsById(id);
@@ -198,7 +212,7 @@ public class SeekerController {
 	
 	
 	
-	//*****************SKILLS*****************
+	//**********************************SKILLS**********************************
 	@GetMapping("${rest.api.basePath}/seekers/{id}/skills")
 	List<Skill> getSkillsById(@PathVariable int id) throws NotFoundException {
 		return seekerService.findSkillsById(id);
@@ -226,7 +240,7 @@ public class SeekerController {
 	
 	
 	
-	//*****************TECHNOLOGIES*****************
+	//**********************************TECHNOLOGIES**********************************
 	@GetMapping("${rest.api.basePath}/seekers/{id}/skills/{skillId}/technologies")
 	List<Technology> getTechnologiesById(@PathVariable int id, @PathVariable int skillId) throws AccessDeniedException, NotFoundException {
 		return seekerService.findTechnologiesById(id, skillId);
@@ -254,7 +268,7 @@ public class SeekerController {
 	
 	
 	
-	//*****************LANGUAGES*****************
+	//**********************************LANGUAGES**********************************
 	@GetMapping("${rest.api.basePath}/seekers/{id}/languages")
 	List<Language> getLanguagesById(@PathVariable int id) throws NotFoundException {
 		return seekerService.findLanguagesById(id);

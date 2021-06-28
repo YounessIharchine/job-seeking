@@ -89,6 +89,9 @@ public class SeekerServiceImpl implements SeekerService {
 	String path;
 	
 	
+	
+	//**********************************PUBLIC PROFILE**********************************
+	
 	@Override
 	public SeekerDto findSeeker(int id) throws IOException, NotFoundException {
 		SeekerDto response = new SeekerDto();
@@ -101,7 +104,6 @@ public class SeekerServiceImpl implements SeekerService {
 			throw new NotFoundException("There is no seeker with that id.");
 		
 		seeker = (Seeker)user;
-		
 		
 		response.setEmail(seeker.getEmail());
 		response.setFirstName(seeker.getFirstName());
@@ -138,6 +140,10 @@ public class SeekerServiceImpl implements SeekerService {
 	}
 	
 	
+	
+	
+	//**********************************OWN PROFILE**********************************
+	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
@@ -172,6 +178,10 @@ public class SeekerServiceImpl implements SeekerService {
 	}
 	
 	
+	
+	
+	//**********************************ACCOUNT**********************************
+	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
@@ -189,7 +199,6 @@ public class SeekerServiceImpl implements SeekerService {
 			response.setCity(seeker.getCity().getName());
 		else
 			response.setCity(null);
-		
 		
 		return response;
 	}
@@ -213,6 +222,10 @@ public class SeekerServiceImpl implements SeekerService {
 		return response;
 	}
 	
+	
+	
+	
+	//**********************************STEP ONE**********************************
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
@@ -250,6 +263,11 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		return seekerStepOneDto;
 	}
+	
+	
+	
+	
+	//**********************************SAVE**********************************
 
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Override
@@ -279,6 +297,9 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	
+	
+	//**********************************FOLLOW**********************************
+	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
@@ -297,11 +318,16 @@ public class SeekerServiceImpl implements SeekerService {
 		Seeker seeker = getAuthenticatedSeeker();
 		seeker.unfollowCompany(companyRepository.findCompanyByName(companyName));
 	}
+	
+	
+	
+	
+	//**********************************APPLICATION**********************************
 
 
 	
 	
-	//*****************EXPERIENCES*****************
+	//**********************************EXPERIENCES**********************************
 	
 	@Transactional
 	@Override
@@ -389,7 +415,7 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	
-	//*****************EDUCATIONS*****************
+	//**********************************EDUCATIONS**********************************
 	
 	@Transactional
 	@Override
@@ -476,7 +502,7 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	
-	//*****************PROJECTS*****************
+	//**********************************PROJECTS**********************************
 	
 	@Transactional
 	@Override
@@ -561,7 +587,7 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	
-	//*****************SKILLS*****************
+	//**********************************SKILLS**********************************
 	
 	@Transactional
 	@Override
@@ -637,7 +663,7 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	
-	//*****************TECHNOLOGIES*****************
+	//**********************************TECHNOLOGIES**********************************
 	
 	@Transactional
 	@Override
@@ -733,7 +759,7 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	
-	//*****************LANGUAGES*****************
+	//**********************************LANGUAGES**********************************
 	
 	@Transactional
 	@Override
@@ -841,6 +867,11 @@ public class SeekerServiceImpl implements SeekerService {
 		return response;
 	}
 
+	
+	
+	
+	
+	//**********************************PRIVATE METHODS**********************************
 
 	private Seeker getAuthenticatedSeeker() {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();

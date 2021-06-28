@@ -24,21 +24,35 @@ import com.pfa.jobseeking.rest.response.OfferResponse;
 
 public interface SeekerService {
 	
+	//***************************PUBLIC PROFILE***************************
+	
 	SeekerDto findSeeker(int id) throws IOException, NotFoundException;
 	
 	PhotoDto findSeekerPhoto(int id) throws NotFoundException, IOException;
+	
+	
+	//***************************OWN PROFILE***************************
 	
 	SeekerDto updateInfo(SeekerDto seekerDto) throws IOException;
 	
 	PhotoDto updatePhoto(PhotoDto photoDto) throws IOException;
 	
+	
+	//***************************ACCOUNT***************************
+	
 	SeekerAccountDto fetchSeekerAccount();
 	
 	SeekerAccountDto updateSeekerAccount(SeekerAccountDto seekerAccountDto);
 
+	
+	//***************************STEP ONE***************************
+	
 	SeekerStepOneDto fetchSeekerStepOne();
 	
 	SeekerStepOneDto updateSeekerStepOne(SeekerStepOneDto seekerStepOneDto);
+	
+	
+	//***************************SAVE***************************
 	
 	List<OfferResponse> findSavedOffers();
 
@@ -46,13 +60,19 @@ public interface SeekerService {
 	
 	void unsave(int id);
 
+	
+	//***************************FOLLOW***************************
+	
 	void follow(String companyName);
 	
 	void unfollow(String companyName);
 
 	
+	//***************************APPLICATION***************************
 	
-	//*****************EXPERIENCES*****************
+	
+	
+	//***************************EXPERIENCES***************************
 	
 	List<Experience> findExperiencesById(int id) throws NotFoundException;
 
@@ -65,7 +85,7 @@ public interface SeekerService {
 	List<Experience> deleteExperience(int id) throws AccessDeniedException;
 	
 	
-	//*****************EDUCATIONS*****************
+	//***************************EDUCATIONS***************************
 	
 	List<Education> findEducationsById(int id) throws NotFoundException;
 
@@ -78,7 +98,7 @@ public interface SeekerService {
 	List<Education> deleteEducation(int id) throws AccessDeniedException;
 	
 	
-	//*****************PROJECTS*****************
+	//***************************PROJECTS***************************
 	
 	List<Project> findProjectsById(int id) throws NotFoundException;
 	
@@ -91,7 +111,7 @@ public interface SeekerService {
 	List<Project> deleteProject(int id) throws AccessDeniedException;
 	
 	
-	//*****************SKILLS*****************
+	//***************************SKILLS***************************
 	
 	List<Skill> findSkillsById(int id) throws NotFoundException;
 	
@@ -104,7 +124,7 @@ public interface SeekerService {
 	List<Skill> deleteSkill(int id) throws AccessDeniedException;
 	
 	
-	//*****************TECHNOLOGIES*****************
+	//***************************TECHNOLOGIES***************************
 	
 	List<Technology> findTechnologiesById(int id, int skillId) throws NotFoundException, AccessDeniedException;
 	
@@ -117,7 +137,7 @@ public interface SeekerService {
 	List<Technology> deleteTechnology(int skillId, int id) throws AccessDeniedException;
 	
 	
-	//*****************LANGUAGES*****************
+	//***************************LANGUAGES***************************
 	
 	List<Language> findLanguagesById(int id) throws NotFoundException;
 	
