@@ -3,7 +3,6 @@ package com.pfa.jobseeking.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -54,12 +53,6 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 			CompanyCreationRequestResponse item = new CompanyCreationRequestResponse();
 			item.setDate(request.getDate());
 			item.setCompanyName(request.getCompany().getName());
-			byte[] logoBytes = FileUtils.readFileToByteArray(new File(path+request.getCompany().getCompanyProfile().getLogo()));
-			String encodedLogo =  Base64.getEncoder().encodeToString(logoBytes);
-//			byte[] documentBytes = FileUtils.readFileToByteArray(new File(path+request.getCompany().getDocumentPath()));
-//			String encodedDocument =  Base64.getEncoder().encodeToString(documentBytes);
-			item.setEncodedLogo(encodedLogo);
-			item.setEncodedDocument(null);
 			response.add(item);
 		}
 		
@@ -119,6 +112,12 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 	@Override
 	public void rejectOfferCreationOffer(int id) {
 		offerRepository.delete(offerRepository.findById(id));
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Override
+	public byte[] getDocument(int id) throws IOException {
+		return FileUtils.readFileToByteArray(new File(path+companyCreationRequestRepository.findById(id).getCompany().getDocumentPath()));
 	}
 
 }

@@ -4,18 +4,14 @@ public class CompanyCreationRequestResponse {
 
 	String date;
 	String companyName;
-	String encodedLogo;
-	String encodedDocument;
 	
 	
 	public CompanyCreationRequestResponse() {}
 
-	public CompanyCreationRequestResponse(String date, String companyName, String encodedLogo, String encodedDocument) {
+	public CompanyCreationRequestResponse(String date, String companyName) {
 		super();
 		this.date = date;
 		this.companyName = companyName;
-		this.encodedLogo = encodedLogo;
-		this.encodedDocument = encodedDocument;
 	}
 
 	
@@ -25,12 +21,6 @@ public class CompanyCreationRequestResponse {
 	public String getCompanyName() {
 		return companyName;
 	}
-	public String getEncodedLogo() {
-		return encodedLogo;
-	}
-	public String getEncodedDocument() {
-		return encodedDocument;
-	}
 
 	
 	
@@ -39,12 +29,6 @@ public class CompanyCreationRequestResponse {
 	}
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
-	}
-	public void setEncodedLogo(String encodedLogo) {
-		this.encodedLogo = encodedLogo;
-	}
-	public void setEncodedDocument(String encodedDocument) {
-		this.encodedDocument = encodedDocument;
 	}
 	
 	

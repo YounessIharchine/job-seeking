@@ -19,5 +19,7 @@ public interface CreationRequestService {
 	void acceptOfferCreationOffer(int id);
 
 	void rejectOfferCreationOffer(int id);
+
+	byte[] getDocument(int id) throws IOException;
 	
 }

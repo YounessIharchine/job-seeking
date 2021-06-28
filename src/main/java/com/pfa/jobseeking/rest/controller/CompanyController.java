@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.company.Photo;
-import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.dto.ParagraphDto;
+import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
@@ -37,7 +37,6 @@ public class CompanyController {
 		return companyService.findCompany(id);
 	}
 	
-
 	@PatchMapping("${rest.api.basePath}/companies/profile")
 	ResponseEntity<Response> updateCompanyInfo(@RequestBody Map<String, String> map) throws IOException {
 		companyService.updateInfo(map);
@@ -45,6 +44,7 @@ public class CompanyController {
 		Response response = new Response(HttpStatus.OK.value(), "Update Successful");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
 	
 	
 	@GetMapping("${rest.api.basePath}/companies/paragraphs")
@@ -63,18 +63,22 @@ public class CompanyController {
 	}
 	
 	
-	@PostMapping("${rest.api.basePath}/companies/photos")
-	void addPhoto(@RequestBody PhotoDto photoDto) throws IOException {
-		companyService.addPhoto(photoDto);
-	}
 	
 	@GetMapping("${rest.api.basePath}/companies/photos")
 	Set<Photo> findPhotos() {
 		return companyService.findPhotos();
 	}
 	
+	@PostMapping("${rest.api.basePath}/companies/photos")
+	void addPhoto(@RequestBody PhotoDto photoDto) throws IOException {
+		companyService.addPhoto(photoDto);
+	}
+	
 	@DeleteMapping("${rest.api.basePath}/companies/photos/{id}")
 	void deletePhoto(@PathVariable(name = "id") int id) throws AccessDeniedException {
 		companyService.deletePhoto(id);
 	}
+	
+	
+	
 }

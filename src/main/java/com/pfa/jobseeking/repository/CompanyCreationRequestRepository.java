@@ -10,6 +10,8 @@ public interface CompanyCreationRequestRepository extends CrudRepository<Company
 	
 	List<CompanyCreationRequest> findAll();
 	
+	CompanyCreationRequest findById(int id);
+	
 	CompanyCreationRequest findByCompanyName(String companyName);
 
 }
