@@ -733,7 +733,7 @@ public class FillServiceImpl implements FillService {
 		userRepository.save(orange);
 		
 		JobOffer offerOrange1 = new JobOffer();
-		offerOrange1.setDate("24/06/2021");
+		offerOrange1.setDate("24-06-2021");
 		offerOrange1.setDescription("Vous participez à la mise en oeuvre de projets Salesforce, dans des contextes variés.<br>"
 				+ "<br>"
 				+ "Vous interviendrez sur l'ensemble des technologies de l'éditeur Salesforce (plateforme Cloud, SalesCloud, ServiceCloud, Pardot, Wave Analytics, Mobilité etc.) en lien avec différentes fonctions d'une organisation (Achat, Vente, Marketing, Management, Service Client, etc.).<br>"
@@ -770,7 +770,7 @@ public class FillServiceImpl implements FillService {
 		
 		
 		InternshipOffer offerOrange2 = new InternshipOffer();
-		offerOrange2.setDate("20/05/2021");
+		offerOrange2.setDate("20-05-2021");
 		offerOrange2.setDescription("Mettre en place la direction artistique des tous les projets issus de l’école du code : développés ou accompagnés.<br>"
 				+ "<br>"
 				+ "Assurer une qualité optimale des maquettes graphiques et des supports de communication pour les projets technologiques issus de l’Orange Digital Center : production des supports graphiques et des prototypes.<br>"
@@ -829,7 +829,7 @@ public class FillServiceImpl implements FillService {
 		userRepository.save(danone);
 		
 		JobOffer offerDanone1 = new JobOffer();
-		offerDanone1.setDate("24/05/2021");
+		offerDanone1.setDate("24-05-2021");
 		offerDanone1.setDescription("Centrale Danone est à la recherche de son nouveau Ingénieur Qualité qui sera basé à l'Usine de Meknès.<br>"
 				+ "<br>"
 				+ "Missions :<br>"
@@ -856,7 +856,7 @@ public class FillServiceImpl implements FillService {
 		
 		
 		InternshipOffer offerDanone2 = new InternshipOffer();
-		offerDanone2.setDate("20/03/2021");
+		offerDanone2.setDate("20-03-2021");
 		offerDanone2.setDescription("Centrale Danone est à la recherche de son nouveau Regulatory Affairs Manager au sein de la direction Juridique.<br>"
 				+ "<br>"
 				+ "Le Regulatory Manager est l’interlocuteur principal sur tous les sujets réglementaires de Centrale Danone. A ce titre, ses principales missions s’articulent autour de :<br>"
@@ -963,7 +963,7 @@ public class FillServiceImpl implements FillService {
 		userRepository.save(oracle);
 		
 		JobOffer offerOracle1 = new JobOffer();
-		offerOracle1.setDate("13/04/2021");
+		offerOracle1.setDate("13-04-2021");
 		offerOracle1.setDescription("Software Developer - Oracle Labs -21000I0F\r\n"
 				+ "\r\n"
 				+ "Applicants are required to read, write, and speak the following languages: English\r\n"
@@ -1042,7 +1042,7 @@ public class FillServiceImpl implements FillService {
 		
 		
 		InternshipOffer offerOracle2 = new InternshipOffer();
-		offerOracle2.setDate("28/01/2021");
+		offerOracle2.setDate("28-01-2021");
 		offerOracle2.setDescription("Research assistant-21000OB8\r\n"
 				+ "\r\n"
 				+ "Applicants are required to read, write, and speak the following languages: English\r\n"
