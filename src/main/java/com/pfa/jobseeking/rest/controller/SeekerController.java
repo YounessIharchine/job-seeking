@@ -72,9 +72,12 @@ public class SeekerController {
 	
 	
 	
+	
 
-	
-	
+	@GetMapping("${rest.api.basePath}/seekers/savedOffers")
+	List<OfferResponse> showSavedOffers() {
+		return seekerService.findSavedOffers();
+	}
 	
 	@GetMapping("${rest.api.basePath}/seekers/saveOffer/{id}")
 	void saveOffer(@PathVariable int id) {
@@ -88,6 +91,7 @@ public class SeekerController {
 	
 	
 	
+	
 	@GetMapping("${rest.api.basePath}/seekers/followCompany")
 	void followCompany(@RequestParam String companyName) {
 		seekerService.follow(companyName);
@@ -98,10 +102,7 @@ public class SeekerController {
 		seekerService.unfollow(companyName);
 	}
 	
-	@GetMapping("${rest.api.basePath}/seekers/savedOffers")
-	List<OfferResponse> showSavedOffers() {
-		return seekerService.findSavedOffers();
-	}
+
 	
 	
 	
@@ -119,6 +120,11 @@ public class SeekerController {
 	@PostMapping("${rest.api.basePath}/seekers/experiences")
 	List<Experience> addExperience(@RequestBody ExperienceDto experienceDto) {
 		return seekerService.addExperience(experienceDto);
+	}
+	
+	@PatchMapping("${rest.api.basePath}/seekers/experiences/{id}")
+	List<Experience> updateExperience(@PathVariable int id, @RequestBody ExperienceDto experienceDto) throws AccessDeniedException {
+		return seekerService.updateExperience(id, experienceDto);
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/experiences/{id}")
@@ -144,6 +150,11 @@ public class SeekerController {
 		return seekerService.addEducation(educationDto);
 	}
 	
+	@PatchMapping("${rest.api.basePath}/seekers/educations/{id}")
+	List<Education> updateEducation(@PathVariable int id, @RequestBody EducationDto educationDto) throws AccessDeniedException {
+		return seekerService.updateEducation(id, educationDto);
+	}
+	
 	@DeleteMapping("${rest.api.basePath}/seekers/educations/{id}")
 	List<Education> removeEducation(@PathVariable int id) throws AccessDeniedException {
 		return seekerService.deleteEducation(id);
@@ -165,6 +176,11 @@ public class SeekerController {
 	@PostMapping("${rest.api.basePath}/seekers/projects")
 	List<Project> addProject(@RequestBody ProjectDto projectDto) {
 		return seekerService.addProject(projectDto);
+	}
+	
+	@PatchMapping("${rest.api.basePath}/seekers/projects/{id}")
+	List<Project> updateProject(@PathVariable int id, @RequestBody ProjectDto projectDto) throws AccessDeniedException {
+		return seekerService.updateProject(id, projectDto);
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/projects/{id}")
@@ -190,6 +206,11 @@ public class SeekerController {
 		return seekerService.addSkill(skillDto);
 	}
 	
+	@PatchMapping("${rest.api.basePath}/seekers/skills/{id}")
+	List<Skill> updateSkill(@PathVariable int id, @RequestBody NameDto skillDto) throws AccessDeniedException {
+		return seekerService.updateSkill(id, skillDto);
+	}
+	
 	@DeleteMapping("${rest.api.basePath}/seekers/skills/{id}")
 	List<Skill> removeSkill(@PathVariable int id) throws AccessDeniedException {
 		return seekerService.deleteSkill(id);
@@ -213,6 +234,11 @@ public class SeekerController {
 		return seekerService.addTechnology(technologyDto, skillId);
 	}
 	
+	@PatchMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies/{id}")
+	List<Technology> updateTechnology(@PathVariable int skillId, @PathVariable int id, @RequestBody NameDto technologyDto) throws AccessDeniedException {
+		return seekerService.updateTechnology(technologyDto, skillId, id);
+	}
+	
 	@DeleteMapping("${rest.api.basePath}/seekers/skills/{skillId}/technologies/{id}")
 	List<Technology> removeTechnology(@PathVariable int skillId, @PathVariable int id) throws AccessDeniedException {
 		return seekerService.deleteTechnology(skillId, id);
@@ -234,6 +260,11 @@ public class SeekerController {
 	@PostMapping("${rest.api.basePath}/seekers/languages")
 	List<Language> addLanguage(@RequestBody LanguageDto languageDto) {
 		return seekerService.addLanguage(languageDto);
+	}
+	
+	@PatchMapping("${rest.api.basePath}/seekers/languages/{id}")
+	List<Language> updateLanguage(@PathVariable int id, @RequestBody LanguageDto languageDto) throws AccessDeniedException {
+		return seekerService.updateLanguage(id, languageDto);
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/seekers/languages/{id}")

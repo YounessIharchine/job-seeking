@@ -217,7 +217,13 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 
-	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Override
+	public List<OfferResponse> findSavedOffers() {
+		Seeker seeker = getAuthenticatedSeeker();
+
+		return mapToResponse(seeker.getOffers());
+	}
 	
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
@@ -258,14 +264,7 @@ public class SeekerServiceImpl implements SeekerService {
 		seeker.unfollowCompany(companyRepository.findCompanyByName(companyName));
 	}
 
-	
-	@PreAuthorize("hasRole('ROLE_SEEKER')")
-	@Override
-	public List<OfferResponse> findSavedOffers() {
-		Seeker seeker = getAuthenticatedSeeker();
 
-		return mapToResponse(seeker.getOffers());
-	}
 	
 	
 	//*****************EXPERIENCES*****************
@@ -308,6 +307,28 @@ public class SeekerServiceImpl implements SeekerService {
 		timePeriod.setStartDate(experienceDto.getStartDate());
 		timePeriod.setEndDate(experienceDto.getEndDate());
 		experience.setTimePeriod(timePeriod);
+
+		
+		experienceRepository.save(experience);
+		
+		return seeker.getProfile().getExperiences();
+	}
+	
+	@Override
+	public List<Experience> updateExperience(int id, ExperienceDto experienceDto) throws AccessDeniedException {
+		Seeker seeker = getAuthenticatedSeeker();
+		Experience experience = experienceRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, experience))
+			throw new AccessDeniedException("You are not the owner of this experience.");
+		
+		experience.setJobTitle(experienceDto.getJobTitle());
+		experience.setCompany(experienceDto.getCompany());
+		experience.setCity(experienceDto.getCity());
+		experience.setDescription(experienceDto.getDescription());
+		TimePeriod timePeriod = experience.getTimePeriod();
+		timePeriod.setStartDate(experienceDto.getStartDate());
+		timePeriod.setEndDate(experienceDto.getEndDate());
 
 		
 		experienceRepository.save(experience);
@@ -377,6 +398,29 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		return seeker.getProfile().getEducations();
 	}
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Education> updateEducation(int id, EducationDto educationDto) throws AccessDeniedException {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		Education education = educationRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, education))
+			throw new AccessDeniedException("You are not the owner of this education.");
+		
+		education.setType(educationDto.getType());
+		education.setInstitution(educationDto.getInstitution());
+		education.setCity(educationDto.getCity());
+		TimePeriod timePeriod = education.getTimePeriod();
+		timePeriod.setStartDate(educationDto.getStartDate());
+		timePeriod.setEndDate(educationDto.getEndDate());
+
+		educationRepository.save(education);
+		
+		return seeker.getProfile().getEducations();
+	}
 
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
@@ -440,6 +484,28 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		return seeker.getProfile().getProjects();
 	}
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Project> updateProject(int id, ProjectDto projectDto) throws AccessDeniedException {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		Project project = projectRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, project))
+			throw new AccessDeniedException("You are not the owner of this project.");
+		
+		project.setTitle(projectDto.getTitle());
+		project.setDescription(projectDto.getDescription());
+		TimePeriod timePeriod = project.getTimePeriod();
+		timePeriod.setStartDate(projectDto.getStartDate());
+		timePeriod.setEndDate(projectDto.getEndDate());
+		
+		projectRepository.save(project);
+		
+		return seeker.getProfile().getProjects();
+	}
 
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
@@ -492,6 +558,24 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		Skill skill = new Skill();
 		skill.setProfile(seeker.getProfile());
+		skill.setName(skillDto.getName());
+		
+		skillRepository.save(skill);
+		
+		return seeker.getProfile().getSkills();
+	}
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Skill> updateSkill(int id, NameDto skillDto) throws AccessDeniedException {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		Skill skill = skillRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, skill))
+			throw new AccessDeniedException("You are not the owner of this skill.");
+		
 		skill.setName(skillDto.getName());
 		
 		skillRepository.save(skill);
@@ -571,6 +655,27 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		return skill.getTechnologies();
 	}
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Technology> updateTechnology(NameDto technologyDto, int skillId, int id) throws AccessDeniedException {
+		Seeker seeker = getAuthenticatedSeeker();
+		Skill skill = skillRepository.findById(skillId);
+		Technology technology = technologyRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, skill))
+			throw new AccessDeniedException("You are not the owner of this skill.");
+		
+		if(!isTechnologyOwner(skill, technology))
+			throw new AccessDeniedException("This technology does not belong to this skill.");
+		
+		technology.setName(technologyDto.getName());
+		
+		technologyRepository.save(technology);
+		
+		return skill.getTechnologies();
+	}
 
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
@@ -630,11 +735,29 @@ public class SeekerServiceImpl implements SeekerService {
 		language.setProfile(seeker.getProfile());
 		
 		languageRepository.save(language);
-//		seeker.getProfile().addLanguage(language);
 		
 		return seeker.getProfile().getLanguages();
 	}
 	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public List<Language> updateLanguage(int id, LanguageDto languageDto) throws AccessDeniedException {
+		Seeker seeker = getAuthenticatedSeeker();
+		
+		Language language = languageRepository.findById(id);
+		
+		if(!isInformationOwner(seeker, language))
+			throw new AccessDeniedException("You are not the owner of this language.");
+		
+		
+		language.setName(languageDto.getName());
+		language.setLevel(languageDto.getLevel());
+		
+		languageRepository.save(language);
+		
+		return seeker.getProfile().getLanguages();
+	}
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
@@ -648,8 +771,6 @@ public class SeekerServiceImpl implements SeekerService {
 			throw new AccessDeniedException("You are not the owner of this language.");
 		
 		languageRepository.deleteById(id);
-//		seeker.getProfile().removeLanguage(languageRepository.findById(id));
-//		userRepository.save(seeker);
 		
 		return seeker.getProfile().getLanguages();
 	}
@@ -691,16 +812,6 @@ public class SeekerServiceImpl implements SeekerService {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 	}
-//	
-//	private boolean isSkillOwner(Seeker seeker, Skill skill) {
-//		boolean isOwner = false;
-//		
-//		for(Skill skillIteration : seeker.getProfile().getSkills())
-//			if(skillIteration == skill)
-//				isOwner = true;
-//		
-//		return isOwner;
-//	}
 
 	
 	private boolean isInformationOwner(Seeker seeker, Object information) {
@@ -732,7 +843,7 @@ public class SeekerServiceImpl implements SeekerService {
 				if(language == information)
 					isOwner = true;
 
-		
+
 		return isOwner;
 	}
 	
@@ -749,6 +860,4 @@ public class SeekerServiceImpl implements SeekerService {
 
 
 
-
-	
 }

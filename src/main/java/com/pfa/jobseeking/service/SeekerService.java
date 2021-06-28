@@ -35,6 +35,8 @@ public interface SeekerService {
 	SeekerAccountResponse fetchSeekerAccount();
 
 	SeekerStepOneResponse fetchSeekerStepOne();
+	
+	List<OfferResponse> findSavedOffers();
 
 	void save(int id);
 	
@@ -43,8 +45,6 @@ public interface SeekerService {
 	void follow(String companyName);
 	
 	void unfollow(String companyName);
-
-	List<OfferResponse> findSavedOffers();
 
 	
 	
@@ -55,6 +55,8 @@ public interface SeekerService {
 	List<Experience> findExperiences();
 
 	List<Experience> addExperience(ExperienceDto experienceDto);
+	
+	List<Experience> updateExperience(int id, ExperienceDto experienceDto) throws AccessDeniedException;
 
 	List<Experience> deleteExperience(int id) throws AccessDeniedException;
 	
@@ -66,6 +68,8 @@ public interface SeekerService {
 	List<Education> findEducations();
 
 	List<Education> addEducation(EducationDto educationDto);
+	
+	List<Education> updateEducation(int id, EducationDto educationDto) throws AccessDeniedException;
 
 	List<Education> deleteEducation(int id) throws AccessDeniedException;
 	
@@ -77,6 +81,8 @@ public interface SeekerService {
 	List<Project> findProjects();
 
 	List<Project> addProject(ProjectDto projectDto);
+	
+	List<Project> updateProject(int id, ProjectDto projectDto) throws AccessDeniedException;
 
 	List<Project> deleteProject(int id) throws AccessDeniedException;
 	
@@ -88,6 +94,8 @@ public interface SeekerService {
 	List<Skill> findSkills();
 
 	List<Skill> addSkill(NameDto skillDto);
+	
+	List<Skill> updateSkill(int id, NameDto skillDto) throws AccessDeniedException;
 
 	List<Skill> deleteSkill(int id) throws AccessDeniedException;
 	
@@ -99,6 +107,8 @@ public interface SeekerService {
 	List<Technology> findTechnologies(int skillId) throws AccessDeniedException;
 
 	List<Technology> addTechnology(NameDto technologyDto, int skillId) throws AccessDeniedException;
+	
+	List<Technology> updateTechnology(NameDto technologyDto, int skillId, int id) throws AccessDeniedException;
 
 	List<Technology> deleteTechnology(int skillId, int id) throws AccessDeniedException;
 	
@@ -110,6 +120,8 @@ public interface SeekerService {
 	List<Language> findLanguages();
 
 	List<Language> addLanguage(LanguageDto languageDto);
+	
+	List<Language> updateLanguage(int id, LanguageDto languageDto) throws AccessDeniedException;
 
 	List<Language> deleteLanguage(int id) throws AccessDeniedException;
 
