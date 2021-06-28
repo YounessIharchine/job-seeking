@@ -32,7 +32,7 @@ import com.pfa.jobseeking.repository.DomainRepository;
 import com.pfa.jobseeking.repository.RoleRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.CompanyDto;
-import com.pfa.jobseeking.rest.dto.SeekerDto;
+import com.pfa.jobseeking.rest.dto.RegisterSeekerDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
 	@Override
-	public void saveSeeker(SeekerDto seekerDto) throws AlreadyExistsException {
+	public void saveSeeker(RegisterSeekerDto seekerDto) throws AlreadyExistsException {
 		
 		if(userRepository.findUserByEmail(seekerDto.getEmail()) != null)
 			throw new AlreadyExistsException("There is already an account with that email.");

@@ -2,11 +2,8 @@ package com.pfa.jobseeking.rest.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,12 +24,11 @@ import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
+import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
-import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
-import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
 import com.pfa.jobseeking.rest.response.SeekerStepOneResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
@@ -44,7 +40,7 @@ public class SeekerController {
 	
 	
 	@GetMapping("${rest.api.basePath}/seekers/{id}")
-	SeekerProfileResponse getSeeker(@PathVariable int id) throws IOException, NotFoundException {
+	SeekerDto getSeeker(@PathVariable int id) throws IOException, NotFoundException {
 		return seekerService.findSeeker(id);
 	}
 	
@@ -60,11 +56,8 @@ public class SeekerController {
 	
 	
 	@PatchMapping("${rest.api.basePath}/seekers/profile")
-	ResponseEntity<Response> updateInfo(@RequestBody Map<String, String> map) throws IOException {
-		seekerService.updateInfo(map);
-		
-		Response response = new Response(HttpStatus.OK.value(), "Update Successful");
-		return new ResponseEntity<>(response, HttpStatus.OK);
+	SeekerDto updateInfo(@RequestBody SeekerDto seekerDto) throws IOException {
+		return seekerService.updateInfo(seekerDto);
 	}
 	
 	

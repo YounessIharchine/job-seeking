@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.rest.dto.CompanyDto;
-import com.pfa.jobseeking.rest.dto.SeekerDto;
+import com.pfa.jobseeking.rest.dto.RegisterSeekerDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.Response;
@@ -26,7 +26,7 @@ public class UserController {
 	
 	
 	@PostMapping("/registerSeeker")
-	ResponseEntity<Response> registerSeeker(@RequestBody SeekerDto seekerDto) throws AlreadyExistsException {
+	ResponseEntity<Response> registerSeeker(@RequestBody RegisterSeekerDto seekerDto) throws AlreadyExistsException {
 		userService.saveSeeker(seekerDto);
 		
 		Response response = new Response(HttpStatus.OK.value(), "Registration Successful");

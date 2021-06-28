@@ -1,14 +1,10 @@
 package com.pfa.jobseeking.service.impl;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,11 +40,11 @@ import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
+import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
-import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
 import com.pfa.jobseeking.rest.response.SeekerStepOneResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
@@ -90,8 +86,8 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	@Override
-	public SeekerProfileResponse findSeeker(int id) throws IOException, NotFoundException {
-		SeekerProfileResponse response = new SeekerProfileResponse();
+	public SeekerDto findSeeker(int id) throws IOException, NotFoundException {
+		SeekerDto response = new SeekerDto();
 		
 		User user = userRepository.findById(id);
 		Seeker seeker = null;
@@ -102,13 +98,6 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		seeker = (Seeker)user;
 		
-		String photo;
-		if(seeker.getProfile().getPhoto() == null)
-			photo = null;
-		else {
-			byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+seeker.getProfile().getPhoto()));
-			photo = Base64.getEncoder().encodeToString(photoBytes);
-		}
 		
 		response.setEmail(seeker.getEmail());
 		response.setFirstName(seeker.getFirstName());
@@ -117,10 +106,7 @@ public class SeekerServiceImpl implements SeekerService {
 		response.setAddress(seeker.getAddress());
 		response.setBirthDate(seeker.getBirthDate());
 		response.setCity(seeker.getCity().getName());
-		response.setCv(null);
-		response.setPhoto(photo);
 		response.setSpeciality(seeker.getProfile().getSpeciality());
-		response.setDescription(seeker.getProfile().getDescription());
 		response.setPortefolio(seeker.getProfile().getPortefolio());
 		response.setGithub(seeker.getProfile().getGithub());
 
@@ -175,35 +161,21 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public void updateInfo(Map<String, String> map) throws IOException {
+	public SeekerDto updateInfo(SeekerDto seekerDto) throws IOException {
 		Seeker seeker = getAuthenticatedSeeker();
 		
-		if(map.containsKey("firstName"))
-			seeker.setFirstName(map.get("firstName"));
-		if(map.containsKey("lastName"))
-			seeker.setLastName(map.get("lastName"));
-		if(map.containsKey("phone"))
-			seeker.setPhone(map.get("phone"));
-		if(map.containsKey("address"))
-			seeker.setAddress(map.get("address"));
-		if(map.containsKey("birthDate"))
-			seeker.setBirthDate(map.get("birthDate"));
-		if(map.containsKey("city"))
-			seeker.setCity(cityRepository.findCityByName(map.get("city")));
-//		if(map.containsKey("cv"))
-//		seeker.setFirstName(map.get("cv"));
-		if(map.containsKey("photo")) {
-			String photoPath = "\\profilePhotos\\photo-" + seeker.getId() + ".png";
-			byte[] imageBytes = Base64.getDecoder().decode(map.get("photo"));
-			FileUtils.writeByteArrayToFile(new File(path+photoPath), imageBytes);
-			seeker.getProfile().setPhoto(photoPath.replace("\\", "\\\\"));
-		}
-		if(map.containsKey("speciality"))
-			seeker.getProfile().setSpeciality(map.get("speciality"));
-		if(map.containsKey("github"))
-			seeker.getProfile().setGithub(map.get("github"));
-		if(map.containsKey("portfolio"))
-			seeker.getProfile().setPortefolio(map.get("portfolio"));
+		seekerDto.setEmail(seeker.getEmail());
+		seeker.setFirstName(seekerDto.getFirstName());
+		seeker.setLastName(seekerDto.getLastName());
+		seeker.setPhone(seekerDto.getPhone());
+		seeker.setAddress(seekerDto.getAddress());
+		seeker.setBirthDate(seekerDto.getBirthDate());
+		seeker.setCity(cityRepository.findCityByName(seekerDto.getCity()));
+		seeker.getProfile().setSpeciality(seekerDto.getSpeciality());
+		seeker.getProfile().setGithub(seekerDto.getGithub());
+		seeker.getProfile().setPortefolio(seekerDto.getPortefolio());
+		
+		return seekerDto;
 	}
 	
 	

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.rest.dto.CompanyDto;
-import com.pfa.jobseeking.rest.dto.SeekerDto;
+import com.pfa.jobseeking.rest.dto.RegisterSeekerDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
@@ -13,7 +13,7 @@ import com.pfa.jobseeking.rest.response.UserResponse;
 
 public interface UserService {
 
-	void saveSeeker(SeekerDto seekerDto) throws AlreadyExistsException;
+	void saveSeeker(RegisterSeekerDto seekerDto) throws AlreadyExistsException;
 
 	void saveCompany(CompanyDto companyDto) throws AlreadyExistsException, IOException;
 	

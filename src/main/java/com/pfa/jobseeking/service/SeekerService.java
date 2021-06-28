@@ -2,7 +2,6 @@ package com.pfa.jobseeking.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
@@ -15,16 +14,18 @@ import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
 import com.pfa.jobseeking.rest.dto.NameDto;
 import com.pfa.jobseeking.rest.dto.ProjectDto;
+import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerAccountResponse;
-import com.pfa.jobseeking.rest.response.SeekerProfileResponse;
 import com.pfa.jobseeking.rest.response.SeekerStepOneResponse;
 
 public interface SeekerService {
-
-	void updateInfo(Map<String, String> map) throws IOException;
+	
+	SeekerDto findSeeker(int id) throws IOException, NotFoundException;
+	
+	SeekerDto updateInfo(SeekerDto seekerDto) throws IOException;
 
 	void save(int id);
 	
@@ -35,8 +36,6 @@ public interface SeekerService {
 	void unfollow(String companyName);
 
 	List<OfferResponse> findSavedOffers();
-
-	SeekerProfileResponse findSeeker(int id) throws IOException, NotFoundException;
 
 	SeekerAccountResponse fetchSeekerAccount();
 
