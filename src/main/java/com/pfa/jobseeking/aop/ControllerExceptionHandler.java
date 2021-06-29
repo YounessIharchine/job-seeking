@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
+import com.pfa.jobseeking.rest.exception.DoesNotMatchException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.Response;
@@ -17,7 +18,6 @@ public class ControllerExceptionHandler {
 	ResponseEntity<Response> notFoundExceptionHandler(NotFoundException e) {
 		
 		Response response = new Response(HttpStatus.NOT_FOUND.value(), e.getMessage());
-		
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		
 	}
@@ -26,7 +26,6 @@ public class ControllerExceptionHandler {
 	ResponseEntity<Response> alreadyExistsExceptionHandler(AlreadyExistsException e) {
 		
 		Response response = new Response(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-		
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		
 	}
@@ -35,8 +34,15 @@ public class ControllerExceptionHandler {
 	ResponseEntity<Response> accessDeniedExceptionHandler(AccessDeniedException e) {
 		
 		Response response = new Response(HttpStatus.FORBIDDEN.value(), e.getMessage());
-		
 		return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+		
+	}
+	
+	@ExceptionHandler
+	ResponseEntity<Response> doesNotMatchExceptionHandler(DoesNotMatchException e) {
+		
+		Response response = new Response(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		
 	}
 	

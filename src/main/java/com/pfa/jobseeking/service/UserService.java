@@ -27,6 +27,11 @@ public interface UserService {
 
 	
 	//**********************************CHECK USER INFO**********************************
+
+	void checkInfo(String email, String code) throws NotFoundException, DoesNotMatchException;
+
+	
+	
 	
 	
 	//IDK WILL CHECK LATER

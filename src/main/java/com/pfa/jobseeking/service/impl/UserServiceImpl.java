@@ -36,6 +36,7 @@ import com.pfa.jobseeking.rest.dto.CompanyDto;
 import com.pfa.jobseeking.rest.dto.RegisterSeekerDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
+import com.pfa.jobseeking.rest.exception.DoesNotMatchException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.UserResponse;
 import com.pfa.jobseeking.service.UserService;
@@ -172,8 +173,21 @@ public class UserServiceImpl implements UserService {
 	
 	
 	
-	
 	//**********************************CHECK USER INFO**********************************
+
+	@Override
+	public void checkInfo(String email, String code) throws NotFoundException, DoesNotMatchException {
+		if(code == null) {
+			if(userRepository.findUserByEmail(email) == null)
+				throw new NotFoundException("There is no user registred with that email.");
+		}
+		else {
+			User user = userRepository.findUserByEmail(email);
+			if(!user.getPasswordChangeCode().equals(code))
+				throw new DoesNotMatchException("The code is wrong. Please check again.");
+		}
+	}
+	
 	
 	
 	
