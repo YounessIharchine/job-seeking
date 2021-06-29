@@ -5,7 +5,8 @@ import java.util.List;
 
 import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.rest.dto.CompanyDto;
-import com.pfa.jobseeking.rest.dto.RegisterSeekerDto;
+import com.pfa.jobseeking.rest.dto.PasswordChangeDto;
+import com.pfa.jobseeking.rest.dto.UserDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.DoesNotMatchException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
@@ -16,7 +17,7 @@ public interface UserService {
 
 	//**********************************REGISTRATION**********************************
 
-	void saveSeeker(RegisterSeekerDto seekerDto) throws AlreadyExistsException;
+	void saveSeeker(UserDto seekerDto) throws AlreadyExistsException;
 
 	void saveCompany(CompanyDto companyDto) throws AlreadyExistsException, IOException;
 	
@@ -26,11 +27,12 @@ public interface UserService {
 	UserResponse getAuthenticatedUserInfo() throws AccessDeniedException;
 
 	
-	//**********************************CHECK USER INFO**********************************
+	//**********************************PASSWORD CHANGE**********************************
 
 	void checkInfo(String email, String code) throws NotFoundException, DoesNotMatchException;
 
-	
+	void changePassword(PasswordChangeDto passwordChangeDto) throws DoesNotMatchException;
+
 	
 	
 	
@@ -42,6 +44,7 @@ public interface UserService {
 	User findUserByEmail(String email) throws NotFoundException;
 	
 	User save(User user);
+
 
 
 

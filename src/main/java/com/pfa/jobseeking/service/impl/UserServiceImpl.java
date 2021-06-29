@@ -33,7 +33,8 @@ import com.pfa.jobseeking.repository.DomainRepository;
 import com.pfa.jobseeking.repository.RoleRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.CompanyDto;
-import com.pfa.jobseeking.rest.dto.RegisterSeekerDto;
+import com.pfa.jobseeking.rest.dto.PasswordChangeDto;
+import com.pfa.jobseeking.rest.dto.UserDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.DoesNotMatchException;
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void saveSeeker(RegisterSeekerDto seekerDto) throws AlreadyExistsException {
+	public void saveSeeker(UserDto seekerDto) throws AlreadyExistsException {
 		
 		if(userRepository.findUserByEmail(seekerDto.getEmail()) != null)
 			throw new AlreadyExistsException("There is already an account with that email.");
@@ -173,7 +174,7 @@ public class UserServiceImpl implements UserService {
 	
 	
 	
-	//**********************************CHECK USER INFO**********************************
+	//**********************************PASSWORD CHANGE**********************************
 
 	@Override
 	public void checkInfo(String email, String code) throws NotFoundException, DoesNotMatchException {
@@ -188,7 +189,14 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
-	
+	@Transactional
+	@Override
+	public void changePassword(PasswordChangeDto passwordChangeDto) throws DoesNotMatchException {
+		User user = userRepository.findUserByEmail(passwordChangeDto.getEmail());
+		if(!passwordChangeDto.getCode().equals(user.getPasswordChangeCode()))
+			throw new DoesNotMatchException("Stop trying to hack. Or you suck Younes");
+		user.setPassword(passwordEncoder.encode(passwordChangeDto.getPassword()));
+	}
 	
 	
 	
@@ -238,9 +246,6 @@ public class UserServiceImpl implements UserService {
 	public User save(User user) {
 		return userRepository.save(user);
 	}
-
-
-
 
 
 }

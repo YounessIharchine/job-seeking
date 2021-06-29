@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.rest.dto.CompanyDto;
-import com.pfa.jobseeking.rest.dto.RegisterSeekerDto;
+import com.pfa.jobseeking.rest.dto.PasswordChangeDto;
+import com.pfa.jobseeking.rest.dto.UserDto;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.DoesNotMatchException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
-import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.rest.response.UserResponse;
 import com.pfa.jobseeking.service.UserService;
@@ -30,7 +31,7 @@ public class UserController {
 	
 	//**********************************REGISTRATION**********************************
 	@PostMapping("${rest.api.basePath}/users/registerSeeker")
-	ResponseEntity<Response> registerSeeker(@RequestBody RegisterSeekerDto seekerDto) throws AlreadyExistsException {
+	ResponseEntity<Response> registerSeeker(@RequestBody UserDto seekerDto) throws AlreadyExistsException {
 		userService.saveSeeker(seekerDto);
 		
 		Response response = new Response(HttpStatus.OK.value(), "Registration Successful");
@@ -55,10 +56,15 @@ public class UserController {
 	
 	
 	
-	//**********************************CHECK USER INFO**********************************
+	//**********************************PASSWORD CHANGE**********************************
 	@GetMapping("${rest.api.basePath}/users/checkInfo")
 	void checkInfo(String email, @RequestParam(required = false) String code) throws NotFoundException, DoesNotMatchException {
 		userService.checkInfo(email, code);
+	}
+	
+	@PostMapping("${rest.api.basePath}/users/changePassword")
+	void changePassword(@RequestBody PasswordChangeDto passwordChangeDto) throws DoesNotMatchException {
+		userService.changePassword(passwordChangeDto);
 	}
 }
 

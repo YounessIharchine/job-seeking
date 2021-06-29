@@ -1,16 +1,15 @@
 package com.pfa.jobseeking.rest.dto;
 
-public class RegisterSeekerDto {
+public class UserDto {
 
 	private String email;
 	private String password;
 	
 	
-	public RegisterSeekerDto() { }
+	public UserDto() { }
 	
 	
-	public RegisterSeekerDto(String email, String password) {
-		super();
+	public UserDto(String email, String password) {
 		this.email = email;
 		this.password = password;
 	}
@@ -30,7 +29,5 @@ public class RegisterSeekerDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
 	
 }
