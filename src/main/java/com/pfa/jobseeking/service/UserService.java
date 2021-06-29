@@ -11,6 +11,7 @@ import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.DoesNotMatchException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
+import com.pfa.jobseeking.rest.response.CodeResponse;
 import com.pfa.jobseeking.rest.response.UserResponse;
 
 public interface UserService {
@@ -30,8 +31,10 @@ public interface UserService {
 	//**********************************PASSWORD CHANGE**********************************
 
 	void checkInfo(String email, String code) throws NotFoundException, DoesNotMatchException;
+	
+	CodeResponse generateCode(String email) throws NotFoundException;
 
-	void changePassword(PasswordChangeDto passwordChangeDto) throws DoesNotMatchException;
+	void changePassword(PasswordChangeDto passwordChangeDto) throws DoesNotMatchException, NotFoundException;
 
 	
 	
@@ -44,6 +47,7 @@ public interface UserService {
 	User findUserByEmail(String email) throws NotFoundException;
 	
 	User save(User user);
+
 
 
 

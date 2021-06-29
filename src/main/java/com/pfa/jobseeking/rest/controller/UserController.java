@@ -18,6 +18,7 @@ import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.DoesNotMatchException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.response.CodeResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.rest.response.UserResponse;
 import com.pfa.jobseeking.service.UserService;
@@ -58,12 +59,17 @@ public class UserController {
 	
 	//**********************************PASSWORD CHANGE**********************************
 	@GetMapping("${rest.api.basePath}/users/checkInfo")
-	void checkInfo(String email, @RequestParam(required = false) String code) throws NotFoundException, DoesNotMatchException {
+	void checkInfo(@RequestParam String email, @RequestParam(required = false) String code) throws NotFoundException, DoesNotMatchException {
 		userService.checkInfo(email, code);
 	}
 	
+	@GetMapping("${rest.api.basePath}/users/changePassword")
+	CodeResponse generateCode(@RequestParam String email) throws NotFoundException {
+		return userService.generateCode(email);
+	}
+	
 	@PostMapping("${rest.api.basePath}/users/changePassword")
-	void changePassword(@RequestBody PasswordChangeDto passwordChangeDto) throws DoesNotMatchException {
+	void changePassword(@RequestBody PasswordChangeDto passwordChangeDto) throws DoesNotMatchException, NotFoundException {
 		userService.changePassword(passwordChangeDto);
 	}
 }

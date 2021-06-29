@@ -7,6 +7,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -39,6 +40,7 @@ import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
 import com.pfa.jobseeking.rest.exception.DoesNotMatchException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.response.CodeResponse;
 import com.pfa.jobseeking.rest.response.UserResponse;
 import com.pfa.jobseeking.service.UserService;
 
@@ -191,11 +193,38 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
 	@Override
-	public void changePassword(PasswordChangeDto passwordChangeDto) throws DoesNotMatchException {
+	public CodeResponse generateCode(String email) throws NotFoundException {
+		if(userRepository.findUserByEmail(email) == null)
+			throw new NotFoundException("There has been an error with your hack. Or you suck Younes.");
+		
+		User user = userRepository.findUserByEmail(email);
+		
+		String numbers = "0123456879";
+		StringBuilder code = new StringBuilder();
+		Random random = new Random();
+		while(code.length() < 4) {
+			int index = (int) (random.nextFloat() * numbers.length());
+			code.append(numbers.charAt(index));
+		}
+		String codeString = code.toString();
+		
+		user.setPasswordChangeCode(codeString);
+		
+		return new CodeResponse(codeString);
+	}
+	
+	@Transactional
+	@Override
+	public void changePassword(PasswordChangeDto passwordChangeDto) throws DoesNotMatchException, NotFoundException {
+		if(userRepository.findUserByEmail(passwordChangeDto.getEmail()) == null)
+			throw new NotFoundException("There has been an error with your hack. Or you suck Younes.");
+		
 		User user = userRepository.findUserByEmail(passwordChangeDto.getEmail());
+
 		if(!passwordChangeDto.getCode().equals(user.getPasswordChangeCode()))
-			throw new DoesNotMatchException("Stop trying to hack. Or you suck Younes");
+			throw new DoesNotMatchException("Stop trying to hack. Or you suck Younes.");
 		user.setPassword(passwordEncoder.encode(passwordChangeDto.getPassword()));
+		user.setPasswordChangeCode(null);
 	}
 	
 	
