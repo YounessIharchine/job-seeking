@@ -25,7 +25,8 @@ public class UserController {
 	UserService userService;
 	
 	
-	@PostMapping("/registerSeeker")
+	//**********************************REGISTRATION**********************************
+	@PostMapping("${rest.api.basePath}/users/registerSeeker")
 	ResponseEntity<Response> registerSeeker(@RequestBody RegisterSeekerDto seekerDto) throws AlreadyExistsException {
 		userService.saveSeeker(seekerDto);
 		
@@ -33,7 +34,7 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("/registerCompany")
+	@PostMapping("${rest.api.basePath}/users/registerCompany")
 	ResponseEntity<Response> registerCompany(@RequestBody CompanyDto companyDto) throws AlreadyExistsException, IOException {
 		userService.saveCompany(companyDto);
 		
@@ -41,11 +42,17 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@GetMapping("/getAuthenticatedUserInfo")
+	
+	
+	//**********************************AUTHENTICATED USER INFO**********************************
+	@GetMapping("${rest.api.basePath}/users/getAuthenticatedUserInfo")
 	UserResponse getAuthenticatedUserInfo() throws AccessDeniedException {
 		return userService.getAuthenticatedUserInfo();
 	}
 	
+	
+	
+	//**********************************CHECK USER INFO**********************************
 }
 
 

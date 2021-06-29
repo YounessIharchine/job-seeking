@@ -67,6 +67,10 @@ public class UserServiceImpl implements UserService {
 	@Value("${storage.images.basePath}")
 	String path;
 	
+	
+	
+	//**********************************REGISTRATION**********************************
+
 	@Transactional
 	@Override
 	public void saveSeeker(RegisterSeekerDto seekerDto) throws AlreadyExistsException {
@@ -131,6 +135,9 @@ public class UserServiceImpl implements UserService {
 	
 	
 	
+	
+	//**********************************AUTHENTICATED USER INFO**********************************
+
 	@Transactional
 	@Override
 	public UserResponse getAuthenticatedUserInfo() throws AccessDeniedException {
@@ -166,6 +173,7 @@ public class UserServiceImpl implements UserService {
 	
 	
 	
+	//**********************************CHECK USER INFO**********************************
 	
 	
 	
@@ -173,6 +181,14 @@ public class UserServiceImpl implements UserService {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	//IDK WILL CHECK LATER
 	@Override
 	public List<User> findAll() {
 		return userRepository.findAll();
@@ -208,6 +224,8 @@ public class UserServiceImpl implements UserService {
 	public User save(User user) {
 		return userRepository.save(user);
 	}
+
+
 
 
 

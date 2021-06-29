@@ -7,16 +7,29 @@ import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.rest.dto.CompanyDto;
 import com.pfa.jobseeking.rest.dto.RegisterSeekerDto;
 import com.pfa.jobseeking.rest.exception.AlreadyExistsException;
+import com.pfa.jobseeking.rest.exception.DoesNotMatchException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.UserResponse;
 
 public interface UserService {
 
+	//**********************************REGISTRATION**********************************
+
 	void saveSeeker(RegisterSeekerDto seekerDto) throws AlreadyExistsException;
 
 	void saveCompany(CompanyDto companyDto) throws AlreadyExistsException, IOException;
 	
+	
+	//**********************************AUTHENTICATED USER INFO**********************************
+	
+	UserResponse getAuthenticatedUserInfo() throws AccessDeniedException;
+
+	
+	//**********************************CHECK USER INFO**********************************
+	
+	
+	//IDK WILL CHECK LATER
 	List<User> findAll();
 		
 	User findById(int id) throws NotFoundException;
@@ -25,6 +38,6 @@ public interface UserService {
 	
 	User save(User user);
 
-	UserResponse getAuthenticatedUserInfo() throws AccessDeniedException;
+
 
 }

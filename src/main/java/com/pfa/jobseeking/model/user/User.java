@@ -26,8 +26,8 @@ public class User {
 	int id;
 	
 	String email;
-	
 	String password;
+	String passwordChangeCode;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -48,6 +48,9 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
+	public String getPasswordChangeCode() {
+		return passwordChangeCode;
+	}
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -63,6 +66,9 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public void setPasswordChangeCode(String passwordChangeCode) {
+		this.passwordChangeCode = passwordChangeCode;
+	}
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
@@ -71,4 +77,8 @@ public class User {
 	public void addRole(Role role) {
 		this.roles.add(role);
 	}
+	public void removeRole(Role role) {
+		this.roles.remove(role);
+	}
+
 }
