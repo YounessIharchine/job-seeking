@@ -13,6 +13,8 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -67,6 +69,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	JavaMailSender emailSender;
 	
 	@Value("${storage.images.basePath}")
 	String path;
@@ -209,6 +214,15 @@ public class UserServiceImpl implements UserService {
 		String codeString = code.toString();
 		
 		user.setPasswordChangeCode(codeString);
+		
+		//send email
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(user.getEmail());
+		message.setSubject("Password Recovery Code");
+		message.setText("You have request a password change.\n"
+				+ "Please provide the following code in the form present in the link below : " +codeString + "\n"
+				+ "Link : ");
+		emailSender.send(message);
 		
 		return new CodeResponse(codeString);
 	}
