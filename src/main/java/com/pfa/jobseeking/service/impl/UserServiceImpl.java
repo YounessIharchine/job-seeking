@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.CompanyCreationRequest;
+import com.pfa.jobseeking.model.CompanyNotification;
 import com.pfa.jobseeking.model.company.CompanyProfile;
 import com.pfa.jobseeking.model.seeker.Profile;
 import com.pfa.jobseeking.model.user.Admin;
@@ -104,6 +105,10 @@ public class UserServiceImpl implements UserService {
 		company.setPhone(companyDto.getPhone());
 		company.setCity(cityRepository.findCityByName(companyDto.getCity()));
 		company.setDomain(domainRepository.findDomainByName(companyDto.getDomain()));
+		CompanyProfile companyProfile = new CompanyProfile();
+		company.setCompanyProfile(companyProfile);
+		CompanyNotification companyNotification = new CompanyNotification();
+		company.setCompanyNotification(companyNotification);
 		
 		company = (Company)userRepository.save(company);
 		
@@ -111,9 +116,6 @@ public class UserServiceImpl implements UserService {
 		byte[] documentBytes = Base64.getDecoder().decode(companyDto.getDocument());
 		FileUtils.writeByteArrayToFile(new File(path+documentPath), documentBytes);
 		company.setDocumentPath(documentPath.replace("\\", "\\\\"));
-		
-		CompanyProfile companyProfile = new CompanyProfile();
-		company.setCompanyProfile(companyProfile);
 		
 		userRepository.save(company);
 		
