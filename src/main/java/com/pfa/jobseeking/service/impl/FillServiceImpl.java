@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.AdminNotification;
+import com.pfa.jobseeking.model.ApplicationNotification;
 import com.pfa.jobseeking.model.City;
 import com.pfa.jobseeking.model.CompanyNotification;
 import com.pfa.jobseeking.model.Domain;
@@ -766,6 +767,8 @@ public class FillServiceImpl implements FillService {
 		offerOrange1.setDomain(domainService.findByName("Telecommunications"));
 		offerOrange1.setCompany((Company) userRepository.findUserByEmail("orange@gmail.com"));
 		offerOrange1.setJobType(jobTypeRepository.findJobTypeByName("Regular"));
+		ApplicationNotification offerOrange1Notification = new ApplicationNotification();
+		offerOrange1.setApplicationNotification(offerOrange1Notification);
 		
 		
 		
@@ -797,7 +800,8 @@ public class FillServiceImpl implements FillService {
 		offerOrange2.setCompany((Company) userRepository.findUserByEmail("orange@gmail.com"));
 		offerOrange2.setInternshipType(internshipTypeRepository.findInternshipTypeByName("End of Year Project"));
 		offerOrange2.setDuration(durationRepository.findByDuration("3 Months"));
-
+		ApplicationNotification offerOrange2Notification = new ApplicationNotification();
+		offerOrange2.setApplicationNotification(offerOrange2Notification);
 
 
 		offerRepository.save(offerOrange1);
@@ -852,7 +856,8 @@ public class FillServiceImpl implements FillService {
 		offerDanone1.setDomain(domainService.findByName("Food Industry"));
 		offerDanone1.setCompany((Company) userRepository.findUserByEmail("danone@gmail.com"));
 		offerDanone1.setJobType(jobTypeRepository.findJobTypeByName("Temporary Employment"));
-		
+		ApplicationNotification offerDanone1Notification = new ApplicationNotification();
+		offerDanone1.setApplicationNotification(offerDanone1Notification);
 		
 		
 		InternshipOffer offerDanone2 = new InternshipOffer();
@@ -906,7 +911,8 @@ public class FillServiceImpl implements FillService {
 		offerDanone2.setCompany((Company) userRepository.findUserByEmail("danone@gmail.com"));
 		offerDanone2.setInternshipType(internshipTypeRepository.findInternshipTypeByName("Pre-Employment"));
 		offerDanone2.setDuration(durationRepository.findByDuration("3 Months"));
-		
+		ApplicationNotification offerDanone2Notification = new ApplicationNotification();
+		offerDanone2.setApplicationNotification(offerDanone2Notification);
 		
 		
 		offerRepository.save(offerDanone1);
@@ -1038,7 +1044,8 @@ public class FillServiceImpl implements FillService {
 		offerOracle1.setDomain(domainService.findByName("Information Technology"));
 		offerOracle1.setCompany((Company) userRepository.findUserByEmail("oracle@gmail.com"));
 		offerOracle1.setJobType(jobTypeRepository.findJobTypeByName("Temporary Employment"));
-		
+		ApplicationNotification offerOracle1Notification = new ApplicationNotification();
+		offerOracle1.setApplicationNotification(offerOracle1Notification);
 		
 		
 		InternshipOffer offerOracle2 = new InternshipOffer();
@@ -1067,7 +1074,8 @@ public class FillServiceImpl implements FillService {
 		offerOracle2.setCompany((Company) userRepository.findUserByEmail("oracle@gmail.com"));
 		offerOracle2.setInternshipType(internshipTypeRepository.findInternshipTypeByName("End of Study Project"));
 		offerOracle2.setDuration(durationRepository.findByDuration("5 Months"));
-		
+		ApplicationNotification offerOracle2Notification = new ApplicationNotification();
+		offerOracle2.setApplicationNotification(offerOracle2Notification);
 		
 		
 		offerRepository.save(offerOracle1);

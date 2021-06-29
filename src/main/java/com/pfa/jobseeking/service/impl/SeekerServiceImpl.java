@@ -358,6 +358,8 @@ public class SeekerServiceImpl implements SeekerService {
 		application.setCoverLetter(coverLetterPath.replace("\\", "\\\\"));
 		
 		applicationRepository.save(application);
+		
+		offer.getApplicationNotification().incrementNewApplications();
 	}
 	
 	

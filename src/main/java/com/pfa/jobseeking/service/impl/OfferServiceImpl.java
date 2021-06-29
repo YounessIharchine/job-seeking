@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pfa.jobseeking.model.ApplicationNotification;
 import com.pfa.jobseeking.model.OfferCreationRequest;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
@@ -241,6 +242,8 @@ public class OfferServiceImpl implements OfferService {
 		internshipOffer.setInternshipType(internshipTypeRepository.findInternshipTypeByName(offerDto.getType()));
 		internshipOffer.setDuration(durationRepository.findByDuration(offerDto.getDuration()));
 		internshipOffer.setCompany(company);
+		ApplicationNotification applicationNotification = new ApplicationNotification();
+		internshipOffer.setApplicationNotification(applicationNotification);
 		
 		generateOfferCreationRequest(internshipOffer);
 		
@@ -261,6 +264,8 @@ public class OfferServiceImpl implements OfferService {
 		JobOffer jobOffer = (JobOffer)mapOfferDto(offerDto, false);
 		jobOffer.setJobType(jobTypeRepository.findJobTypeByName(offerDto.getType()));
 		jobOffer.setCompany(company);
+		ApplicationNotification applicationNotification = new ApplicationNotification();
+		jobOffer.setApplicationNotification(applicationNotification);
 		
 		generateOfferCreationRequest(jobOffer);
 		
