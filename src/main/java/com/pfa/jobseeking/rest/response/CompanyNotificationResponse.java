@@ -1,11 +1,12 @@
 package com.pfa.jobseeking.rest.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyNotificationResponse {
 
 	int newFollowers;
-	List<ApplicationNotificationResponse> applicationNotifications;
+	List<ApplicationNotificationResponse> applicationNotifications = new ArrayList<>();
 	
 	
 	
