@@ -20,7 +20,7 @@ public class OfferController {
 	@Autowired
 	OfferService offerService;
 	
-	
+	//****************************OFFER SEARCH***************************
 	@GetMapping("${rest.api.basePath}/offers")
 	List<OfferResponse> showOffers(
 			@RequestParam(required = false) String domain,
@@ -33,6 +33,9 @@ public class OfferController {
 		
 	}
 	
+	
+	
+	//****************************OFFER PUBLICATION***************************
 	@PostMapping("${rest.api.basePath}/internshipOffers")
 	void addInternshipOffer(@RequestBody OfferDto offerDto) {
 		offerService.addInternshipOffer(offerDto);

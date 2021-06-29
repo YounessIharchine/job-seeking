@@ -66,6 +66,9 @@ public class OfferServiceImpl implements OfferService {
 	@Autowired
 	AdminRepository adminRepository;
 	
+	
+	//****************************OFFER SEARCH***************************
+
 	@Override
 	public List<OfferResponse> findAll(String domain, String keyword, String city, String internshipType, String jobType) {
 		
@@ -225,6 +228,9 @@ public class OfferServiceImpl implements OfferService {
 	
 
 	
+	
+	//****************************OFFER PUBLICATION***************************
+
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
@@ -271,6 +277,7 @@ public class OfferServiceImpl implements OfferService {
 	
 	
 	
+	//****************************PRIVATE METHODS***************************
 
 	private List<OfferResponse> mapToResponse(List<Offer> offers) {
 		List<OfferResponse> response = new ArrayList<>();

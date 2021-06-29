@@ -8,13 +8,21 @@ import com.pfa.jobseeking.rest.response.FollowNotificationResponse;
 
 public interface NotificationService {
 	
+	//******************ADMIN NOTIFICATION******************
+	
 	AdminNotification getAdminNotifications();
 
 	void resetAdminNotifications();
 	
+	
+	//******************COMPANY NOTIFICATIONS******************
+	
 	CompanyNotificationResponse getCompanyNotifications();
 
 	void resetCompanyNotifications();
+	
+	
+	//******************FOLLOW NOTIFICATION******************
 	
 	List<FollowNotificationResponse> getFollowNotifications();
 

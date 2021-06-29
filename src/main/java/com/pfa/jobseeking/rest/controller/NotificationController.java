@@ -17,6 +17,7 @@ public class NotificationController {
 	@Autowired
 	NotificationService notificationService;
 	
+	//******************ADMIN NOTIFICATION******************
 	@GetMapping("/api/adminNotifications")
 	AdminNotification getAdminNotifications() {
 		return notificationService.getAdminNotifications();
@@ -27,6 +28,9 @@ public class NotificationController {
 		notificationService.resetAdminNotifications();
 	}
 	
+	
+	
+	//******************COMPANY NOTIFICATIONS******************
 	@GetMapping("/api/companyNotifications")
 	CompanyNotificationResponse getCompanyNotifications() {
 		return notificationService.getCompanyNotifications();
@@ -37,6 +41,9 @@ public class NotificationController {
 		notificationService.resetCompanyNotifications();
 	}
 	
+	
+	
+	//******************FOLLOW NOTIFICATION******************
 	@GetMapping("/api/followNotifications")
 	List<FollowNotificationResponse> getFollowNotifications() {
 		return notificationService.getFollowNotifications();

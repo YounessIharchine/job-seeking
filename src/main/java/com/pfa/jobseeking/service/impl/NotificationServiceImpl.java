@@ -32,6 +32,10 @@ public class NotificationServiceImpl implements NotificationService {
 	@Autowired
 	UserRepository userRepository;
 	
+	
+	
+	//****************************ADMIN NOTIFICATION***************************
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional
 	@Override
@@ -52,7 +56,8 @@ public class NotificationServiceImpl implements NotificationService {
 	
 	
 	
-	
+	//****************************COMPANY NOTIFICATIONS***************************
+
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
@@ -83,7 +88,8 @@ public class NotificationServiceImpl implements NotificationService {
 	
 	
 	
-	
+	//****************************FOLLOW NOTIFICATION***************************
+
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
@@ -111,6 +117,9 @@ public class NotificationServiceImpl implements NotificationService {
 	
 	
 	
+	
+	
+	//****************************PRIVATE METHODS***************************
 	
 	private Admin getAuthenticatedAdmin() {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
