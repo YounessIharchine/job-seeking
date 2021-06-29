@@ -39,6 +39,7 @@ import com.pfa.jobseeking.repository.ExperienceRepository;
 import com.pfa.jobseeking.repository.LanguageRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.ProjectRepository;
+import com.pfa.jobseeking.repository.SeekerRepository;
 import com.pfa.jobseeking.repository.SkillRepository;
 import com.pfa.jobseeking.repository.TechnologyRepository;
 import com.pfa.jobseeking.repository.UserRepository;
@@ -55,6 +56,7 @@ import com.pfa.jobseeking.rest.dto.SeekerStepOneDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
+import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
 @Service
@@ -62,6 +64,9 @@ public class SeekerServiceImpl implements SeekerService {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	SeekerRepository seekerRepository;
 	
 	@Autowired
 	OfferRepository offerRepository;
@@ -95,6 +100,31 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Value("${storage.images.basePath}")
 	String path;
+	
+	
+	
+	//**********************************FIND SEEKERS**********************************
+	
+	@Override
+	public List<SeekerResponse> findSeekers() throws IOException {
+		List<SeekerResponse> response = new ArrayList<>();
+		
+		List<Seeker> seekers = seekerRepository.findAll();
+		
+		for(Seeker seeker : seekers) {
+			SeekerResponse item = new SeekerResponse();
+			item.setName(seeker.getFirstName()+" "+seeker.getLastName());
+			item.setSpeciality(seeker.getProfile().getSpeciality());
+			item.setCity(seeker.getCity().getName());
+			byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+seeker.getProfile().getPhoto()));
+			item.setPhoto(Base64.getEncoder().encodeToString(photoBytes));
+			response.add(item);
+		}
+		
+		return response;
+	}
+
+	
 	
 	
 	
@@ -960,6 +990,5 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		return isOwner;
 	}
-
 
 }

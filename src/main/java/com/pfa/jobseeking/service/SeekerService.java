@@ -22,8 +22,14 @@ import com.pfa.jobseeking.rest.dto.SeekerStepOneDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
+import com.pfa.jobseeking.rest.response.SeekerResponse;
 
 public interface SeekerService {
+	
+	//***************************FIND SEEKERS***************************
+	
+	List<SeekerResponse> findSeekers() throws IOException;
+
 	
 	//***************************PUBLIC PROFILE***************************
 	

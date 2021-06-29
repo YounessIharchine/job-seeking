@@ -32,6 +32,7 @@ import com.pfa.jobseeking.rest.dto.SeekerStepOneDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
+import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.SeekerService;
 
 @RestController
@@ -39,6 +40,14 @@ public class SeekerController {
 
 	@Autowired
 	SeekerService seekerService;
+	
+	
+	
+	//**********************************FIND SEEKERS**********************************
+	@GetMapping("${rest.api.basePath}/seekers")
+	List<SeekerResponse> getSeekers() throws IOException {
+		return seekerService.findSeekers();
+	}
 	
 	
 	
