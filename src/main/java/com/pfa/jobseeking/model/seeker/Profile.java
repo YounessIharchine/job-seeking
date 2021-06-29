@@ -27,7 +27,6 @@ public class Profile {
 	String photo;
 	String speciality;
 	@Column(columnDefinition = "TEXT")
-	String description;
 	String portefolio;
 	String github;
 	
@@ -62,9 +61,6 @@ public class Profile {
 	}
 	public String getSpeciality() {
 		return speciality;
-	}
-	public String getDescription() {
-		return description;
 	}
 	public String getPortefolio() {
 		return portefolio;
@@ -104,9 +100,6 @@ public class Profile {
 	}
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
-	}
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	public void setPortefolio(String portefolio) {
 		this.portefolio = portefolio;
