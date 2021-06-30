@@ -898,6 +898,8 @@ public class SeekerServiceImpl implements SeekerService {
 		if(!isInformationOwner(seeker, language))
 			throw new AccessDeniedException("You are not the owner of this language.");
 		
+		seeker.getProfile().removeLanguage(language);
+		
 		languageRepository.deleteById(id);
 		
 		return seeker.getProfile().getLanguages();
