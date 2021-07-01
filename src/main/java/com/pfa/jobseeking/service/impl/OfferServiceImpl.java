@@ -19,6 +19,7 @@ import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.seeker.Follow;
 import com.pfa.jobseeking.model.user.Admin;
 import com.pfa.jobseeking.model.user.Company;
+import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.repository.AdminRepository;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.DomainRepository;
@@ -231,8 +232,15 @@ public class OfferServiceImpl implements OfferService {
 	@Override
 	public OfferResponse findOffer(int id) {
 		Offer offer = offerRepository.findById(id);
-
-		return mapToResponse(offer);
+		Seeker seeker = getAuthenticatedSeeker();
+		boolean isSaved = false;
+		
+		if(seeker != null) 
+			for(Offer iteratedOffer : seeker.getOffers())
+				if(iteratedOffer == offer)
+					isSaved = true;
+		
+		return mapToResponse(offer, isSaved);
 	}
 	
 	//****************************OFFER PUBLICATION***************************
@@ -318,9 +326,11 @@ public class OfferServiceImpl implements OfferService {
 		return response;
 	}
 	
-	private OfferResponse mapToResponse(Offer offer) {
+	private OfferResponse mapToResponse(Offer offer, boolean isSaved) {
 		OfferResponse response = new OfferResponse();
 
+		
+		
 		response.setId(offer.getId());
 		response.setTitle(offer.getTitle());
 		response.setDescription(offer.getDescription());
@@ -340,6 +350,7 @@ public class OfferServiceImpl implements OfferService {
 			response.setType(jobOffer.getJobType().getName());
 			response.setDuration(null);
 		}
+		response.setSaved(isSaved);
 				
 		return response;
 	}
@@ -384,6 +395,11 @@ public class OfferServiceImpl implements OfferService {
 	private Company getAuthenticatedCompany() {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+	}
+	
+	private Seeker getAuthenticatedSeeker() {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		return (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 	}
 
 }

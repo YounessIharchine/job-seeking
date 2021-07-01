@@ -79,7 +79,7 @@ public interface SeekerService {
 	
 	//***************************APPLICATION***************************
 	
-	void applyOffer(int id, ApplicationDto applicationDto) throws IOException;
+	void applyOffer(int id, ApplicationDto applicationDto) throws IOException, DocumentException;
 	
 	void applyOffer(int id, ApplicationWithoutCvDto applicationWithoutCvDto) throws DocumentException, IOException;
 	

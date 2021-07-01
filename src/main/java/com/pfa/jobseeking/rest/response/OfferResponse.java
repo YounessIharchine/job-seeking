@@ -12,11 +12,12 @@ public class OfferResponse {
 	boolean isInternshipOffer;
 	String type;
 	String duration;
+	boolean isSaved;
 	
 	public OfferResponse() { }
 
 	public OfferResponse(int id, String title, String description, String date, String city, String domain,
-			String companyName, boolean isInternshipOffer, String type, String duration) {
+			String companyName, boolean isInternshipOffer, String type, String duration, boolean isSaved) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -27,6 +28,7 @@ public class OfferResponse {
 		this.isInternshipOffer = isInternshipOffer;
 		this.type = type;
 		this.duration = duration;
+		this.isSaved = isSaved;
 	}
 	
 	
@@ -60,6 +62,9 @@ public class OfferResponse {
 	public String getDuration() {
 		return duration;
 	}
+	public boolean isSaved() {
+		return isSaved;
+	}
 
 	
 	public void setId(int id) {
@@ -91,6 +96,9 @@ public class OfferResponse {
 	}
 	public void setDuration(String duration) {
 		this.duration = duration;
+	}
+	public void setSaved(boolean isSaved) {
+		this.isSaved = isSaved;
 	}
 	
 	
