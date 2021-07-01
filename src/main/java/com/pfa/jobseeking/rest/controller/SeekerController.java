@@ -33,6 +33,7 @@ import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.dto.SeekerStepOneDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.response.FindCompanyResponse;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.SeekerService;
@@ -124,6 +125,11 @@ public class SeekerController {
 	
 	
 	//**********************************FOLLOWING**********************************
+	@GetMapping("${rest.api.basePath}/seekers/followedCompanies")
+	List<FindCompanyResponse> showFollowedCompanies() throws IOException {
+		return seekerService.findFollowedCompanies();
+	}
+	
 	@GetMapping("${rest.api.basePath}/seekers/followCompany")
 	void followCompany(@RequestParam String companyName) {
 		seekerService.follow(companyName);

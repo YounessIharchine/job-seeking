@@ -33,6 +33,7 @@ import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
+import com.pfa.jobseeking.model.seeker.Follow;
 import com.pfa.jobseeking.model.seeker.Language;
 import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.Skill;
@@ -66,6 +67,7 @@ import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.dto.SeekerStepOneDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.response.FindCompanyResponse;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.SeekerService;
@@ -323,7 +325,7 @@ public class SeekerServiceImpl implements SeekerService {
 	public List<OfferResponse> findSavedOffers() {
 		Seeker seeker = getAuthenticatedSeeker();
 
-		return mapToResponse(seeker.getOffers());
+		return mapToSavedOffersResponse(seeker.getOffers());
 	}
 	
 	
@@ -333,7 +335,7 @@ public class SeekerServiceImpl implements SeekerService {
 	public List<OfferResponse> save(int id) {
 		Seeker seeker = getAuthenticatedSeeker();
 		seeker.saveOffer(offerRepository.findById(id));
-		return mapToResponse(seeker.getOffers());
+		return mapToSavedOffersResponse(seeker.getOffers());
 	}
 	
 	
@@ -343,7 +345,7 @@ public class SeekerServiceImpl implements SeekerService {
 	public List<OfferResponse> unsave(int id) {
 		Seeker seeker = getAuthenticatedSeeker();
 		seeker.unsaveOffer(offerRepository.findById(id));
-		return mapToResponse(seeker.getOffers());
+		return mapToSavedOffersResponse(seeker.getOffers());
 	}
 	
 	
@@ -351,6 +353,15 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	//**********************************FOLLOW**********************************
 	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Override
+	public List<FindCompanyResponse> findFollowedCompanies() throws IOException {
+		Seeker seeker = getAuthenticatedSeeker();
+
+		return mapToFollowedCompanyResponse(seeker.getFollows());
+	}
+
+
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
@@ -963,8 +974,12 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	
 	
+	
+	
+	//**********************************PRIVATE METHODS**********************************
+	
 
-	private List<OfferResponse> mapToResponse(Set<Offer> offers) {
+	private List<OfferResponse> mapToSavedOffersResponse(Set<Offer> offers) {
 		List<OfferResponse> response = new ArrayList<>();
 		for(Offer offer : offers) {
 			OfferResponse item = new OfferResponse();
@@ -994,11 +1009,21 @@ public class SeekerServiceImpl implements SeekerService {
 	}
 
 	
+	private List<FindCompanyResponse> mapToFollowedCompanyResponse(Set<Follow> follows) throws IOException {
+		List<FindCompanyResponse> response = new ArrayList<>();
+		for(Follow follow : follows) {
+			FindCompanyResponse item = new FindCompanyResponse();
+			item.setName(follow.getCompany().getName());
+			item.setCity(follow.getCompany().getCity().getName());
+			item.setDomain(follow.getCompany().getDomain().getName());
+			byte[] logoBytes = FileUtils.readFileToByteArray(new File(path+follow.getCompany().getCompanyProfile().getLogo()));
+			item.setLogo(Base64.getEncoder().encodeToString(logoBytes));
+			response.add(item);
+		}
+		return response;
+	}
 	
 	
-	
-	//**********************************PRIVATE METHODS**********************************
-
 	private Seeker getAuthenticatedSeeker() {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
@@ -1143,4 +1168,5 @@ public class SeekerServiceImpl implements SeekerService {
 		}
 		return data;
 	}
+
 }

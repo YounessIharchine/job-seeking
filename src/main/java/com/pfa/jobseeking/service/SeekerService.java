@@ -23,6 +23,7 @@ import com.pfa.jobseeking.rest.dto.SeekerDto;
 import com.pfa.jobseeking.rest.dto.SeekerStepOneDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.response.FindCompanyResponse;
 import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerResponse;
 
@@ -73,6 +74,7 @@ public interface SeekerService {
 	//***************************FOLLOW***************************
 	
 	void follow(String companyName);
+	List<FindCompanyResponse> findFollowedCompanies() throws IOException;
 	
 	void unfollow(String companyName);
 
