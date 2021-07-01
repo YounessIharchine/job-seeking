@@ -119,23 +119,11 @@ public class SeekerServiceImpl implements SeekerService {
 	//**********************************FIND SEEKERS**********************************
 	
 	@Override
-	public List<SeekerResponse> findSeekers() throws IOException {
-		List<SeekerResponse> response = new ArrayList<>();
-		
-		List<Seeker> seekers = seekerRepository.findAll();
-		
-		for(Seeker seeker : seekers) {
-			SeekerResponse item = new SeekerResponse();
-			item.setId(seeker.getId());
-			item.setName(seeker.getFirstName()+" "+seeker.getLastName());
-			item.setSpeciality(seeker.getProfile().getSpeciality());
-			item.setCity(seeker.getCity().getName());
-			byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+seeker.getProfile().getPhoto()));
-			item.setPhoto(Base64.getEncoder().encodeToString(photoBytes));
-			response.add(item);
-		}
-		
-		return response;
+	public List<SeekerResponse> findSeekers(String keyword) throws IOException {
+		if(keyword == null)
+			return mapToResponse(seekerRepository.findAll());
+		else
+			return mapToResponse(seekerRepository.findAllByKeyword(keyword));
 	}
 
 	
@@ -981,6 +969,22 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	//**********************************PRIVATE METHODS**********************************
 	
+	private List<SeekerResponse> mapToResponse(List<Seeker> seekers) throws IOException {
+		List<SeekerResponse> response = new ArrayList<>();
+		
+		for(Seeker seeker : seekers) {
+			SeekerResponse item = new SeekerResponse();
+			item.setId(seeker.getId());
+			item.setName(seeker.getFirstName()+" "+seeker.getLastName());
+			item.setSpeciality(seeker.getProfile().getSpeciality());
+			item.setCity(seeker.getCity().getName());
+			byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+seeker.getProfile().getPhoto()));
+			item.setPhoto(Base64.getEncoder().encodeToString(photoBytes));
+			response.add(item);
+		}
+		
+		return response;
+	}
 
 	private List<OfferResponse> mapToSavedOffersResponse(Set<Offer> offers) {
 		List<OfferResponse> response = new ArrayList<>();

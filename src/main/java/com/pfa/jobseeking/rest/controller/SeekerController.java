@@ -48,8 +48,8 @@ public class SeekerController {
 	
 	//**********************************FIND SEEKERS**********************************
 	@GetMapping("${rest.api.basePath}/seekers")
-	List<SeekerResponse> getSeekers() throws IOException {
-		return seekerService.findSeekers();
+	List<SeekerResponse> getSeekers(@RequestParam(required = false) String keyword) throws IOException {
+		return seekerService.findSeekers(keyword);
 	}
 	
 	

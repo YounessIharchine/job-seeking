@@ -31,7 +31,7 @@ public interface SeekerService {
 	
 	//***************************FIND SEEKERS***************************
 	
-	List<SeekerResponse> findSeekers() throws IOException;
+	List<SeekerResponse> findSeekers(String keyword) throws IOException;
 
 	
 	//***************************PUBLIC PROFILE***************************
