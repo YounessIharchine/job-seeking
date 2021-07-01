@@ -228,7 +228,12 @@ public class OfferServiceImpl implements OfferService {
 	}
 	
 
-	
+	@Override
+	public OfferResponse findOffer(int id) {
+		Offer offer = offerRepository.findById(id);
+
+		return mapToResponse(offer);
+	}
 	
 	//****************************OFFER PUBLICATION***************************
 
@@ -310,6 +315,32 @@ public class OfferServiceImpl implements OfferService {
 				
 			response.add(item);
 		}
+		return response;
+	}
+	
+	private OfferResponse mapToResponse(Offer offer) {
+		OfferResponse response = new OfferResponse();
+
+		response.setId(offer.getId());
+		response.setTitle(offer.getTitle());
+		response.setDescription(offer.getDescription());
+		response.setDate(offer.getDate());
+		response.setCity(offer.getCity().getName());
+		response.setDomain(offer.getDomain().getName());
+		response.setCompanyName(offer.getCompany().getName());
+		if(offer instanceof InternshipOffer) {
+			InternshipOffer internshipOffer = (InternshipOffer) offer;
+			response.setInternshipOffer(true);
+			response.setType(internshipOffer.getInternshipType().getName());
+			response.setDuration(internshipOffer.getDuration().getDuration());
+		}
+		else if(offer instanceof JobOffer) {
+			JobOffer jobOffer = (JobOffer) offer;
+			response.setInternshipOffer(false);
+			response.setType(jobOffer.getJobType().getName());
+			response.setDuration(null);
+		}
+				
 		return response;
 	}
 

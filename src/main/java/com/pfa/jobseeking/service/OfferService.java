@@ -11,11 +11,15 @@ public interface OfferService {
 
 	List<OfferResponse> findAll(String domain, String keyword, String city, String internshipType, String jobType);
 
+	OfferResponse findOffer(int id);
+
 	
 	//****************************OFFER PUBLICATION***************************
 
 	void addInternshipOffer(OfferDto offerDto);
 
 	void addJobOffer(OfferDto offerDto);
+
+
 
 }
