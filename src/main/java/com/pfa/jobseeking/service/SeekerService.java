@@ -65,9 +65,9 @@ public interface SeekerService {
 	
 	List<OfferResponse> findSavedOffers();
 
-	void save(int id);
+	List<OfferResponse> save(int id);
 	
-	void unsave(int id);
+	List<OfferResponse> unsave(int id);
 
 	
 	//***************************FOLLOW***************************

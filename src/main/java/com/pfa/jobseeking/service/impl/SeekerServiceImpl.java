@@ -329,18 +329,20 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public void save(int id) {
+	public List<OfferResponse> save(int id) {
 		Seeker seeker = getAuthenticatedSeeker();
 		seeker.saveOffer(offerRepository.findById(id));
+		return mapToResponse(seeker.getOffers());
 	}
 	
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public void unsave(int id) {
+	public List<OfferResponse> unsave(int id) {
 		Seeker seeker = getAuthenticatedSeeker();
 		seeker.unsaveOffer(offerRepository.findById(id));
+		return mapToResponse(seeker.getOffers());
 	}
 	
 	

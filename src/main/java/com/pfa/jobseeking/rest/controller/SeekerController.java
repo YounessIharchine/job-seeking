@@ -112,13 +112,13 @@ public class SeekerController {
 	}
 	
 	@GetMapping("${rest.api.basePath}/seekers/saveOffer/{id}")
-	void saveOffer(@PathVariable int id) {
-		seekerService.save(id);
+	List<OfferResponse> saveOffer(@PathVariable int id) {
+		return seekerService.save(id);
 	}
 	
 	@GetMapping("${rest.api.basePath}/seekers/unsaveOffer/{id}")
-	void unsaveOffer(@PathVariable int id) {
-		seekerService.unsave(id);
+	List<OfferResponse> unsaveOffer(@PathVariable int id) {
+		return seekerService.unsave(id);
 	}
 	
 	
