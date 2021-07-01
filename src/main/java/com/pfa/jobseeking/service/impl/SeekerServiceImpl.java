@@ -1,12 +1,15 @@
 package com.pfa.jobseeking.service.impl;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -16,7 +19,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import com.lowagie.text.DocumentException;
 import com.pfa.jobseeking.model.offer.Application;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
@@ -44,6 +53,7 @@ import com.pfa.jobseeking.repository.SkillRepository;
 import com.pfa.jobseeking.repository.TechnologyRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.ApplicationDto;
+import com.pfa.jobseeking.rest.dto.ApplicationWithoutCvDto;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
@@ -390,6 +400,34 @@ public class SeekerServiceImpl implements SeekerService {
 		applicationRepository.save(application);
 		
 		offer.getApplicationNotification().incrementNewApplications();
+	}
+	
+	@PreAuthorize("hasRole('ROLE_SEEKER')")
+	@Transactional
+	@Override
+	public void applyOffer(int id, ApplicationWithoutCvDto applicationWithoutCvDto) throws DocumentException, IOException {
+		Seeker seeker = getAuthenticatedSeeker();
+		Offer offer = offerRepository.findById(id);
+//		Application application = new Application();
+//		
+//		application.setSeeker(seeker);
+//		application.setOffer(offer);
+//		application.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+//		
+//		applicationRepository.save(application);
+//		
+//		offer.getApplicationNotification().incrementNewApplications();
+		
+		
+		String cv = parseCvTemplate();
+		generatePdfFromHtml(cv, "\\cv-test.pdf");
+		
+		StringBuilder textBuilder = new StringBuilder("\t");
+		textBuilder.append(applicationWithoutCvDto.getCoverLetter().replaceAll("(\n)+", "\n").replace("\n", "\n\n\t"));
+		String text = textBuilder.toString();
+		
+		String coverLetter = parseCoverLetterTemplate(seeker, offer.getCompany(), text);
+		generatePdfFromHtml(coverLetter, "\\coverLetter-test.pdf");
 	}
 	
 	
@@ -993,4 +1031,53 @@ public class SeekerServiceImpl implements SeekerService {
 		return isOwner;
 	}
 
+	
+	private String parseCvTemplate() {
+		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		templateResolver.setPrefix("/templates/");
+		templateResolver.setSuffix(".html");
+		templateResolver.setTemplateMode(TemplateMode.HTML);
+		
+		TemplateEngine templateEngine = new TemplateEngine();
+		templateEngine.setTemplateResolver(templateResolver);
+		
+		Context context = new Context();
+		context.setVariable("var", "CV");
+		
+		return templateEngine.process("cv-template", context);
+	}
+	
+	private String parseCoverLetterTemplate(Seeker seeker, Company company, String text) {
+		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		templateResolver.setPrefix("/templates/");
+		templateResolver.setSuffix(".html");
+		templateResolver.setTemplateMode(TemplateMode.HTML);
+		
+		TemplateEngine templateEngine = new TemplateEngine();
+		templateEngine.setTemplateResolver(templateResolver);
+		
+		Context context = new Context();
+		context.setVariable("seeker", seeker);
+		context.setVariable("company", company);
+		context.setVariable("text", text);
+		context.setVariable("date", new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(new Date()));
+		
+		return templateEngine.process("coverLetter-template", context);
+	}
+	
+	private void generatePdfFromHtml(String html, String relativePath) throws DocumentException, IOException {
+		//generate .html
+		FileUtils.writeStringToFile(new File(path+"\\coverLetter-test.html"), html, "UTF-8");;
+		
+		
+		//generate .pdf
+		OutputStream outputStream = new FileOutputStream(path+relativePath);
+		ITextRenderer renderer = new ITextRenderer();
+		
+		renderer.setDocumentFromString(html);
+		renderer.layout();
+		renderer.createPDF(outputStream);
+		
+		outputStream.close();
+	}
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>CoverLetter</title>
+		<link th:href="@{http://localhost:8080/coverLetter-style.css}" rel="stylesheet"/>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<div class="left">
+					<span class="name" th:text="${seeker.firstName}+' '+${seeker.lastName}"></span>
+					<br/>
+					<span th:text="${seeker.profile.speciality}"></span>
+					<br/><br/>
+					<span class="info" th:text="${seeker.city.name}"></span>
+					<br/>
+					<span class="info" th:text="${seeker.address}"></span>
+					<br/>
+					<span class="info" th:text="${seeker.phone}"></span>
+					<br/>
+					<span class="info" th:text="${seeker.email}"></span>
+				</div>
+				<div class="right">
+					<span class="info" th:text="${date}"></span>
+					<br/><br/><br/><br/>
+					<span class="company" th:text="${company.name}"></span>
+					<br/>
+					<span th:text="${company.city.name}+', Morocco'"></span>
+				</div>
+			</div>
+			<div class="text">
+				<p id="dear" th:text="'Dear Sir / Madam,'"></p>
+				<br/>
+				<p id="text" th:text="${text}"></p>
+			</div>
+			<div class="signature">
+				<span th:text="'Sincerely, '"></span>
+				<br/>
+				<span th:text="${seeker.firstName}+' '+${seeker.lastName}"></span>
+			</div>
+		</div>
+	</body>
+</html>

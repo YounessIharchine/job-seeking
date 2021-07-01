@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lowagie.text.DocumentException;
 import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
@@ -20,6 +21,7 @@ import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.Skill;
 import com.pfa.jobseeking.model.seeker.Technology;
 import com.pfa.jobseeking.rest.dto.ApplicationDto;
+import com.pfa.jobseeking.rest.dto.ApplicationWithoutCvDto;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
@@ -138,6 +140,11 @@ public class SeekerController {
 	@PostMapping("${rest.api.basePath}/seekers/applyOffer/{id}")
 	void applyOffer(@PathVariable int id, @RequestBody ApplicationDto applicationDto) throws IOException {
 		seekerService.applyOffer(id, applicationDto);
+	}
+	
+	@PostMapping("${rest.api.basePath}/seekers/applyOfferWithoutCv/{id}")
+	void applyOfferWithoutCv(@PathVariable int id, @RequestBody ApplicationWithoutCvDto applicationWithoutCvDto) throws IOException, DocumentException {
+		seekerService.applyOffer(id, applicationWithoutCvDto);
 	}
 	
 	

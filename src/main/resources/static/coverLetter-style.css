@@ -1,0 +1,63 @@
+body {
+	height: 1000px;
+	font-family: "Franklin Gothic Medium", "Franklin Gothic", sans-serif;
+}
+
+.container {
+	text-align: center;
+	height: 100%;
+	width: 100%;
+}
+
+.header {
+	height: 20%;
+	width: 100%;
+	font-size: 18px;
+}
+
+.left {
+	float: left;
+	height: 100%;
+	width: 50%;
+}
+
+.name {
+	color: #004080;
+}
+
+.company {
+	font-weight: bold;
+}
+
+.info {
+	color: #313131;
+}
+
+.right {
+	float: right;
+	height: 100%;
+	width: 50%;
+}
+
+
+
+
+.text {
+	text-align: justify;
+	width: 100%;
+}
+
+.text #dear {
+	text-indent: 2em;
+}
+
+.text #text {
+	white-space: pre-wrap;
+}
+
+.signature {
+	float: right;
+	padding-top: 50px;
+	width: 50%;
+}
+

@@ -3,6 +3,7 @@ package com.pfa.jobseeking.service;
 import java.io.IOException;
 import java.util.List;
 
+import com.lowagie.text.DocumentException;
 import com.pfa.jobseeking.model.seeker.Education;
 import com.pfa.jobseeking.model.seeker.Experience;
 import com.pfa.jobseeking.model.seeker.Language;
@@ -10,6 +11,7 @@ import com.pfa.jobseeking.model.seeker.Project;
 import com.pfa.jobseeking.model.seeker.Skill;
 import com.pfa.jobseeking.model.seeker.Technology;
 import com.pfa.jobseeking.rest.dto.ApplicationDto;
+import com.pfa.jobseeking.rest.dto.ApplicationWithoutCvDto;
 import com.pfa.jobseeking.rest.dto.EducationDto;
 import com.pfa.jobseeking.rest.dto.ExperienceDto;
 import com.pfa.jobseeking.rest.dto.LanguageDto;
@@ -78,6 +80,8 @@ public interface SeekerService {
 	//***************************APPLICATION***************************
 	
 	void applyOffer(int id, ApplicationDto applicationDto) throws IOException;
+	
+	void applyOffer(int id, ApplicationWithoutCvDto applicationWithoutCvDto) throws DocumentException, IOException;
 	
 	
 	//***************************EXPERIENCES***************************
