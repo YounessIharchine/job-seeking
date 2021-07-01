@@ -8,5 +8,23 @@
 		<h3 style="text-align:center;color:green">
 			<span th:text="'This is a test ' + ${var}"></span>
 		</h3>
+		<div th:each="experience: ${experiences}">
+			<span th:text="${experience.jobTitle}"></span>
+		</div>
+		<div th:each="education: ${educations}">
+			<span th:text="${education.type}"></span>
+		</div>
+		<div th:each="project: ${projects}">
+			<span th:text="${project.title}"></span>
+		</div>
+		<div th:each="skill: ${skills}">
+			<span th:text="${skill.name}"></span>
+			<div th:each="technology : ${skill.technologies}">
+				<span th:text="${technology.name}"></span>
+			</div>
+		</div>
+		<div th:each="language: ${languages}">
+			<span th:text="${language.jobTitle}"></span>
+		</div>
 	</body>
 </html>

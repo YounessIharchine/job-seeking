@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -388,14 +389,15 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		application = applicationRepository.save(application);
 		
+		//CV
 		String cvPath = "\\cv\\cv-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
 		byte[] cvBytes = Base64.getDecoder().decode(applicationDto.getCv());
 		FileUtils.writeByteArrayToFile(new File(path+cvPath), cvBytes);
 		
+		//Cover Letter
 		StringBuilder textBuilder = new StringBuilder("\t");
 		textBuilder.append(applicationDto.getCoverLetter().replaceAll("(\n)+", "\n").replace("\n", "\n\n\t"));
 		String text = textBuilder.toString();
-		
 		String coverLetterPath = "\\coverLetters\\coverLetter-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
 		String coverLetter = parseCoverLetterTemplate(seeker, offer.getCompany(), text);
 		generatePdfFromHtml(coverLetter, coverLetterPath);
@@ -421,16 +423,21 @@ public class SeekerServiceImpl implements SeekerService {
 		application.setOffer(offer);
 		application.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
 		
+		
+		//Cover Letter
 		StringBuilder textBuilder = new StringBuilder("\t");
 		textBuilder.append(applicationWithoutCvDto.getCoverLetter().replaceAll("(\n)+", "\n").replace("\n", "\n\n\t"));
 		String text = textBuilder.toString();
-		
 		String coverLetterPath = "\\coverLetters\\coverLetter-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
 		String coverLetter = parseCoverLetterTemplate(seeker, offer.getCompany(), text);
 		generatePdfFromHtml(coverLetter, coverLetterPath);
 		
+		
+		//CV
 		String cvPath = "\\cv\\cv-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
-		String cv = parseCvTemplate();
+		String cv = parseCvTemplate(seeker, applicationWithoutCvDto.getExperiencesIds(), applicationWithoutCvDto.getEducationsIds(),
+				applicationWithoutCvDto.getProjectsIds(), applicationWithoutCvDto.getSkillsIds(), 
+				applicationWithoutCvDto.getLanguagesIds());
 		generatePdfFromHtml(cv, cvPath);
 		
 		application.setCv(cvPath.replace("\\", "\\\\"));
@@ -1043,17 +1050,39 @@ public class SeekerServiceImpl implements SeekerService {
 	}
 
 	
-	private String parseCvTemplate() {
+	private String parseCvTemplate(Seeker seeker, List<Integer> experiencesIds, List<Integer> educationsIds, 
+			List<Integer> projectsIds, List<Integer> skillsIds, List<Integer> languagesIds) {
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 		templateResolver.setPrefix("/templates/");
 		templateResolver.setSuffix(".html");
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		
+		
+		List<Experience> experiences = new ArrayList<>();
+		List<Education> educations = new ArrayList<>();
+		List<Project> projects = new ArrayList<>();
+		List<Skill> skills = new ArrayList<>();
+		List<Language> languages = new ArrayList<>();
+		
+		experiences = fillData(Experience.class, experiencesIds);
+		educations = fillData(Education.class, educationsIds);
+		projects = fillData(Project.class, projectsIds);
+		skills = fillData(Skill.class, skillsIds);
+		languages = fillData(Language.class, languagesIds);
+
+		System.out.println(experiences);
+
 		TemplateEngine templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
 		
 		Context context = new Context();
 		context.setVariable("var", "CV");
+		context.setVariable("experiences", experiences);
+		context.setVariable("educations", educations);
+		context.setVariable("projects", projects);
+		context.setVariable("skills", skills);
+		context.setVariable("languages", languages);
+
 		
 		return templateEngine.process("cv-template", context);
 	}
@@ -1090,5 +1119,28 @@ public class SeekerServiceImpl implements SeekerService {
 		renderer.createPDF(outputStream);
 		
 		outputStream.close();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	private <T> List<T> fillData(Class<T> dataClass, List<Integer> ids) {
+		List<T> data = new ArrayList<>();
+		
+		if(dataClass == Experience.class) {
+			data.addAll((Collection<? extends T>) experienceRepository.findAllById(ids));
+		}
+		if(dataClass == Education.class) {
+			data.addAll((Collection<? extends T>) educationRepository.findAllById(ids));
+		}
+		if(dataClass == Project.class) {
+			data.addAll((Collection<? extends T>) projectRepository.findAllById(ids));
+		}
+		if(dataClass == Skill.class) {
+			data.addAll((Collection<? extends T>) skillRepository.findAllById(ids));
+		}
+		if(dataClass == Language.class) {
+			data.addAll((Collection<? extends T>) languageRepository.findAllById(ids));
+		}
+		return data;
 	}
 }

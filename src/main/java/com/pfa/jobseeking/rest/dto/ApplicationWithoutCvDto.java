@@ -9,7 +9,6 @@ public class ApplicationWithoutCvDto {
 	List<Integer> educationsIds;
 	List<Integer> projectsIds;
 	List<Integer> skillsIds;
-	List<Integer> technologiesIds;
 	List<Integer> languagesIds;
 	
 	
@@ -19,14 +18,12 @@ public class ApplicationWithoutCvDto {
 	
 
 	public ApplicationWithoutCvDto(String coverLetter, List<Integer> experiencesIds, List<Integer> educationsIds,
-			List<Integer> projectsIds, List<Integer> skillsIds, List<Integer> technologiesIds,
-			List<Integer> languagesIds) {
+			List<Integer> projectsIds, List<Integer> skillsIds, List<Integer> languagesIds) {
 		this.coverLetter = coverLetter;
 		this.experiencesIds = experiencesIds;
 		this.educationsIds = educationsIds;
 		this.projectsIds = projectsIds;
 		this.skillsIds = skillsIds;
-		this.technologiesIds = technologiesIds;
 		this.languagesIds = languagesIds;
 	}
 
@@ -46,9 +43,6 @@ public class ApplicationWithoutCvDto {
 	}
 	public List<Integer> getSkillsIds() {
 		return skillsIds;
-	}
-	public List<Integer> getTechnologiesIds() {
-		return technologiesIds;
 	}
 	public List<Integer> getLanguagesIds() {
 		return languagesIds;
@@ -70,9 +64,6 @@ public class ApplicationWithoutCvDto {
 	}
 	public void setSkillsIds(List<Integer> skillsIds) {
 		this.skillsIds = skillsIds;
-	}
-	public void setTechnologiesIds(List<Integer> technologiesIds) {
-		this.technologiesIds = technologiesIds;
 	}
 	public void setLanguagesIds(List<Integer> languagesIds) {
 		this.languagesIds = languagesIds;
@@ -105,13 +96,6 @@ public class ApplicationWithoutCvDto {
 	}
 	public void removeSkill(int skillId) {
 		this.skillsIds.remove(skillId);
-	}
-	
-	public void addTechnology(int technologyId) {
-		this.technologiesIds.add(technologyId);
-	}
-	public void removeTechnology(int technologyId) {
-		this.technologiesIds.remove(technologyId);
 	}
 	
 	public void addLanguage(int languageId) {
