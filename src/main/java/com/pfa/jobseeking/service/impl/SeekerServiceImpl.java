@@ -126,6 +126,7 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		for(Seeker seeker : seekers) {
 			SeekerResponse item = new SeekerResponse();
+			item.setId(seeker.getId());
 			item.setName(seeker.getFirstName()+" "+seeker.getLastName());
 			item.setSpeciality(seeker.getProfile().getSpeciality());
 			item.setCity(seeker.getCity().getName());

@@ -2,6 +2,7 @@ package com.pfa.jobseeking.rest.response;
 
 public class SeekerResponse {
 
+	int id;
 	String name;
 	String photo;
 	String speciality;
@@ -13,7 +14,8 @@ public class SeekerResponse {
 
 	
 	
-	public SeekerResponse(String name, String photo, String speciality, String city) {
+	public SeekerResponse(int id, String name, String photo, String speciality, String city) {
+		this.id = id;
 		this.name = name;
 		this.photo = photo;
 		this.speciality = speciality;
@@ -21,7 +23,9 @@ public class SeekerResponse {
 	}
 
 	
-	
+	public int getId() {
+		return id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -37,6 +41,9 @@ public class SeekerResponse {
 
 	
 	
+	public void setId(int id) {
+		this.id = id;
+	}
 	public void setName(String name) {
 		this.name = name;
 	}
