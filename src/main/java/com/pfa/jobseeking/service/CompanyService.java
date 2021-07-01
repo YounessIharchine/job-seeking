@@ -18,7 +18,7 @@ public interface CompanyService {
 	
 	//**********************************FIND COMPANIES**********************************
 
-	List<FindCompanyResponse> findCompanies() throws IOException;
+	List<FindCompanyResponse> findCompanies(String name, String domain) throws IOException;
 
 	
 	//**********************************PUBLIC PROFILE**********************************

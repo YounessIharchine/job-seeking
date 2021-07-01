@@ -2,6 +2,7 @@ package com.pfa.jobseeking.rest.response;
 
 public class FindCompanyResponse {
 
+	int id;
 	String name;
 	String city;
 	String domain;
@@ -13,7 +14,8 @@ public class FindCompanyResponse {
 
 	
 	
-	public FindCompanyResponse(String name, String city, String domain, String logo) {
+	public FindCompanyResponse(int id, String name, String city, String domain, String logo) {
+		this.id = id;
 		this.name = name;
 		this.city = city;
 		this.domain = domain;
@@ -21,7 +23,9 @@ public class FindCompanyResponse {
 	}
 
 
-
+	public int getId() {
+		return id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -36,7 +40,9 @@ public class FindCompanyResponse {
 	}
 	
 	
-	
+	public void setId(int id) {
+		this.id = id;
+	}
 	public void setName(String name) {
 		this.name = name;
 	}

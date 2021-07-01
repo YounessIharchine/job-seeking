@@ -63,21 +63,17 @@ public class CompanyServiceImpl implements CompanyService {
 	//**********************************FIND COMPANIES**********************************
 
 	@Override
-	public List<FindCompanyResponse> findCompanies() throws IOException {
-		List<FindCompanyResponse> response = new ArrayList<>();
-		List<Company> companies = companyRepository.findAll();
-		
-		for(Company company : companies) {
-			FindCompanyResponse item = new FindCompanyResponse();
-			item.setName(company.getName());
-			item.setCity(company.getCity().getName());
-			item.setDomain(company.getDomain().getName());
-			byte[] logoBytes = FileUtils.readFileToByteArray(new File(path+company.getCompanyProfile().getLogo()));
-			item.setLogo(Base64.getEncoder().encodeToString(logoBytes));
-			response.add(item);
-		}
-		
-		return response;
+	public List<FindCompanyResponse> findCompanies(String name, String domain) throws IOException {
+		if(name == null)
+			if(domain == null)
+				return mapToResponse(companyRepository.findAll());
+			else
+				return mapToResponse(companyRepository.findAllByDomain(domain));
+		else
+			if(domain == null)
+				return mapToResponse(companyRepository.findAllByName(name));
+			else
+				return mapToResponse(companyRepository.findAllByNameAndDomain(name, domain));
 	}
 	
 	
@@ -297,6 +293,23 @@ public class CompanyServiceImpl implements CompanyService {
 	private Company getAuthenticatedCompany() {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+	}
+	
+	private List<FindCompanyResponse> mapToResponse(List<Company> companies) throws IOException {
+		List<FindCompanyResponse> response = new ArrayList<>();
+		
+		for(Company company : companies) {
+			FindCompanyResponse item = new FindCompanyResponse();
+			item.setId(company.getId());
+			item.setName(company.getName());
+			item.setCity(company.getCity().getName());
+			item.setDomain(company.getDomain().getName());
+			byte[] logoBytes = FileUtils.readFileToByteArray(new File(path+company.getCompanyProfile().getLogo()));
+			item.setLogo(Base64.getEncoder().encodeToString(logoBytes));
+			response.add(item);
+		}
+		
+		return response;
 	}
 	
 	
