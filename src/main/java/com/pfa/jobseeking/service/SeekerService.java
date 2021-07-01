@@ -73,10 +73,11 @@ public interface SeekerService {
 	
 	//***************************FOLLOW***************************
 	
-	void follow(String companyName);
 	List<FindCompanyResponse> findFollowedCompanies() throws IOException;
 	
-	void unfollow(String companyName);
+	List<FindCompanyResponse> follow(String companyName) throws IOException;
+	
+	List<FindCompanyResponse> unfollow(String companyName) throws IOException;
 
 	
 	//***************************APPLICATION***************************

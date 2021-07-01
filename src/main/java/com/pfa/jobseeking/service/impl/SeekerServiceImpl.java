@@ -365,20 +365,22 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public void follow(String companyName) {
+	public List<FindCompanyResponse> follow(String companyName) throws IOException {
 		Seeker seeker = getAuthenticatedSeeker();
 		Company company = companyRepository.findCompanyByName(companyName);
 		seeker.followCompany(company);
 		company.getCompanyNotification().incrementNewFollowers();
+		return mapToFollowedCompanyResponse(seeker.getFollows());
 	}
 	
 	
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public void unfollow(String companyName) {
+	public List<FindCompanyResponse> unfollow(String companyName) throws IOException {
 		Seeker seeker = getAuthenticatedSeeker();
 		seeker.unfollowCompany(companyRepository.findCompanyByName(companyName));
+		return mapToFollowedCompanyResponse(seeker.getFollows());
 	}
 	
 	

@@ -131,13 +131,13 @@ public class SeekerController {
 	}
 	
 	@GetMapping("${rest.api.basePath}/seekers/followCompany")
-	void followCompany(@RequestParam String companyName) {
-		seekerService.follow(companyName);
+	List<FindCompanyResponse> followCompany(@RequestParam String companyName) throws IOException {
+		return seekerService.follow(companyName);
 	}
 	
 	@GetMapping("${rest.api.basePath}/seekers/unfollowCompany")
-	void unfollowCompany(@RequestParam String companyName) {
-		seekerService.unfollow(companyName);
+	List<FindCompanyResponse> unfollowCompany(@RequestParam String companyName) throws IOException {
+		return seekerService.unfollow(companyName);
 	}
 	
 	
