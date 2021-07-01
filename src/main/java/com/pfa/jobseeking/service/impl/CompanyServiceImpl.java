@@ -2,6 +2,7 @@ package com.pfa.jobseeking.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.repository.CityRepository;
+import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.DomainRepository;
 import com.pfa.jobseeking.repository.ParagraphRepository;
 import com.pfa.jobseeking.repository.PhotoRepository;
@@ -29,6 +31,7 @@ import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
+import com.pfa.jobseeking.rest.response.FindCompanyResponse;
 import com.pfa.jobseeking.service.CompanyService;
 
 @Service
@@ -36,6 +39,9 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	CompanyRepository companyRepository;
 	
 	@Autowired
 	CityRepository cityRepository;
@@ -53,6 +59,32 @@ public class CompanyServiceImpl implements CompanyService {
 	String path;
 	
 	
+	
+	//**********************************FIND COMPANIES**********************************
+
+	@Override
+	public List<FindCompanyResponse> findCompanies() throws IOException {
+		List<FindCompanyResponse> response = new ArrayList<>();
+		List<Company> companies = companyRepository.findAll();
+		
+		for(Company company : companies) {
+			FindCompanyResponse item = new FindCompanyResponse();
+			item.setName(company.getName());
+			item.setCity(company.getCity().getName());
+			item.setDomain(company.getDomain().getName());
+			byte[] logoBytes = FileUtils.readFileToByteArray(new File(path+company.getCompanyProfile().getLogo()));
+			item.setLogo(Base64.getEncoder().encodeToString(logoBytes));
+			response.add(item);
+		}
+		
+		return response;
+	}
+	
+	
+	
+	
+	//**********************************PUBLIC PROFILE**********************************
+
 	@Override
 	public CompanyResponse findCompany(int id) throws IOException, NotFoundException {
 		CompanyResponse response = new CompanyResponse();
@@ -98,6 +130,9 @@ public class CompanyServiceImpl implements CompanyService {
 	
 
 	
+	
+	//**********************************OWN PROFILE**********************************
+
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
@@ -146,6 +181,10 @@ public class CompanyServiceImpl implements CompanyService {
 
 	
 	
+	
+	
+	//**********************************PARAGRAPHS**********************************
+
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
@@ -196,6 +235,10 @@ public class CompanyServiceImpl implements CompanyService {
 
 	
 	
+	
+	
+	//**********************************PHOTOS**********************************
+
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
@@ -249,7 +292,8 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	
 	
-	
+	//**********************************PRIVATE METHODS**********************************
+
 	private Company getAuthenticatedCompany() {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Company)userRepository.findUserByEmail(authenticatedUserEmail);
@@ -275,5 +319,6 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		return isOwner;
 	}
+
 
 }

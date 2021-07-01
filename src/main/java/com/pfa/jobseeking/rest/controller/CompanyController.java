@@ -23,6 +23,7 @@ import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
+import com.pfa.jobseeking.rest.response.FindCompanyResponse;
 import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.CompanyService;
 
@@ -32,11 +33,21 @@ public class CompanyController {
 	@Autowired
 	CompanyService companyService;
 	
+	
+	//**********************************FIND COMPANIES**********************************
+	@GetMapping("${rest.api.basePath}/companies")
+	List<FindCompanyResponse> getCompanies() throws IOException {
+		return companyService.findCompanies();
+	}
+	
+	//**********************************PUBLIC PROFILE**********************************
 	@GetMapping("${rest.api.basePath}/companies/{id}")
-	CompanyResponse getCompany(@PathVariable(name = "id") int id) throws IOException, NotFoundException {
+	CompanyResponse getCompany(@PathVariable int id) throws IOException, NotFoundException {
 		return companyService.findCompany(id);
 	}
 	
+	
+	//**********************************OWN PROFILE**********************************
 	@PatchMapping("${rest.api.basePath}/companies/profile")
 	ResponseEntity<Response> updateCompanyInfo(@RequestBody Map<String, String> map) throws IOException {
 		companyService.updateInfo(map);
@@ -46,7 +57,7 @@ public class CompanyController {
 	}
 	
 	
-	
+	//**********************************PARAGRAPHS**********************************
 	@GetMapping("${rest.api.basePath}/companies/paragraphs")
 	List<Paragraph> findParagraphs() {
 		return companyService.findParagraphs();
@@ -63,7 +74,7 @@ public class CompanyController {
 	}
 	
 	
-	
+	//**********************************PHOTOS**********************************
 	@GetMapping("${rest.api.basePath}/companies/photos")
 	Set<Photo> findPhotos() {
 		return companyService.findPhotos();
