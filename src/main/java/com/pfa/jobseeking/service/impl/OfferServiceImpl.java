@@ -329,8 +329,6 @@ public class OfferServiceImpl implements OfferService {
 	private OfferResponse mapToResponse(Offer offer, boolean isSaved) {
 		OfferResponse response = new OfferResponse();
 
-		
-		
 		response.setId(offer.getId());
 		response.setTitle(offer.getTitle());
 		response.setDescription(offer.getDescription());

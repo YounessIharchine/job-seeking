@@ -375,7 +375,7 @@ public class SeekerServiceImpl implements SeekerService {
 	@PreAuthorize("hasRole('ROLE_SEEKER')")
 	@Transactional
 	@Override
-	public void applyOffer(int id, ApplicationDto applicationDto) throws IOException {
+	public void applyOffer(int id, ApplicationDto applicationDto) throws IOException, DocumentException {
 		Seeker seeker = getAuthenticatedSeeker();
 		Offer offer = offerRepository.findById(id);
 		Application application = new Application();
@@ -390,9 +390,14 @@ public class SeekerServiceImpl implements SeekerService {
 		byte[] cvBytes = Base64.getDecoder().decode(applicationDto.getCv());
 		FileUtils.writeByteArrayToFile(new File(path+cvPath), cvBytes);
 		
+		StringBuilder textBuilder = new StringBuilder("\t");
+		textBuilder.append(applicationDto.getCoverLetter().replaceAll("(\n)+", "\n").replace("\n", "\n\n\t"));
+		String text = textBuilder.toString();
+		
 		String coverLetterPath = "\\coverLetters\\coverLetter-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
-		byte[] coverLetterBytes = Base64.getDecoder().decode(applicationDto.getCoverLetter());
-		FileUtils.writeByteArrayToFile(new File(path+coverLetterPath), coverLetterBytes);
+		String coverLetter = parseCoverLetterTemplate(seeker, offer.getCompany(), text);
+		generatePdfFromHtml(coverLetter, coverLetterPath);
+		
 		
 		application.setCv(cvPath.replace("\\", "\\\\"));
 		application.setCoverLetter(coverLetterPath.replace("\\", "\\\\"));
@@ -408,26 +413,30 @@ public class SeekerServiceImpl implements SeekerService {
 	public void applyOffer(int id, ApplicationWithoutCvDto applicationWithoutCvDto) throws DocumentException, IOException {
 		Seeker seeker = getAuthenticatedSeeker();
 		Offer offer = offerRepository.findById(id);
-//		Application application = new Application();
-//		
-//		application.setSeeker(seeker);
-//		application.setOffer(offer);
-//		application.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-//		
-//		applicationRepository.save(application);
-//		
-//		offer.getApplicationNotification().incrementNewApplications();
+		Application application = new Application();
 		
-		
-		String cv = parseCvTemplate();
-		generatePdfFromHtml(cv, "\\cv-test.pdf");
+		application.setSeeker(seeker);
+		application.setOffer(offer);
+		application.setDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
 		
 		StringBuilder textBuilder = new StringBuilder("\t");
 		textBuilder.append(applicationWithoutCvDto.getCoverLetter().replaceAll("(\n)+", "\n").replace("\n", "\n\n\t"));
 		String text = textBuilder.toString();
 		
+		String coverLetterPath = "\\coverLetters\\coverLetter-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
 		String coverLetter = parseCoverLetterTemplate(seeker, offer.getCompany(), text);
-		generatePdfFromHtml(coverLetter, "\\coverLetter-test.pdf");
+		generatePdfFromHtml(coverLetter, coverLetterPath);
+		
+		String cvPath = "\\cv\\cv-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
+		String cv = parseCvTemplate();
+		generatePdfFromHtml(cv, cvPath);
+		
+		application.setCv(cvPath.replace("\\", "\\\\"));
+		application.setCoverLetter(coverLetterPath.replace("\\", "\\\\"));	
+		
+		applicationRepository.save(application);
+		
+		offer.getApplicationNotification().incrementNewApplications();
 	}
 	
 	

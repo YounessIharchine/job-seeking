@@ -138,7 +138,7 @@ public class SeekerController {
 
 	//**********************************APPLYING**********************************
 	@PostMapping("${rest.api.basePath}/seekers/applyOffer/{id}")
-	void applyOffer(@PathVariable int id, @RequestBody ApplicationDto applicationDto) throws IOException {
+	void applyOffer(@PathVariable int id, @RequestBody ApplicationDto applicationDto) throws IOException, DocumentException {
 		seekerService.applyOffer(id, applicationDto);
 	}
 	
