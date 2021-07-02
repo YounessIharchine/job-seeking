@@ -49,6 +49,11 @@ public class CompanyController {
 		return companyService.findCompany(id);
 	}
 	
+	@GetMapping("${rest.api.basePath}/companies/{id}/logo")
+	PhotoDto getSeekerPhoto(@PathVariable int id) throws IOException, NotFoundException {
+		return companyService.findCompanyLogo(id);
+	}
+	
 	
 	//**********************************OWN PROFILE**********************************
 	@PatchMapping("${rest.api.basePath}/companies/profile")

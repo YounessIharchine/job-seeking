@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -104,29 +103,36 @@ public class CompanyServiceImpl implements CompanyService {
 				if(follow.getCompany() == company)
 					isFollowed = true;
 		
-		String logo;
-		if(company.getCompanyProfile().getLogo() == null)
-			logo = null;
-		else {
-			byte[] logoBytes = FileUtils.readFileToByteArray(new File(path+company.getCompanyProfile().getLogo()));
-			logo = Base64.getEncoder().encodeToString(logoBytes);
-		}
-		
-		
 		response.setId(company.getId());
 		response.setName(company.getName());
 		response.setPublicEmail(company.getPublicEmail());
 		response.setPhone(company.getPhone());
 		response.setCity(company.getCity().getName());
 		response.setDomain(company.getDomain().getName());
-		response.setLogo(logo);
 		response.setWebSite(company.getCompanyProfile().getWebSite());
 		response.setFollowed(isFollowed);
 		
 		return response;
 	}
 	
-
+	@Override
+	public PhotoDto findCompanyLogo(int id) throws IOException, NotFoundException {
+		PhotoDto response = new PhotoDto();
+		
+		User user = userRepository.findById(id);
+		Company company = null;
+		if(user instanceof Company)
+			company = (Company)user;
+		else
+			throw new NotFoundException("There is no company with that id.");
+		
+		company = (Company)user;
+		
+		byte[] logoBytes = FileUtils.readFileToByteArray(new File(path+company.getCompanyProfile().getLogo()));
+		response.setPhoto(Base64.getEncoder().encodeToString(logoBytes));
+		
+		return response;
+	}
 	
 	
 	//**********************************OWN PROFILE**********************************
@@ -333,6 +339,5 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		return isOwner;
 	}
-
 
 }
