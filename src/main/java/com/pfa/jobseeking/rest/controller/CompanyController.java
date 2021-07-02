@@ -56,7 +56,7 @@ public class CompanyController {
 		return companyService.updateInfo(companyResponse);
 	}
 	
-	@PatchMapping("${rest.api.basePath}/companies/profile/photo")
+	@PatchMapping("${rest.api.basePath}/companies/logo")
 	PhotoDto updatePhoto(@RequestBody PhotoDto photoDto) throws IOException {
 		return companyService.updateLogo(photoDto);
 	}

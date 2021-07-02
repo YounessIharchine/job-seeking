@@ -144,11 +144,12 @@ public class CompanyServiceImpl implements CompanyService {
 		Company company = getAuthenticatedCompany();
 		
 		companyDto.setId(company.getId());
-		companyDto.setName(company.getName());
-		companyDto.setCity(company.getCity().getName());
-		companyDto.setDomain(company.getDomain().getName());
-		companyDto.setPhone(company.getPhone());
-		companyDto.setWebSite(company.getCompanyProfile().getWebSite());
+		company.setName(companyDto.getName());
+		company.setPublicEmail(companyDto.getPublicEmail());
+		company.setPhone(companyDto.getPhone());
+		company.setCity(cityRepository.findCityByName(companyDto.getCity()));
+		company.setDomain(domainRepository.findDomainByName(companyDto.getDomain()));
+		company.getCompanyProfile().setWebSite(companyDto.getWebSite());
 		
 		return companyDto;
 	}
@@ -168,7 +169,6 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	//**********************************PARAGRAPHS**********************************
 
-	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
 	public List<Paragraph> findParagraphs(int id) throws NotFoundException {
