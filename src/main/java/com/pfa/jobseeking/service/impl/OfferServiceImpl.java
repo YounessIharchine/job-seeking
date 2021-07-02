@@ -80,35 +80,53 @@ public class OfferServiceImpl implements OfferService {
 				
 				if(city == null || city.isEmpty()) {
 					
-					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
+					if((internshipType == null) && (jobType == null)) {
 						return mapToResponse(offerRepository.findAll());
 					}
 					
-					else if(internshipType == null || internshipType.isEmpty()) {
-						return mapToResponse(jobOfferRepository.findByJobTypeName(jobType));
+					else if(internshipType == null) {
+						if(jobType.isEmpty())
+							return mapToResponse(jobOfferRepository.findAllJobs());
+						else
+							return mapToResponse(jobOfferRepository.findByJobTypeName(jobType));
 					}
 					
-					else {
-						return mapToResponse(internshipOfferRepository.findByInternshipTypeName(internshipType));
+					else if(jobType == null) {
+						if(internshipType.isEmpty())
+							return mapToResponse(internshipOfferRepository.findAllInternships());
+						else
+							return mapToResponse(internshipOfferRepository.findByInternshipTypeName(internshipType));
 					}
+					else
+						return null;
 					
 				}
 				
 				else {
 					
-					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
-						return mapToResponse(offerRepository.findByCityName(city));
-					}
-					
-					else if(internshipType == null || internshipType.isEmpty()) {
+				if((internshipType == null) && (jobType == null)) {
+					return mapToResponse(offerRepository.findByCityName(city));
+				}
+				
+				else if(internshipType == null) {
+					if(jobType.isEmpty())
+						return mapToResponse(jobOfferRepository.findJobsByCity(city));
+					else
 						return mapToResponse(jobOfferRepository.findByCityANDType(city, jobType));
-					}
-					
-					else {
+				}
+				
+				else if(jobType == null) {
+					if(internshipType.isEmpty())
+						return mapToResponse(internshipOfferRepository.findInternshipsByCity(city));
+					else
 						return mapToResponse(internshipOfferRepository.findByCityANDType(city, internshipType));
-					}
+				}
+				else
+					return null;
 					
 				}
+				
+
 				
 			}
 			
@@ -116,33 +134,52 @@ public class OfferServiceImpl implements OfferService {
 				
 				if(city == null || city.isEmpty()) {
 					
-					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
+					if((internshipType == null) && (jobType == null)) {
 						return mapToResponse(offerRepository.findByKeyword(keyword));
 					}
 					
-					else if(internshipType == null || internshipType.isEmpty()) {
-						return mapToResponse(jobOfferRepository.findByKeywordANDType(keyword, jobType));
+					else if(internshipType == null) {
+						if(jobType.isEmpty())
+							return mapToResponse(jobOfferRepository.findJobsByKeyword(keyword));
+						else
+							return mapToResponse(jobOfferRepository.findByKeywordANDType(keyword, jobType));
 					}
 					
-					else {
-						return mapToResponse(internshipOfferRepository.findByKeywordANDType(keyword, internshipType));
+					else if(jobType == null) {
+						if(internshipType.isEmpty())
+							return mapToResponse(internshipOfferRepository.findInternshipsByKeyword(keyword));
+						else
+							return mapToResponse(internshipOfferRepository.findByKeywordANDType(keyword, internshipType));
 					}
+					else
+						return null;
+					
 					
 				}
 				
+				
 				else {
+			
 					
-					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
+					if((internshipType == null) && (jobType == null)) {
 						return mapToResponse(offerRepository.findByKeywordANDCity(keyword, city));
 					}
 					
-					else if(internshipType == null || internshipType.isEmpty()) {
-						return mapToResponse(jobOfferRepository.findByKeywordANDCityANDType(keyword, city, jobType));
+					else if(internshipType == null) {
+						if(jobType.isEmpty())
+							return mapToResponse(jobOfferRepository.findJobsByKeywordANDCity(keyword, city));
+						else
+							return mapToResponse(jobOfferRepository.findByKeywordANDCityANDType(keyword, city, jobType));
 					}
 					
-					else {
-						return mapToResponse(internshipOfferRepository.findByKeywordANDCityANDType(keyword, city, internshipType));
+					else if(jobType == null) {
+						if(internshipType.isEmpty())
+							return mapToResponse(internshipOfferRepository.findInternshipsByKeywordANDCity(keyword, city));
+						else
+							return mapToResponse(internshipOfferRepository.findByKeywordANDCityANDType(keyword, city, internshipType));
 					}
+					else
+						return null;
 
 				}
 				
@@ -155,33 +192,49 @@ public class OfferServiceImpl implements OfferService {
 				
 				if(city == null || city.isEmpty()) {
 					
-					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
+					if((internshipType == null) && (jobType == null)) {
 						return mapToResponse(offerRepository.findByDomainName(domain));
 					}
 					
-					else if(internshipType == null || internshipType.isEmpty()) {
-						return mapToResponse(jobOfferRepository.findByDomainANDType(domain, jobType));
+					else if(internshipType == null) {
+						if(jobType.isEmpty())
+							return mapToResponse(jobOfferRepository.findJobsByDomain(domain));
+						else
+							return mapToResponse(jobOfferRepository.findByDomainANDType(domain, jobType));
 					}
 					
-					else {
-						return mapToResponse(internshipOfferRepository.findByDomainANDType(domain, internshipType));
+					else if(jobType == null) {
+						if(internshipType.isEmpty())
+							return mapToResponse(internshipOfferRepository.findInternshipsByDomain(domain));
+						else
+							return mapToResponse(internshipOfferRepository.findByDomainANDType(domain, internshipType));
 					}
+					else
+						return null;
 					
 				}
 				
 				else {
 					
-					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
+					if((internshipType == null) && (jobType == null)) {
 						return mapToResponse(offerRepository.findByDomainNameANDCity(domain, city));
 					}
 					
-					else if(internshipType == null || internshipType.isEmpty()) {
-						return mapToResponse(jobOfferRepository.findByDomainANDCityANDType(domain, city, jobType));
+					else if(internshipType == null) {
+						if(jobType.isEmpty())
+							return mapToResponse(jobOfferRepository.findJobsByDomainANDCity(domain, city));
+						else
+							return mapToResponse(jobOfferRepository.findByDomainANDCityANDType(domain, city, jobType));
 					}
 					
-					else {
-						return mapToResponse(internshipOfferRepository.findByDomainANDCityANDType(domain, city, internshipType));
+					else if(jobType == null) {
+						if(internshipType.isEmpty())
+							return mapToResponse(internshipOfferRepository.findInternshipsByDomainANDCity(domain, city));
+						else
+							return mapToResponse(internshipOfferRepository.findByDomainANDCityANDType(domain, city, internshipType));
 					}
+					else
+						return null;
 
 				}
 				
@@ -192,33 +245,50 @@ public class OfferServiceImpl implements OfferService {
 				
 				if(city == null || city.isEmpty()) {
 					
-					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
+					
+					if((internshipType == null) && (jobType == null)) {
 						return mapToResponse(offerRepository.findByDomainNameANDKeyword(domain, keyword));
 					}
 					
-					else if(internshipType == null || internshipType.isEmpty()) {
-						return mapToResponse(jobOfferRepository.findByDomainANDKeywordANDType(domain, keyword, jobType));
+					else if(internshipType == null) {
+						if(jobType.isEmpty())
+							return mapToResponse(jobOfferRepository.findJobsByDomainANDKeyword(domain, keyword));
+						else
+							return mapToResponse(jobOfferRepository.findByDomainANDKeywordANDType(domain, keyword, jobType));
 					}
 					
-					else {
-						return mapToResponse(internshipOfferRepository.findByDomainANDKeywordANDType(domain, keyword, internshipType));
+					else if(jobType == null) {
+						if(internshipType.isEmpty())
+							return mapToResponse(internshipOfferRepository.findInternshipsByDomainANDKeyword(domain, keyword));
+						else
+							return mapToResponse(internshipOfferRepository.findByDomainANDKeywordANDType(domain, keyword, internshipType));
 					}
+					else
+						return null;
 
 				}
 				
 				else {
 					
-					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
+					if((internshipType == null) && (jobType == null)) {
 						return mapToResponse(offerRepository.findByDomainNameANDKeywordANDCity(domain, keyword, city));
 					}
 					
-					else if(internshipType == null || internshipType.isEmpty()) {
-						return mapToResponse(jobOfferRepository.findByDomainANDKeywordANDCityANDType(domain, keyword, city, jobType));
+					else if(internshipType == null) {
+						if(jobType.isEmpty())
+							return mapToResponse(jobOfferRepository.findJobsByDomainANDKeywordANDCity(domain, keyword, city));
+						else
+							return mapToResponse(jobOfferRepository.findByDomainANDKeywordANDCityANDType(domain, keyword, city, jobType));
 					}
 					
-					else {
-						return mapToResponse(internshipOfferRepository.findByDomainANDKeywordANDCityANDType(domain, keyword, city, internshipType));
+					else if(jobType == null) {
+						if(internshipType.isEmpty())
+							return mapToResponse(internshipOfferRepository.findInternshipsByDomainANDKeywordANDCity(domain, keyword, city));
+						else
+							return mapToResponse(internshipOfferRepository.findByDomainANDKeywordANDCityANDType(domain, keyword, city, internshipType));
 					}
+					else
+						return null;
 
 				}
 				
