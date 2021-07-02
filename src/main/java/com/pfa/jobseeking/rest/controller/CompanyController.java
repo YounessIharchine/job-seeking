@@ -80,9 +80,9 @@ public class CompanyController {
 	
 	
 	//**********************************PHOTOS**********************************
-	@GetMapping("${rest.api.basePath}/companies/photos")
-	List<CompanyPhotoResponse> findPhotos() {
-		return companyService.findPhotos();
+	@GetMapping("${rest.api.basePath}/companies/{id}/photos")
+	List<CompanyPhotoResponse> findPhotos(@PathVariable int id) throws NotFoundException, IOException {
+		return companyService.findPhotos(id);
 	}
 	
 	@PostMapping("${rest.api.basePath}/companies/photos")

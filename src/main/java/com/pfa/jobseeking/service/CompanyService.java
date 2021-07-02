@@ -45,7 +45,7 @@ public interface CompanyService {
 	
 	//**********************************PHOTOS**********************************
 
-	List<CompanyPhotoResponse> findPhotos();
+	List<CompanyPhotoResponse> findPhotos(int id) throws NotFoundException, IOException;
 	
 	List<CompanyPhotoResponse> addPhoto(PhotoDto photoDto) throws IOException;
 

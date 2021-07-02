@@ -222,13 +222,19 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	//**********************************PHOTOS**********************************
 
-	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
-	public List<CompanyPhotoResponse> findPhotos() {
-		List<CompanyPhotoResponse> response = new ArrayList<>();
+	public List<CompanyPhotoResponse> findPhotos(int id) throws NotFoundException, IOException {
+		User user = userRepository.findById(id);
+		Company company = null;
+		if(user instanceof Company)
+			company = (Company)user;
+		else
+			throw new NotFoundException("There is no company with that id.");
 		
+		company = (Company)user;
 		
+		List<CompanyPhotoResponse> response = mapToPhotosResponse(company.getCompanyProfile().getPhotos());
 		return response;
 	}
 	
