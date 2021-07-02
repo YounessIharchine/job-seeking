@@ -178,9 +178,11 @@ public class Seeker extends User {
 	}
 
 	public void unfollowCompany(Company company) {
+		Follow followToRemove = null;
 		for(Follow follow : this.follows)
 			if(follow.getCompany() == company)
-				this.follows.remove(follow);
+				followToRemove = follow;
+		follows.remove(followToRemove);
 	}
 
 
