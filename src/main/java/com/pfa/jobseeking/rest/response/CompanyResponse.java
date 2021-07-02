@@ -9,14 +9,13 @@ public class CompanyResponse {
 	String city;
 	String domain;
 	String logo;
-	String coverPhoto;
 	String webSite;
 	boolean isFollowed;
 	
 	public CompanyResponse() { }
 
 	public CompanyResponse(int id, String name, String publicEmail, String phone, String city,
-			String domain, String logo, String coverPhoto, String webSite, boolean isFollowed) {
+			String domain, String logo, String webSite, boolean isFollowed) {
 		this.id = id;
 		this.name = name;
 		this.publicEmail = publicEmail;
@@ -24,7 +23,6 @@ public class CompanyResponse {
 		this.city = city;
 		this.domain = domain;
 		this.logo = logo;
-		this.coverPhoto = coverPhoto;
 		this.webSite = webSite;
 		this.isFollowed = isFollowed;
 	}
@@ -50,9 +48,6 @@ public class CompanyResponse {
 	}
 	public String getLogo() {
 		return logo;
-	}
-	public String getCoverPhoto() {
-		return coverPhoto;
 	}
 	public String getWebSite() {
 		return webSite;
@@ -83,9 +78,6 @@ public class CompanyResponse {
 	}
 	public void setLogo(String logo) {
 		this.logo = logo;
-	}
-	public void setCoverPhoto(String coverPhoto) {
-		this.coverPhoto = coverPhoto;
 	}
 	public void setWebSite(String webSite) {
 		this.webSite = webSite;

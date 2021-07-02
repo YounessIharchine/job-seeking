@@ -112,13 +112,6 @@ public class CompanyServiceImpl implements CompanyService {
 			logo = Base64.getEncoder().encodeToString(logoBytes);
 		}
 		
-		String coverPhoto;
-		if(company.getCompanyProfile().getCoverPhoto() == null)
-			coverPhoto = null;
-		else {
-			byte[] coverPhotoBytes = FileUtils.readFileToByteArray(new File(path+company.getCompanyProfile().getCoverPhoto()));
-			coverPhoto = Base64.getEncoder().encodeToString(coverPhotoBytes);
-		}
 		
 		response.setId(company.getId());
 		response.setName(company.getName());
@@ -127,7 +120,6 @@ public class CompanyServiceImpl implements CompanyService {
 		response.setCity(company.getCity().getName());
 		response.setDomain(company.getDomain().getName());
 		response.setLogo(logo);
-		response.setCoverPhoto(coverPhoto);
 		response.setWebSite(company.getCompanyProfile().getWebSite());
 		response.setFollowed(isFollowed);
 		
@@ -177,12 +169,6 @@ public class CompanyServiceImpl implements CompanyService {
 			company.getCompanyProfile().setLogo(logoPath.replace("\\", "\\\\"));
 		}
 		
-		if(map.containsKey("coverPhoto")) {
-			String coverPath = "\\coverPhotos\\cover-" + company.getId() + ".png";
-			byte[] coverBytes = Base64.getDecoder().decode(map.get("coverPhoto"));
-			FileUtils.writeByteArrayToFile(new File(path+coverPath), coverBytes);
-			company.getCompanyProfile().setCoverPhoto(coverPath.replace("\\", "\\\\"));
-		}
 	}
 
 	

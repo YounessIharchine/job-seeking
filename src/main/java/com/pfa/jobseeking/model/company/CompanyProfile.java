@@ -23,7 +23,6 @@ public class CompanyProfile {
 	Company company;
 	
 	String logo;
-	String coverPhoto;
 	String webSite;
 	
 	@OneToMany(mappedBy = "companyProfile", cascade = CascadeType.ALL)
@@ -47,9 +46,6 @@ public class CompanyProfile {
 	public String getLogo() {
 		return logo;
 	}
-	public String getCoverPhoto() {
-		return coverPhoto;
-	}
 	public String getWebSite() {
 		return webSite;
 	}
@@ -70,9 +66,6 @@ public class CompanyProfile {
 	}
 	public void setLogo(String logo) {
 		this.logo = logo;
-	}
-	public void setCoverPhoto(String coverPhoto) {
-		this.coverPhoto = coverPhoto;
 	}
 	public void setWebSite(String webSite) {
 		this.webSite = webSite;
