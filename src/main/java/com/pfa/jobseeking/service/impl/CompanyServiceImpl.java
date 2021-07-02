@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.company.Photo;
+import com.pfa.jobseeking.model.seeker.Follow;
 import com.pfa.jobseeking.model.user.Company;
+import com.pfa.jobseeking.model.user.Seeker;
 import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.CompanyRepository;
@@ -94,7 +96,13 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		company = (Company)user;
 		
+		Seeker seeker = getAuthenticatedSeeker();
+		boolean isFollowed = false;
 		
+		if(seeker != null) 
+			for(Follow follow : seeker.getFollows())
+				if(follow.getCompany() == company)
+					isFollowed = true;
 		
 		String logo;
 		if(company.getCompanyProfile().getLogo() == null)
@@ -120,6 +128,7 @@ public class CompanyServiceImpl implements CompanyService {
 		response.setLogo(logo);
 		response.setCoverPhoto(coverPhoto);
 		response.setWebSite(company.getCompanyProfile().getWebSite());
+		response.setFollowed(isFollowed);
 		
 		return response;
 	}
@@ -293,6 +302,11 @@ public class CompanyServiceImpl implements CompanyService {
 	private Company getAuthenticatedCompany() {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Company)userRepository.findUserByEmail(authenticatedUserEmail);
+	}
+	
+	private Seeker getAuthenticatedSeeker() {
+		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		return (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 	}
 	
 	private List<FindCompanyResponse> mapToResponse(List<Company> companies) throws IOException {
