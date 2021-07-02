@@ -66,13 +66,13 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public List<FindCompanyResponse> findCompanies(String name, String domain) throws IOException {
-		if(name == null)
-			if(domain == null)
+		if(name == null || name.isEmpty())
+			if(domain == null || domain.isEmpty())
 				return mapToResponse(companyRepository.findAll());
 			else
 				return mapToResponse(companyRepository.findAllByDomain(domain));
 		else
-			if(domain == null)
+			if(domain == null || domain.isEmpty())
 				return mapToResponse(companyRepository.findAllByName(name));
 			else
 				return mapToResponse(companyRepository.findAllByNameAndDomain(name, domain));
