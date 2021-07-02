@@ -2,14 +2,13 @@ package com.pfa.jobseeking.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import com.pfa.jobseeking.model.company.Paragraph;
-import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.rest.dto.ParagraphDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.response.CompanyPhotoResponse;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.FindCompanyResponse;
 
@@ -46,10 +45,10 @@ public interface CompanyService {
 	
 	//**********************************PHOTOS**********************************
 
-	void addPhoto(PhotoDto photoDto) throws IOException;
+	List<CompanyPhotoResponse> findPhotos();
+	
+	List<CompanyPhotoResponse> addPhoto(PhotoDto photoDto) throws IOException;
 
-	Set<Photo> findPhotos();
-
-	void deletePhoto(int id) throws AccessDeniedException;
+	List<CompanyPhotoResponse> deletePhoto(int id) throws AccessDeniedException, IOException;
 
 }

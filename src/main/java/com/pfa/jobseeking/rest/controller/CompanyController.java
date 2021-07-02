@@ -2,7 +2,6 @@ package com.pfa.jobseeking.rest.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.model.company.Paragraph;
-import com.pfa.jobseeking.model.company.Photo;
 import com.pfa.jobseeking.rest.dto.ParagraphDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.response.CompanyPhotoResponse;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.FindCompanyResponse;
 import com.pfa.jobseeking.service.CompanyService;
@@ -82,18 +81,18 @@ public class CompanyController {
 	
 	//**********************************PHOTOS**********************************
 	@GetMapping("${rest.api.basePath}/companies/photos")
-	Set<Photo> findPhotos() {
+	List<CompanyPhotoResponse> findPhotos() {
 		return companyService.findPhotos();
 	}
 	
 	@PostMapping("${rest.api.basePath}/companies/photos")
-	void addPhoto(@RequestBody PhotoDto photoDto) throws IOException {
-		companyService.addPhoto(photoDto);
+	List<CompanyPhotoResponse> addPhoto(@RequestBody PhotoDto photoDto) throws IOException {
+		return companyService.addPhoto(photoDto);
 	}
 	
 	@DeleteMapping("${rest.api.basePath}/companies/photos/{id}")
-	void deletePhoto(@PathVariable(name = "id") int id) throws AccessDeniedException {
-		companyService.deletePhoto(id);
+	List<CompanyPhotoResponse> deletePhoto(@PathVariable(name = "id") int id) throws AccessDeniedException, IOException {
+		return companyService.deletePhoto(id);
 	}
 	
 	

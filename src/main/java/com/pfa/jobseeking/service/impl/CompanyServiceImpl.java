@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,7 @@ import com.pfa.jobseeking.rest.dto.ParagraphDto;
 import com.pfa.jobseeking.rest.dto.PhotoDto;
 import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
+import com.pfa.jobseeking.rest.response.CompanyPhotoResponse;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.FindCompanyResponse;
 import com.pfa.jobseeking.service.CompanyService;
@@ -225,9 +225,11 @@ public class CompanyServiceImpl implements CompanyService {
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
-	public Set<Photo> findPhotos() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<CompanyPhotoResponse> findPhotos() {
+		List<CompanyPhotoResponse> response = new ArrayList<>();
+		
+		
+		return response;
 	}
 	
 	
@@ -235,10 +237,8 @@ public class CompanyServiceImpl implements CompanyService {
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
-	public void addPhoto(PhotoDto photoDto) throws IOException {
+	public List<CompanyPhotoResponse> addPhoto(PhotoDto photoDto) throws IOException {
 		Company company = getAuthenticatedCompany();
-		
-		
 		
 		//this gymnastics is to get the id for storage name
 		Photo photo = new Photo();
@@ -252,13 +252,14 @@ public class CompanyServiceImpl implements CompanyService {
 		photo.setPhotoPath(photoPath.replace("\\", "\\\\"));
 		
 		photo = photoRepository.save(photo);
-
+		List<CompanyPhotoResponse> response = mapToPhotosResponse(company.getCompanyProfile().getPhotos());
+		return response;
 	}
 	
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
-	public void deletePhoto(int id) throws AccessDeniedException {
+	public List<CompanyPhotoResponse> deletePhoto(int id) throws AccessDeniedException, IOException {
 		Company company = getAuthenticatedCompany();
 		Photo photo = photoRepository.findById(id);
 		
@@ -269,6 +270,8 @@ public class CompanyServiceImpl implements CompanyService {
 		company.getCompanyProfile().removePhoto(photo);
 		
 		photoRepository.deleteById(id);
+		List<CompanyPhotoResponse> response = mapToPhotosResponse(company.getCompanyProfile().getPhotos());
+		return response;
 	}
 
 	
@@ -301,6 +304,18 @@ public class CompanyServiceImpl implements CompanyService {
 			response.add(item);
 		}
 		
+		return response;
+	}
+	
+	private List<CompanyPhotoResponse> mapToPhotosResponse(List<Photo> photos) throws IOException {
+		List<CompanyPhotoResponse> response = new ArrayList<>();
+		for(Photo photo : photos) {
+			CompanyPhotoResponse item = new CompanyPhotoResponse();
+			item.setId(photo.getId());
+			byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+photo.getPhotoPath()));
+			item.setPhoto(Base64.getEncoder().encodeToString(photoBytes));
+			response.add(item);
+		}
 		return response;
 	}
 	
