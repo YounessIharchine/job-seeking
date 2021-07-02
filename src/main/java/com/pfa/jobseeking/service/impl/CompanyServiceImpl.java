@@ -140,45 +140,30 @@ public class CompanyServiceImpl implements CompanyService {
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
-	public void updateInfo(Map<String, String> map) throws IOException {
+	public CompanyResponse updateInfo(CompanyResponse companyDto) throws IOException {
 		Company company = getAuthenticatedCompany();
 		
-		if(map.containsKey("name"))
-			company.setName(map.get("name"));
+		companyDto.setId(company.getId());
+		companyDto.setName(company.getName());
+		companyDto.setCity(company.getCity().getName());
+		companyDto.setDomain(company.getDomain().getName());
+		companyDto.setPhone(company.getPhone());
+		companyDto.setWebSite(company.getCompanyProfile().getWebSite());
 		
-		if(map.containsKey("city"))
-			company.setCity(cityRepository.findCityByName(map.get("city")));
-		
-		if(map.containsKey("domain"))
-			company.setDomain(domainRepository.findDomainByName(map.get("domain")));
-		
-		if(map.containsKey("document")) {
-			String documentPath = "\\documents\\document-" + company.getId() + ".pdf";
-			byte[] documentBytes = Base64.getDecoder().decode(map.get("document"));
-			FileUtils.writeByteArrayToFile(new File(path+documentPath), documentBytes);
-			company.setDocumentPath(documentPath.replace("\\", "\\\\"));
-		}
-		
-		if(map.containsKey("publicEmail"))
-			company.setPublicEmail(map.get("publicEmail"));
-		
-		if(map.containsKey("phone"))
-			company.setPhone(map.get("phone"));
-		
-		if(map.containsKey("webSite"))
-			company.getCompanyProfile().setWebSite(map.get("webSite"));
-		
-		if(map.containsKey("logo")) {
-			String logoPath = "\\logos\\logo-" + company.getId() + ".png";
-			byte[] logoBytes = Base64.getDecoder().decode(map.get("logo"));
-			FileUtils.writeByteArrayToFile(new File(path+logoPath), logoBytes);
-			company.getCompanyProfile().setLogo(logoPath.replace("\\", "\\\\"));
-		}
-		
+		return companyDto;
 	}
 
 	
-	
+	@Override
+	public PhotoDto updateLogo(PhotoDto photoDto) throws IOException {
+		Company company = getAuthenticatedCompany();
+		
+		byte[] logoBytes = Base64.getDecoder().decode(photoDto.getPhoto());
+		FileUtils.writeByteArrayToFile(new File(path+company.getCompanyProfile().getLogo()), logoBytes);
+		
+		return photoDto;
+	}
+
 	
 	
 	//**********************************PARAGRAPHS**********************************

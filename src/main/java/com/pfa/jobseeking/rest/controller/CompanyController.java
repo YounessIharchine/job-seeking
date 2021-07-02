@@ -2,12 +2,9 @@ package com.pfa.jobseeking.rest.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,7 +22,6 @@ import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.FindCompanyResponse;
-import com.pfa.jobseeking.rest.response.Response;
 import com.pfa.jobseeking.service.CompanyService;
 
 @RestController
@@ -57,11 +53,13 @@ public class CompanyController {
 	
 	//**********************************OWN PROFILE**********************************
 	@PatchMapping("${rest.api.basePath}/companies/profile")
-	ResponseEntity<Response> updateCompanyInfo(@RequestBody Map<String, String> map) throws IOException {
-		companyService.updateInfo(map);
-		
-		Response response = new Response(HttpStatus.OK.value(), "Update Successful");
-		return new ResponseEntity<>(response, HttpStatus.OK);
+	CompanyResponse updateCompanyInfo(@RequestBody CompanyResponse companyResponse) throws IOException {
+		return companyService.updateInfo(companyResponse);
+	}
+	
+	@PatchMapping("${rest.api.basePath}/companies/profile/photo")
+	PhotoDto updatePhoto(@RequestBody PhotoDto photoDto) throws IOException {
+		return companyService.updateLogo(photoDto);
 	}
 	
 	

@@ -2,7 +2,6 @@ package com.pfa.jobseeking.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.pfa.jobseeking.model.company.Paragraph;
@@ -30,7 +29,10 @@ public interface CompanyService {
 	
 	//**********************************OWN PROFILE**********************************
 
-	void updateInfo(Map<String, String> map) throws IOException;
+	CompanyResponse updateInfo(CompanyResponse companyResponse) throws IOException;
+	
+	PhotoDto updateLogo(PhotoDto photoDto) throws IOException;
+
 	
 	
 	//**********************************PARAGRAPHS**********************************
