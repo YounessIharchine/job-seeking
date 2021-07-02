@@ -73,6 +73,11 @@ public class CompanyController {
 		return companyService.addParagraph(paragraphDto);
 	}
 	
+	@PatchMapping("${rest.api.basePath}/companies/paragraphs/{id}")
+	List<Paragraph> updateParagraph(@PathVariable(name = "id") int id, @RequestBody ParagraphDto paragraphDto) throws AccessDeniedException {
+		return companyService.updateParagraph(id, paragraphDto);
+	}
+	
 	@DeleteMapping("${rest.api.basePath}/companies/paragraphs/{id}")
 	List<Paragraph> deleteParagraph(@PathVariable(name = "id") int id) throws AccessDeniedException {
 		return companyService.deleteParagraph(id);

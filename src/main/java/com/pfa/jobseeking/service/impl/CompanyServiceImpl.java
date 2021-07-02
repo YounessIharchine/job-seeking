@@ -202,6 +202,21 @@ public class CompanyServiceImpl implements CompanyService {
 		return company.getCompanyProfile().getParagraphs();
 		
 	}
+	
+	
+	@Override
+	public List<Paragraph> updateParagraph(int id, ParagraphDto paragraphDto) throws AccessDeniedException {
+		Company company = getAuthenticatedCompany();
+		Paragraph paragraph = paragraphRepository.findById(id);
+		
+		if(!isParagraphOwner(company, paragraph))
+			throw new AccessDeniedException("You don't own this paragraph.");
+		
+		paragraph.setTitle(paragraphDto.getTitle());
+		paragraph.setText(paragraphDto.getText());
+		
+		return company.getCompanyProfile().getParagraphs();
+	}
 
 	
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
@@ -352,5 +367,6 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		return isOwner;
 	}
+
 
 }

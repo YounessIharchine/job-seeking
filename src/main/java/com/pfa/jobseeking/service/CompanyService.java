@@ -39,6 +39,8 @@ public interface CompanyService {
 	List<Paragraph> findParagraphs(int id) throws NotFoundException;
 
 	List<Paragraph> addParagraph(ParagraphDto paragraphDto);
+	
+	List<Paragraph> updateParagraph(int id, ParagraphDto paragraphDto) throws AccessDeniedException;
 
 	List<Paragraph> deleteParagraph(int id) throws AccessDeniedException;
 
