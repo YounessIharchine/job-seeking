@@ -171,8 +171,15 @@ public class CompanyServiceImpl implements CompanyService {
 	@PreAuthorize("hasRole('ROLE_COMPANY')")
 	@Transactional
 	@Override
-	public List<Paragraph> findParagraphs() {
-		Company company = getAuthenticatedCompany();
+	public List<Paragraph> findParagraphs(int id) throws NotFoundException {
+		User user = userRepository.findById(id);
+		Company company = null;
+		if(user instanceof Company)
+			company = (Company)user;
+		else
+			throw new NotFoundException("There is no company with that id.");
+		
+		company = (Company)user;
 		
 		return company.getCompanyProfile().getParagraphs();
 	}

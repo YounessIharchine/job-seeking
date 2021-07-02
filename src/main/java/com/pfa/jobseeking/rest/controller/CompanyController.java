@@ -63,9 +63,9 @@ public class CompanyController {
 	
 	
 	//**********************************PARAGRAPHS**********************************
-	@GetMapping("${rest.api.basePath}/companies/paragraphs")
-	List<Paragraph> findParagraphs() {
-		return companyService.findParagraphs();
+	@GetMapping("${rest.api.basePath}/companies/{id}/paragraphs")
+	List<Paragraph> findParagraphs(@PathVariable int id) throws NotFoundException {
+		return companyService.findParagraphs(id);
 	}
 	
 	@PostMapping("${rest.api.basePath}/companies/paragraphs")

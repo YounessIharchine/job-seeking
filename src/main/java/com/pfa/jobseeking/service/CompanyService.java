@@ -36,7 +36,7 @@ public interface CompanyService {
 	
 	//**********************************PARAGRAPHS**********************************
 
-	List<Paragraph> findParagraphs();
+	List<Paragraph> findParagraphs(int id) throws NotFoundException;
 
 	List<Paragraph> addParagraph(ParagraphDto paragraphDto);
 
