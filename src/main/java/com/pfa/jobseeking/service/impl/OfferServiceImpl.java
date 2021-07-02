@@ -74,17 +74,17 @@ public class OfferServiceImpl implements OfferService {
 	@Override
 	public List<OfferResponse> findAll(String domain, String keyword, String city, String internshipType, String jobType) {
 		
-		if(domain == null) {
+		if(domain == null || domain.isEmpty()) {
 			
-			if(keyword == null) {
+			if(keyword == null || keyword.isEmpty()) {
 				
-				if(city == null) {
+				if(city == null || city.isEmpty()) {
 					
-					if(internshipType == null && jobType == null) {
+					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
 						return mapToResponse(offerRepository.findAll());
 					}
 					
-					else if(internshipType == null) {
+					else if(internshipType == null || internshipType.isEmpty()) {
 						return mapToResponse(jobOfferRepository.findByJobTypeName(jobType));
 					}
 					
@@ -96,11 +96,11 @@ public class OfferServiceImpl implements OfferService {
 				
 				else {
 					
-					if(internshipType == null && jobType == null) {
+					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
 						return mapToResponse(offerRepository.findByCityName(city));
 					}
 					
-					else if(internshipType == null) {
+					else if(internshipType == null || internshipType.isEmpty()) {
 						return mapToResponse(jobOfferRepository.findByCityANDType(city, jobType));
 					}
 					
@@ -114,13 +114,13 @@ public class OfferServiceImpl implements OfferService {
 			
 			else {
 				
-				if(city == null) {
+				if(city == null || city.isEmpty()) {
 					
-					if(internshipType == null && jobType == null) {
+					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
 						return mapToResponse(offerRepository.findByKeyword(keyword));
 					}
 					
-					else if(internshipType == null) {
+					else if(internshipType == null || internshipType.isEmpty()) {
 						return mapToResponse(jobOfferRepository.findByKeywordANDType(keyword, jobType));
 					}
 					
@@ -132,11 +132,11 @@ public class OfferServiceImpl implements OfferService {
 				
 				else {
 					
-					if(internshipType == null && jobType == null) {
+					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
 						return mapToResponse(offerRepository.findByKeywordANDCity(keyword, city));
 					}
 					
-					else if(internshipType == null) {
+					else if(internshipType == null || internshipType.isEmpty()) {
 						return mapToResponse(jobOfferRepository.findByKeywordANDCityANDType(keyword, city, jobType));
 					}
 					
@@ -151,15 +151,15 @@ public class OfferServiceImpl implements OfferService {
 		}
 		else {
 			
-			if(keyword == null) {
+			if(keyword == null || keyword.isEmpty()) {
 				
-				if(city == null) {
+				if(city == null || city.isEmpty()) {
 					
-					if(internshipType == null && jobType == null) {
+					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
 						return mapToResponse(offerRepository.findByDomainName(domain));
 					}
 					
-					else if(internshipType == null) {
+					else if(internshipType == null || internshipType.isEmpty()) {
 						return mapToResponse(jobOfferRepository.findByDomainANDType(domain, jobType));
 					}
 					
@@ -171,11 +171,11 @@ public class OfferServiceImpl implements OfferService {
 				
 				else {
 					
-					if(internshipType == null && jobType == null) {
+					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
 						return mapToResponse(offerRepository.findByDomainNameANDCity(domain, city));
 					}
 					
-					else if(internshipType == null) {
+					else if(internshipType == null || internshipType.isEmpty()) {
 						return mapToResponse(jobOfferRepository.findByDomainANDCityANDType(domain, city, jobType));
 					}
 					
@@ -190,13 +190,13 @@ public class OfferServiceImpl implements OfferService {
 			
 			else {
 				
-				if(city == null) {
+				if(city == null || city.isEmpty()) {
 					
-					if(internshipType == null && jobType == null) {
+					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
 						return mapToResponse(offerRepository.findByDomainNameANDKeyword(domain, keyword));
 					}
 					
-					else if(internshipType == null) {
+					else if(internshipType == null || internshipType.isEmpty()) {
 						return mapToResponse(jobOfferRepository.findByDomainANDKeywordANDType(domain, keyword, jobType));
 					}
 					
@@ -208,11 +208,11 @@ public class OfferServiceImpl implements OfferService {
 				
 				else {
 					
-					if(internshipType == null && jobType == null) {
+					if((internshipType == null || internshipType.isEmpty()) && (jobType == null || jobType.isEmpty())) {
 						return mapToResponse(offerRepository.findByDomainNameANDKeywordANDCity(domain, keyword, city));
 					}
 					
-					else if(internshipType == null) {
+					else if(internshipType == null || internshipType.isEmpty()) {
 						return mapToResponse(jobOfferRepository.findByDomainANDKeywordANDCityANDType(domain, keyword, city, jobType));
 					}
 					
