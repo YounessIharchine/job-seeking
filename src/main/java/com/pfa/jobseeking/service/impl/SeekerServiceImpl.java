@@ -368,7 +368,9 @@ public class SeekerServiceImpl implements SeekerService {
 	@Override
 	public List<FindCompanyResponse> unfollow(String companyName) throws IOException {
 		Seeker seeker = getAuthenticatedSeeker();
+		System.out.println("bfore");
 		seeker.unfollowCompany(companyRepository.findCompanyByName(companyName));
+		System.out.println("after");
 		return mapToFollowedCompanyResponse(seeker.getFollows());
 	}
 	
@@ -1016,10 +1018,11 @@ public class SeekerServiceImpl implements SeekerService {
 	}
 
 	
-	private List<FindCompanyResponse> mapToFollowedCompanyResponse(Set<Follow> follows) throws IOException {
+	private List<FindCompanyResponse> mapToFollowedCompanyResponse(List<Follow> follows) throws IOException {
 		List<FindCompanyResponse> response = new ArrayList<>();
 		for(Follow follow : follows) {
 			FindCompanyResponse item = new FindCompanyResponse();
+			item.setId(follow.getCompany().getId());
 			item.setName(follow.getCompany().getName());
 			item.setCity(follow.getCompany().getCity().getName());
 			item.setDomain(follow.getCompany().getDomain().getName());

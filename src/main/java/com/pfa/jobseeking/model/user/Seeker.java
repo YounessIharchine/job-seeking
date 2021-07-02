@@ -1,6 +1,7 @@
 package com.pfa.jobseeking.model.user;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -58,7 +59,7 @@ public class Seeker extends User {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "seeker", orphanRemoval = true, cascade = CascadeType.ALL)
-	Set<Follow> follows;
+	List<Follow> follows;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -113,7 +114,7 @@ public class Seeker extends User {
 	public Set<Application> getApplications() {
 		return applications;
 	}
-	public Set<Follow> getFollows() {
+	public List<Follow> getFollows() {
 		return follows;
 	}
 	
@@ -152,7 +153,7 @@ public class Seeker extends User {
 	public void setApplications(Set<Application> applications) {
 		this.applications = applications;
 	}
-	public void setFollows(Set<Follow> follows) {
+	public void setFollows(List<Follow> follows) {
 		this.follows = follows;
 	}
 	

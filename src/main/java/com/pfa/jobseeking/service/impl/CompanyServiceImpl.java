@@ -120,6 +120,7 @@ public class CompanyServiceImpl implements CompanyService {
 			coverPhoto = Base64.getEncoder().encodeToString(coverPhotoBytes);
 		}
 		
+		response.setId(company.getId());
 		response.setName(company.getName());
 		response.setPublicEmail(company.getPublicEmail());
 		response.setPhone(company.getPhone());
