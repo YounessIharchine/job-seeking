@@ -12,20 +12,28 @@ public interface OfferRepository extends CrudRepository<Offer, Integer> {
 	Offer findById(int id);
 	
 	@Query("SELECT o FROM Offer o "
+			+ "WHERE o.isOpen = TRUE "
+			+ "AND o.isVerified = TRUE "
 			+ "ORDER BY STR_TO_DATE(o.date, '%d-%m-%Y') DESC")
 	List<Offer> findAll();
 	
 	
 	@Query("SELECT o FROM Offer o "
-			+ "WHERE o.title LIKE %?1% OR o.description LIKE %?1% "
+			+ "WHERE (o.title LIKE %?1% OR o.description LIKE %?1%) "
+			+ "AND o.isOpen = TRUE "
+			+ "AND o.isVerified = TRUE "
 			+ "ORDER BY STR_TO_DATE(o.date, '%d-%m-%Y') DESC")
 	List<Offer> findByKeyword(String keyword);
 	@Query("SELECT o FROM Offer o "
 			+ "WHERE o.domain.name = ?1 "
+			+ "AND o.isOpen = TRUE "
+			+ "AND o.isVerified = TRUE "
 			+ "ORDER BY STR_TO_DATE(o.date, '%d-%m-%Y') DESC")
 	List<Offer> findByDomainName(String domainName);
 	@Query("SELECT o FROM Offer o "
 			+ "WHERE o.city.name = ?1 "
+			+ "AND o.isOpen = TRUE "
+			+ "AND o.isVerified = TRUE "
 			+ "ORDER BY STR_TO_DATE(o.date, '%d-%m-%Y') DESC")
 	List<Offer> findByCityName(String cityName);
 	
@@ -33,16 +41,22 @@ public interface OfferRepository extends CrudRepository<Offer, Integer> {
 	@Query("SELECT o FROM Offer o "
 			+ "WHERE o.domain.name = ?1 "
 			+ "AND (o.title LIKE %?2% OR o.description LIKE %?2%) "
+			+ "AND o.isOpen = TRUE "
+			+ "AND o.isVerified = TRUE "
 			+ "ORDER BY STR_TO_DATE(o.date, '%d-%m-%Y') DESC")
 	List<Offer> findByDomainNameANDKeyword(String domainName, String Keyword);
 	@Query("SELECT o FROM Offer o "
 			+ "WHERE o.domain.name = ?1 "
 			+ "AND o.city.name = ?2 "
+			+ "AND o.isOpen = TRUE "
+			+ "AND o.isVerified = TRUE "
 			+ "ORDER BY STR_TO_DATE(o.date, '%d-%m-%Y') DESC")
 	List<Offer> findByDomainNameANDCity(String domainName, String cityName);
 	@Query("SELECT o FROM Offer o "
 			+ "WHERE (o.title LIKE %?1% OR o.description LIKE %?1%) "
 			+ "AND o.city.name = ?2 "
+			+ "AND o.isOpen = TRUE "
+			+ "AND o.isVerified = TRUE "
 			+ "ORDER BY STR_TO_DATE(o.date, '%d-%m-%Y') DESC")
 	List<Offer> findByKeywordANDCity(String keyword, String cityName);
 	
@@ -51,6 +65,8 @@ public interface OfferRepository extends CrudRepository<Offer, Integer> {
 			+ "WHERE o.domain.name = ?1 "
 			+ "AND (o.title LIKE %?2% OR o.description LIKE %?2%) "
 			+ "AND o.city.name = ?3 "
+			+ "AND o.isOpen = TRUE "
+			+ "AND o.isVerified = TRUE "
 			+ "ORDER BY STR_TO_DATE(o.date, '%d-%m-%Y') DESC")
 	List<Offer> findByDomainNameANDKeywordANDCity(String domainName, String keyword, String cityName);
 	
