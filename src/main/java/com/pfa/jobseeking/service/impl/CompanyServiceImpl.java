@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.company.Paragraph;
 import com.pfa.jobseeking.model.company.Photo;
+import com.pfa.jobseeking.model.offer.InternshipOffer;
+import com.pfa.jobseeking.model.offer.JobOffer;
+import com.pfa.jobseeking.model.offer.Offer;
 import com.pfa.jobseeking.model.seeker.Follow;
 import com.pfa.jobseeking.model.user.Company;
 import com.pfa.jobseeking.model.user.Seeker;
@@ -33,6 +36,7 @@ import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyPhotoResponse;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.FindCompanyResponse;
+import com.pfa.jobseeking.rest.response.OfferResponse;
 import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.CompanyService;
 
@@ -185,6 +189,43 @@ public class CompanyServiceImpl implements CompanyService {
 			item.setCity(follow.getSeeker().getCity().getName());
 			byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+follow.getSeeker().getProfile().getPhoto()));
 			item.setPhoto(Base64.getEncoder().encodeToString(photoBytes));
+			response.add(item);
+		}
+		
+		return response;
+	}
+	
+	
+	
+	//**********************************FOLLOWERS**********************************
+
+	@Override
+	public List<OfferResponse> findOffers() {
+		Company company = getAuthenticatedCompany();
+		List<OfferResponse> response = new ArrayList<>();
+		
+		for(Offer offer : company.getOffers()) {
+			OfferResponse item = new OfferResponse();
+			item.setId(offer.getId());
+			item.setTitle(offer.getTitle());
+			item.setDescription(offer.getDescription());
+			item.setDate(offer.getDate());
+			item.setCity(offer.getCity().getName());
+			item.setDomain(offer.getDomain().getName());
+			item.setCompanyName(offer.getCompany().getName());
+			if(offer instanceof InternshipOffer) {
+				InternshipOffer internshipOffer = (InternshipOffer) offer;
+				item.setInternshipOffer(true);
+				item.setType(internshipOffer.getInternshipType().getName());
+				item.setDuration(internshipOffer.getDuration().getDuration());
+			}
+			else if(offer instanceof JobOffer) {
+				JobOffer jobOffer = (JobOffer) offer;
+				item.setInternshipOffer(false);
+				item.setType(jobOffer.getJobType().getName());
+				item.setDuration(null);
+			}
+				
 			response.add(item);
 		}
 		
