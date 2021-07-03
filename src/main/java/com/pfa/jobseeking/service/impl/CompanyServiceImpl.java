@@ -33,6 +33,7 @@ import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyPhotoResponse;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.FindCompanyResponse;
+import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.CompanyService;
 
 @Service
@@ -166,6 +167,29 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	
+	
+	//**********************************FOLLOWERS**********************************
+	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public List<SeekerResponse> findFollowers() throws IOException {
+		Company company = getAuthenticatedCompany();
+		List<SeekerResponse> response = new ArrayList<>();
+		
+		for(Follow follow : company.getFollows()) {
+			SeekerResponse item = new SeekerResponse();
+			item.setId(follow.getSeeker().getId());
+			item.setName(follow.getSeeker().getFirstName()+" "+follow.getSeeker().getLastName());
+			item.setSpeciality(follow.getSeeker().getProfile().getSpeciality());
+			item.setCity(follow.getSeeker().getCity().getName());
+			byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+follow.getSeeker().getProfile().getPhoto()));
+			item.setPhoto(Base64.getEncoder().encodeToString(photoBytes));
+			response.add(item);
+		}
+		
+		return response;
+	}
 	
 	//**********************************PARAGRAPHS**********************************
 

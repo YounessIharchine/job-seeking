@@ -21,6 +21,7 @@ import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyPhotoResponse;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.FindCompanyResponse;
+import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.CompanyService;
 
 @RestController
@@ -59,6 +60,13 @@ public class CompanyController {
 	@PatchMapping("${rest.api.basePath}/companies/logo")
 	PhotoDto updatePhoto(@RequestBody PhotoDto photoDto) throws IOException {
 		return companyService.updateLogo(photoDto);
+	}
+	
+	
+	//**********************************FOLLOWERS**********************************
+	@GetMapping("${rest.api.basePath}/companies/followers")
+	List<SeekerResponse> getFollowers() throws IOException {
+		return companyService.findFollowers();
 	}
 	
 	

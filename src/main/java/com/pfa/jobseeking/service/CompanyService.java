@@ -11,6 +11,7 @@ import com.pfa.jobseeking.rest.exception.NotFoundException;
 import com.pfa.jobseeking.rest.response.CompanyPhotoResponse;
 import com.pfa.jobseeking.rest.response.CompanyResponse;
 import com.pfa.jobseeking.rest.response.FindCompanyResponse;
+import com.pfa.jobseeking.rest.response.SeekerResponse;
 
 public interface CompanyService {
 	
@@ -33,6 +34,10 @@ public interface CompanyService {
 	PhotoDto updateLogo(PhotoDto photoDto) throws IOException;
 
 	
+	//**********************************FOLLOWERS**********************************
+
+	List<SeekerResponse> findFollowers() throws IOException;
+
 	
 	//**********************************PARAGRAPHS**********************************
 
@@ -52,5 +57,7 @@ public interface CompanyService {
 	List<CompanyPhotoResponse> addPhoto(PhotoDto photoDto) throws IOException;
 
 	List<CompanyPhotoResponse> deletePhoto(int id) throws AccessDeniedException, IOException;
+
+
 
 }
