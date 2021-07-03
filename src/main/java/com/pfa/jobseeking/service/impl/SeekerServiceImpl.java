@@ -120,7 +120,7 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	@Override
 	public List<SeekerResponse> findSeekers(String keyword) throws IOException {
-		if(keyword == null)
+		if(keyword == null || keyword.isEmpty())
 			return mapToResponse(seekerRepository.findAll());
 		else
 			return mapToResponse(seekerRepository.findAllByKeyword(keyword));
