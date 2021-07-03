@@ -1,11 +1,16 @@
 package com.pfa.jobseeking.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.ApplicationNotification;
 import com.pfa.jobseeking.model.OfferCreationRequest;
+import com.pfa.jobseeking.model.offer.Application;
 import com.pfa.jobseeking.model.offer.InternshipOffer;
 import com.pfa.jobseeking.model.offer.JobOffer;
 import com.pfa.jobseeking.model.offer.Offer;
@@ -31,7 +37,9 @@ import com.pfa.jobseeking.repository.JobTypeRepository;
 import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.UserRepository;
 import com.pfa.jobseeking.rest.dto.OfferDto;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
+import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.OfferService;
 
 
@@ -67,6 +75,9 @@ public class OfferServiceImpl implements OfferService {
 	
 	@Autowired
 	AdminRepository adminRepository;
+	
+	@Value("${storage.images.basePath}")
+	String path;
 	
 	
 	//****************************OFFER SEARCH***************************
@@ -362,6 +373,41 @@ public class OfferServiceImpl implements OfferService {
 	
 	
 	
+	//****************************OFFER APPLIERS***************************
+
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public List<SeekerResponse> findAppliers(int id) throws AccessDeniedException, IOException {
+		Company company = getAuthenticatedCompany();
+		Offer offer = offerRepository.findById(id);
+		
+		
+		boolean isOfferOwner = false;
+	
+		for(Offer iteratedOffer : company.getOffers())
+			if(iteratedOffer == offer)
+				isOfferOwner = true;
+		
+		if(!isOfferOwner)
+			throw new AccessDeniedException("You are not the owner of this offer.");
+		
+		
+		List<SeekerResponse> response = new ArrayList<>();
+		
+		for(Application application : offer.getApplications()) {
+			SeekerResponse item = new SeekerResponse();
+			item.setId(application.getSeeker().getId());
+			item.setName(application.getSeeker().getFirstName()+" "+application.getSeeker().getLastName());
+			item.setSpeciality(application.getSeeker().getProfile().getSpeciality());
+			item.setCity(application.getSeeker().getCity().getName());
+			byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+application.getSeeker().getProfile().getPhoto()));
+			item.setPhoto(Base64.getEncoder().encodeToString(photoBytes));
+			response.add(item);
+		}
+		
+		return response;
+	}
 	
 	
 	
@@ -469,6 +515,7 @@ public class OfferServiceImpl implements OfferService {
 		String authenticatedUserEmail = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		return (Seeker)userRepository.findUserByEmail(authenticatedUserEmail);
 	}
+
 
 }
 

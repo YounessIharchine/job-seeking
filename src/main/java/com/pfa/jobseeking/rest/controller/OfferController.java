@@ -1,5 +1,6 @@
 package com.pfa.jobseeking.rest.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pfa.jobseeking.rest.dto.OfferDto;
+import com.pfa.jobseeking.rest.exception.AccessDeniedException;
 import com.pfa.jobseeking.rest.response.OfferResponse;
+import com.pfa.jobseeking.rest.response.SeekerResponse;
 import com.pfa.jobseeking.service.OfferService;
 
 
@@ -51,6 +54,11 @@ public class OfferController {
 	}
 	
 	
+	//****************************OFFER APPLIERS***************************
+	@GetMapping("${rest.api.basePath}/offers/{id}/appliers")
+	List<SeekerResponse> getAppliers(@PathVariable int id)throws IOException, AccessDeniedException {
+		return offerService.findAppliers(id);
+	}
 	
 }
 
