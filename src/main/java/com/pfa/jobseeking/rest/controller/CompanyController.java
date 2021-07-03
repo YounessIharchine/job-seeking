@@ -77,6 +77,16 @@ public class CompanyController {
 		return companyService.findOffers();
 	}
 	
+	@GetMapping("${rest.api.basePath}/companies/openOffer/{id}")
+	List<OfferResponse> openOffer(@PathVariable int id) throws AccessDeniedException {
+		return companyService.openOffer(id);
+	}
+	
+	@GetMapping("${rest.api.basePath}/companies/closeOffer/{id}")
+	List<OfferResponse> closeOffer(@PathVariable int id) throws AccessDeniedException {
+		return companyService.closeOffer(id);
+	}
+	
 	
 	//**********************************PARAGRAPHS**********************************
 	@GetMapping("${rest.api.basePath}/companies/{id}/paragraphs")

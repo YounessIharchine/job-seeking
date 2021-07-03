@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.pfa.jobseeking.model.user.User;
 import com.pfa.jobseeking.repository.CityRepository;
 import com.pfa.jobseeking.repository.CompanyRepository;
 import com.pfa.jobseeking.repository.DomainRepository;
+import com.pfa.jobseeking.repository.OfferRepository;
 import com.pfa.jobseeking.repository.ParagraphRepository;
 import com.pfa.jobseeking.repository.PhotoRepository;
 import com.pfa.jobseeking.repository.UserRepository;
@@ -48,6 +50,9 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Autowired
 	CompanyRepository companyRepository;
+	
+	@Autowired
+	OfferRepository offerRepository;
 	
 	@Autowired
 	CityRepository cityRepository;
@@ -197,39 +202,60 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	
 	
-	//**********************************FOLLOWERS**********************************
+	//**********************************OFFERS**********************************
 
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
 	@Override
 	public List<OfferResponse> findOffers() {
 		Company company = getAuthenticatedCompany();
-		List<OfferResponse> response = new ArrayList<>();
+
+		return mapToOfferResponse(company.getOffers());
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public List<OfferResponse> openOffer(int id) throws AccessDeniedException {
+		Company company = getAuthenticatedCompany();
+		Offer offer = offerRepository.findById(id);
 		
-		for(Offer offer : company.getOffers()) {
-			OfferResponse item = new OfferResponse();
-			item.setId(offer.getId());
-			item.setTitle(offer.getTitle());
-			item.setDescription(offer.getDescription());
-			item.setDate(offer.getDate());
-			item.setCity(offer.getCity().getName());
-			item.setDomain(offer.getDomain().getName());
-			item.setCompanyName(offer.getCompany().getName());
-			if(offer instanceof InternshipOffer) {
-				InternshipOffer internshipOffer = (InternshipOffer) offer;
-				item.setInternshipOffer(true);
-				item.setType(internshipOffer.getInternshipType().getName());
-				item.setDuration(internshipOffer.getDuration().getDuration());
-			}
-			else if(offer instanceof JobOffer) {
-				JobOffer jobOffer = (JobOffer) offer;
-				item.setInternshipOffer(false);
-				item.setType(jobOffer.getJobType().getName());
-				item.setDuration(null);
-			}
-				
-			response.add(item);
-		}
+		boolean isOfferOwner = false;
 		
-		return response;
+		for(Offer iteratedOffer : company.getOffers())
+			if(iteratedOffer == offer)
+				isOfferOwner = true;
+		
+		if(!isOfferOwner)
+			throw new AccessDeniedException("You are not the owner of this offer.");
+		
+		offer.setOpen(true);
+		
+		return mapToOfferResponse(company.getOffers());
+	}
+	
+
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
+	@Override
+	public List<OfferResponse> closeOffer(int id) throws AccessDeniedException {
+		Company company = getAuthenticatedCompany();
+		
+		Offer offer = offerRepository.findById(id);
+		
+		boolean isOfferOwner = false;
+		
+		for(Offer iteratedOffer : company.getOffers())
+			if(iteratedOffer == offer)
+				isOfferOwner = true;
+		
+		if(!isOfferOwner)
+			throw new AccessDeniedException("You are not the owner of this offer.");
+		
+		offer.setOpen(false);
+
+		return mapToOfferResponse(company.getOffers());
 	}
 	
 	//**********************************PARAGRAPHS**********************************
@@ -411,6 +437,39 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 		return response;
 	}
+	
+	
+	private List<OfferResponse> mapToOfferResponse(Set<Offer> offers) {
+		List<OfferResponse> response = new ArrayList<>();
+		
+		for(Offer offer : offers) {
+			OfferResponse item = new OfferResponse();
+			item.setId(offer.getId());
+			item.setTitle(offer.getTitle());
+			item.setDescription(offer.getDescription());
+			item.setDate(offer.getDate());
+			item.setCity(offer.getCity().getName());
+			item.setDomain(offer.getDomain().getName());
+			item.setCompanyName(offer.getCompany().getName());
+			if(offer instanceof InternshipOffer) {
+				InternshipOffer internshipOffer = (InternshipOffer) offer;
+				item.setInternshipOffer(true);
+				item.setType(internshipOffer.getInternshipType().getName());
+				item.setDuration(internshipOffer.getDuration().getDuration());
+			}
+			else if(offer instanceof JobOffer) {
+				JobOffer jobOffer = (JobOffer) offer;
+				item.setInternshipOffer(false);
+				item.setType(jobOffer.getJobType().getName());
+				item.setDuration(null);
+			}
+				
+			response.add(item);
+		}
+		
+		return response;
+	}
+
 	
 	
 	private boolean isParagraphOwner(Company company, Paragraph paragraph) {

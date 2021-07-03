@@ -43,6 +43,10 @@ public interface CompanyService {
 	//**********************************FOLLOWERS**********************************
 
 	List<OfferResponse> findOffers();
+	
+	List<OfferResponse> openOffer(int id) throws AccessDeniedException;
+
+	List<OfferResponse> closeOffer(int id) throws AccessDeniedException;
 
 	
 	//**********************************PARAGRAPHS**********************************
@@ -63,5 +67,6 @@ public interface CompanyService {
 	List<CompanyPhotoResponse> addPhoto(PhotoDto photoDto) throws IOException;
 
 	List<CompanyPhotoResponse> deletePhoto(int id) throws AccessDeniedException, IOException;
+
 
 }
