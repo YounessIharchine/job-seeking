@@ -1086,7 +1086,7 @@ public class SeekerServiceImpl implements SeekerService {
 
 	
 	private String parseCvTemplate(Seeker seeker, List<Integer> experiencesIds, List<Integer> educationsIds, 
-			List<Integer> projectsIds, List<Integer> skillsIds, List<Integer> languagesIds) {
+			List<Integer> projectsIds, List<Integer> skillsIds, List<Integer> languagesIds) throws IOException {
 		
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 		templateResolver.setPrefix("/templates/");
@@ -1111,9 +1111,13 @@ public class SeekerServiceImpl implements SeekerService {
 		TemplateEngine templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
 		
+		byte[] photoBytes = FileUtils.readFileToByteArray(new File(path+seeker.getProfile().getPhoto()));
+		String photo = Base64.getEncoder().encodeToString(photoBytes);
+		
 		Context context = new Context();
 		context.setVariable("var", "CV");
 		context.setVariable("seeker", seeker);
+		context.setVariable("photo", photo);
 		context.setVariable("experiences", experiences);
 		context.setVariable("educations", educations);
 		context.setVariable("projects", projects);
