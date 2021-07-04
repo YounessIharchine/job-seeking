@@ -404,7 +404,7 @@ public class SeekerServiceImpl implements SeekerService {
 		String text = textBuilder.toString();
 		String coverLetterPath = "\\coverLetters\\coverLetter-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
 		String coverLetter = parseCoverLetterTemplate(seeker, offer.getCompany(), text);
-		generatePdfFromHtml(coverLetter, coverLetterPath);
+		generatePdfFromHtmlCover(coverLetter, coverLetterPath);
 		
 		
 		application.setCv(cvPath.replace("\\", "\\\\"));
@@ -434,7 +434,7 @@ public class SeekerServiceImpl implements SeekerService {
 		String text = textBuilder.toString();
 		String coverLetterPath = "\\coverLetters\\coverLetter-" + application.getSeeker().getId() + "-" + application.getOffer().getId() + ".pdf";
 		String coverLetter = parseCoverLetterTemplate(seeker, offer.getCompany(), text);
-		generatePdfFromHtml(coverLetter, coverLetterPath);
+		generatePdfFromHtmlCover(coverLetter, coverLetterPath);
 		
 		
 		//CV
@@ -442,7 +442,7 @@ public class SeekerServiceImpl implements SeekerService {
 		String cv = parseCvTemplate(seeker, applicationWithoutCvDto.getExperiencesIds(), applicationWithoutCvDto.getEducationsIds(),
 				applicationWithoutCvDto.getProjectsIds(), applicationWithoutCvDto.getSkillsIds(), 
 				applicationWithoutCvDto.getLanguagesIds());
-		generatePdfFromHtml(cv, cvPath);
+		generatePdfFromHtmlCv(cv, cvPath);
 		
 		application.setCv(cvPath.replace("\\", "\\\\"));
 		application.setCoverLetter(coverLetterPath.replace("\\", "\\\\"));	
@@ -1087,6 +1087,7 @@ public class SeekerServiceImpl implements SeekerService {
 	
 	private String parseCvTemplate(Seeker seeker, List<Integer> experiencesIds, List<Integer> educationsIds, 
 			List<Integer> projectsIds, List<Integer> skillsIds, List<Integer> languagesIds) {
+		
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 		templateResolver.setPrefix("/templates/");
 		templateResolver.setSuffix(".html");
@@ -1112,6 +1113,7 @@ public class SeekerServiceImpl implements SeekerService {
 		
 		Context context = new Context();
 		context.setVariable("var", "CV");
+		context.setVariable("seeker", seeker);
 		context.setVariable("experiences", experiences);
 		context.setVariable("educations", educations);
 		context.setVariable("projects", projects);
@@ -1140,7 +1142,7 @@ public class SeekerServiceImpl implements SeekerService {
 		return templateEngine.process("coverLetter-template", context);
 	}
 	
-	private void generatePdfFromHtml(String html, String relativePath) throws DocumentException, IOException {
+	private void generatePdfFromHtmlCover(String html, String relativePath) throws DocumentException, IOException {
 		//generate .html
 		FileUtils.writeStringToFile(new File(path+"\\coverLetter-test.html"), html, "UTF-8");;
 		
@@ -1156,6 +1158,21 @@ public class SeekerServiceImpl implements SeekerService {
 		outputStream.close();
 	}
 	
+	private void generatePdfFromHtmlCv(String html, String relativePath) throws DocumentException, IOException {
+		//generate .html
+		FileUtils.writeStringToFile(new File(path+"\\cv-test.html"), html, "UTF-8");;
+		
+		
+		//generate .pdf
+		OutputStream outputStream = new FileOutputStream(path+relativePath);
+		ITextRenderer renderer = new ITextRenderer();
+		
+		renderer.setDocumentFromString(html);
+		renderer.layout();
+		renderer.createPDF(outputStream);
+		
+		outputStream.close();
+	}
 	
 	@SuppressWarnings("unchecked")
 	private <T> List<T> fillData(Class<T> dataClass, List<Integer> ids) {
