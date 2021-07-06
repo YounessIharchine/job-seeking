@@ -67,6 +67,7 @@ public class NotificationServiceImpl implements NotificationService {
 		
 		for(Offer offer : getAuthenticatedCompany().getOffers()) {
 			ApplicationNotificationResponse item = new ApplicationNotificationResponse();
+			item.setId(offer.getId());
 			item.setOfferTitle(offer.getTitle());
 			item.setNewApplications(offer.getApplicationNotification().getNewApplications());
 			response.addApplicationNotification(item);

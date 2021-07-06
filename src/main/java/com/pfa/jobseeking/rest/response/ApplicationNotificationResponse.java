@@ -2,6 +2,7 @@ package com.pfa.jobseeking.rest.response;
 
 public class ApplicationNotificationResponse {
 
+	int id;
 	String offerTitle;
 	int newApplications;
 	
@@ -11,13 +12,17 @@ public class ApplicationNotificationResponse {
 
 	
 	
-	public ApplicationNotificationResponse(String offerTitle, int newApplications) {
+	public ApplicationNotificationResponse(int id, String offerTitle, int newApplications) {
+		this.id = id;
 		this.offerTitle = offerTitle;
 		this.newApplications = newApplications;
 	}
 
 	
 	
+	public int getId() {
+		return id;
+	}
 	public String getOfferTitle() {
 		return offerTitle;
 	}
@@ -27,6 +32,9 @@ public class ApplicationNotificationResponse {
 
 	
 	
+	public void setId(int id) {
+		this.id = id;
+	}
 	public void setOfferTitle(String offerTitle) {
 		this.offerTitle = offerTitle;
 	}
