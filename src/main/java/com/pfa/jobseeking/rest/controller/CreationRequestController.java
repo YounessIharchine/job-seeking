@@ -33,26 +33,26 @@ public class CreationRequestController {
 	
 	
 	
-	@GetMapping("/acceptCompanyCreationRequest")
-	void acceptCompanyCreationRequest(@RequestParam String companyName) {
-		creationRequestService.acceptCompanyCreationOffer(companyName);
+	@GetMapping("${rest.api.basePath}/companyCreationRequests/accept")
+	List<CompanyCreationRequestResponse> acceptCompanyCreationRequest(@RequestParam String companyName) {
+		return creationRequestService.acceptCompanyCreationOffer(companyName);
 	}
 	
-	@GetMapping("/rejectCompanyCreationRequest")
-	void rejectCompanyCreationRequest(@RequestParam String companyName) {
-		creationRequestService.rejectCompanyCreationOffer(companyName);
+	@GetMapping("${rest.api.basePath}/companyCreationRequests/reject/{id}")
+	List<CompanyCreationRequestResponse> rejectCompanyCreationRequest(@RequestParam String companyName) {
+		return creationRequestService.rejectCompanyCreationOffer(companyName);
 	}
 	
 	
 	
-	@GetMapping("/acceptOfferCreationRequest/{id}")
-	void acceptOfferCreationRequest(@PathVariable int id) {
-		creationRequestService.acceptOfferCreationOffer(id);
+	@GetMapping("${rest.api.basePath}/offerCreationRequests/accept/{id}")
+	List<OfferCreationRequestResponse> acceptOfferCreationRequest(@PathVariable int id) {
+		return creationRequestService.acceptOfferCreationOffer(id);
 	}
 	
-	@GetMapping("/rejectOfferCreationRequest/{id}")
-	void rejectOfferCreationRequest(@PathVariable int id) {
-		creationRequestService.rejectOfferCreationOffer(id);
+	@GetMapping("${rest.api.basePath}/offerCreationRequests/reject/{id}")
+	List<OfferCreationRequestResponse> rejectOfferCreationRequest(@PathVariable int id) {
+		return creationRequestService.rejectOfferCreationOffer(id);
 	}
 	
 	

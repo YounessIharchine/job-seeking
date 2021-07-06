@@ -9,6 +9,8 @@ import com.pfa.jobseeking.model.user.Company;
 
 public interface CompanyRepository extends CrudRepository<Company, Integer> {
 
+	Company findById(int id);
+	
 	Company findCompanyByName(String name);
 	
 	@Query("SELECT c FROM Company c "

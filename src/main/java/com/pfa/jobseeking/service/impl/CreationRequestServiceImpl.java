@@ -46,7 +46,68 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Override
 	public List<CompanyCreationRequestResponse> findAllCompanyCreationRequests() throws IOException {
-		List<CompanyCreationRequest> requests = companyCreationRequestRepository.findAll();
+		return mapToCompanyResponse(companyCreationRequestRepository.findAll());
+	}
+
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Override
+	public List<OfferCreationRequestResponse> findAllOfferCreationRequests() {
+		return mapToOfferResponse(offerCreationRequestRepository.findAll());
+	}
+
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Transactional
+	@Override
+	public List<CompanyCreationRequestResponse> acceptCompanyCreationOffer(String companyName) {
+		Company company = companyRepository.findCompanyByName(companyName);
+		company.setVerified(true);
+		company.setCompanyCreationRequest(null);
+		companyCreationRequestRepository.delete(companyCreationRequestRepository.findByCompanyName(companyName));
+		return mapToCompanyResponse(companyCreationRequestRepository.findAll());
+	}
+
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Transactional
+	@Override
+	public List<CompanyCreationRequestResponse> rejectCompanyCreationOffer(String companyName) {
+		companyRepository.delete(companyRepository.findCompanyByName(companyName));
+		return mapToCompanyResponse(companyCreationRequestRepository.findAll());
+	}
+
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Override
+	public List<OfferCreationRequestResponse> acceptOfferCreationOffer(int id) {
+		Offer offer = offerRepository.findById(id);
+		offer.setVerified(true);
+		offer.setOfferCreationRequest(null);
+		offerCreationRequestRepository.delete(offerCreationRequestRepository.findByOfferId(id));
+		return mapToOfferResponse(offerCreationRequestRepository.findAll());
+	}
+
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Override
+	public List<OfferCreationRequestResponse> rejectOfferCreationOffer(int id) {
+		offerRepository.delete(offerRepository.findById(id));
+		return mapToOfferResponse(offerCreationRequestRepository.findAll());
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Override
+	public byte[] getDocument(int id) throws IOException {
+		return FileUtils.readFileToByteArray(new File(path+companyCreationRequestRepository.findById(id).getCompany().getDocumentPath()));
+	}
+	
+	
+	
+	
+	
+	
+	private List<CompanyCreationRequestResponse> mapToCompanyResponse(List<CompanyCreationRequest> requests) {
 		List<CompanyCreationRequestResponse> response = new ArrayList<>();
 		
 		for(CompanyCreationRequest request : requests) {
@@ -58,12 +119,9 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 		
 		return response;
 	}
-
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@Override
-	public List<OfferCreationRequestResponse> findAllOfferCreationRequests() {
-		List<OfferCreationRequest> requests = offerCreationRequestRepository.findAll();
+	
+	private List<OfferCreationRequestResponse> mapToOfferResponse(List<OfferCreationRequest> requests) {
 		List<OfferCreationRequestResponse> response = new ArrayList<>();
 		
 		for(OfferCreationRequest request : requests) {
@@ -76,48 +134,6 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 		}
 		
 		return response;
-	}
-
-	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@Transactional
-	@Override
-	public void acceptCompanyCreationOffer(String companyName) {
-		Company company = companyRepository.findCompanyByName(companyName);
-		company.setVerified(true);
-		company.setCompanyCreationRequest(null);
-		companyCreationRequestRepository.delete(companyCreationRequestRepository.findByCompanyName(companyName));
-	}
-
-	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@Transactional
-	@Override
-	public void rejectCompanyCreationOffer(String companyName) {
-		companyRepository.delete(companyRepository.findCompanyByName(companyName));
-	}
-
-	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@Override
-	public void acceptOfferCreationOffer(int id) {
-		Offer offer = offerRepository.findById(id);
-		offer.setVerified(true);
-		offer.setOfferCreationRequest(null);
-		offerCreationRequestRepository.delete(offerCreationRequestRepository.findByOfferId(id));
-	}
-
-	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@Override
-	public void rejectOfferCreationOffer(int id) {
-		offerRepository.delete(offerRepository.findById(id));
-	}
-
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@Override
-	public byte[] getDocument(int id) throws IOException {
-		return FileUtils.readFileToByteArray(new File(path+companyCreationRequestRepository.findById(id).getCompany().getDocumentPath()));
 	}
 
 }

@@ -12,13 +12,13 @@ public interface CreationRequestService {
 	
 	List<OfferCreationRequestResponse> findAllOfferCreationRequests();
 
-	void acceptCompanyCreationOffer(String companyName);
+	List<CompanyCreationRequestResponse> acceptCompanyCreationOffer(String companyName);
 
-	void rejectCompanyCreationOffer(String companyName);
+	List<CompanyCreationRequestResponse> rejectCompanyCreationOffer(String companyName);
 
-	void acceptOfferCreationOffer(int id);
+	List<OfferCreationRequestResponse> acceptOfferCreationOffer(int id);
 
-	void rejectOfferCreationOffer(int id);
+	List<OfferCreationRequestResponse> rejectOfferCreationOffer(int id);
 
 	byte[] getDocument(int id) throws IOException;
 	
