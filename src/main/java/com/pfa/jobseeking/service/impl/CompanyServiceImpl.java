@@ -418,8 +418,10 @@ public class CompanyServiceImpl implements CompanyService {
 			item.setName(company.getName());
 			item.setCity(company.getCity().getName());
 			item.setDomain(company.getDomain().getName());
-			byte[] logoBytes = FileUtils.readFileToByteArray(new File(path+company.getCompanyProfile().getLogo()));
-			item.setLogo(Base64.getEncoder().encodeToString(logoBytes));
+			if(company.getCompanyProfile().getLogo() != null) {
+				byte[] logoBytes = FileUtils.readFileToByteArray(new File(path+company.getCompanyProfile().getLogo()));
+				item.setLogo(Base64.getEncoder().encodeToString(logoBytes));
+			}
 			response.add(item);
 		}
 		
@@ -451,6 +453,7 @@ public class CompanyServiceImpl implements CompanyService {
 			item.setCity(offer.getCity().getName());
 			item.setDomain(offer.getDomain().getName());
 			item.setCompanyName(offer.getCompany().getName());
+			item.setOpen(offer.isOpen());
 			if(offer instanceof InternshipOffer) {
 				InternshipOffer internshipOffer = (InternshipOffer) offer;
 				item.setInternshipOffer(true);

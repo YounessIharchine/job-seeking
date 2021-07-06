@@ -13,11 +13,12 @@ public class OfferResponse {
 	String type;
 	String duration;
 	boolean isSaved;
+	boolean isOpen;
 	
 	public OfferResponse() { }
 
 	public OfferResponse(int id, String title, String description, String date, String city, String domain,
-			String companyName, boolean isInternshipOffer, String type, String duration, boolean isSaved) {
+			String companyName, boolean isInternshipOffer, String type, String duration, boolean isSaved, boolean isOpen) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -29,6 +30,7 @@ public class OfferResponse {
 		this.type = type;
 		this.duration = duration;
 		this.isSaved = isSaved;
+		this.isOpen = isOpen;
 	}
 	
 	
@@ -65,8 +67,12 @@ public class OfferResponse {
 	public boolean isSaved() {
 		return isSaved;
 	}
+	public boolean isOpen() {
+		return isOpen;
+	}
 
 	
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -100,7 +106,9 @@ public class OfferResponse {
 	public void setSaved(boolean isSaved) {
 		this.isSaved = isSaved;
 	}
-	
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
+	}
 	
 	
 	
