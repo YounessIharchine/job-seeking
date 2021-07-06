@@ -60,11 +60,11 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional
 	@Override
-	public List<CompanyCreationRequestResponse> acceptCompanyCreationOffer(String companyName) {
-		Company company = companyRepository.findCompanyByName(companyName);
+	public List<CompanyCreationRequestResponse> acceptCompanyCreationOffer(int id) {
+		Company company = companyRepository.findById(id);
 		company.setVerified(true);
 		company.setCompanyCreationRequest(null);
-		companyCreationRequestRepository.delete(companyCreationRequestRepository.findByCompanyName(companyName));
+		companyCreationRequestRepository.delete(companyCreationRequestRepository.findByCompanyId(id));
 		return mapToCompanyResponse(companyCreationRequestRepository.findAll());
 	}
 
@@ -72,8 +72,8 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Transactional
 	@Override
-	public List<CompanyCreationRequestResponse> rejectCompanyCreationOffer(String companyName) {
-		companyRepository.delete(companyRepository.findCompanyByName(companyName));
+	public List<CompanyCreationRequestResponse> rejectCompanyCreationOffer(int id) {
+		companyRepository.delete(companyRepository.findById(id));
 		return mapToCompanyResponse(companyCreationRequestRepository.findAll());
 	}
 
@@ -112,6 +112,7 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 		
 		for(CompanyCreationRequest request : requests) {
 			CompanyCreationRequestResponse item = new CompanyCreationRequestResponse();
+			item.setId(request.getCompany().getId());
 			item.setDate(request.getDate());
 			item.setCompanyName(request.getCompany().getName());
 			response.add(item);
@@ -126,10 +127,10 @@ public class CreationRequestServiceImpl implements CreationRequestService{
 		
 		for(OfferCreationRequest request : requests) {
 			OfferCreationRequestResponse item = new OfferCreationRequestResponse();
+			item.setId(request.getOffer().getId());
 			item.setRequestDate(request.getDate());
 			item.setDescription(request.getOffer().getDescription());
 			item.setTitle(request.getOffer().getTitle());
-			item.setOfferDate(request.getOffer().getDate());
 			response.add(item);
 		}
 		

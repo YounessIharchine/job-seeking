@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,14 +32,14 @@ public class CreationRequestController {
 	
 	
 	
-	@GetMapping("${rest.api.basePath}/companyCreationRequests/accept")
-	List<CompanyCreationRequestResponse> acceptCompanyCreationRequest(@RequestParam String companyName) {
-		return creationRequestService.acceptCompanyCreationOffer(companyName);
+	@GetMapping("${rest.api.basePath}/companyCreationRequests/accept/{id}")
+	List<CompanyCreationRequestResponse> acceptCompanyCreationRequest(@PathVariable int id) {
+		return creationRequestService.acceptCompanyCreationOffer(id);
 	}
 	
 	@GetMapping("${rest.api.basePath}/companyCreationRequests/reject/{id}")
-	List<CompanyCreationRequestResponse> rejectCompanyCreationRequest(@RequestParam String companyName) {
-		return creationRequestService.rejectCompanyCreationOffer(companyName);
+	List<CompanyCreationRequestResponse> rejectCompanyCreationRequest(@PathVariable int id) {
+		return creationRequestService.rejectCompanyCreationOffer(id);
 	}
 	
 	

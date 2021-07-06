@@ -12,9 +12,9 @@ public interface CreationRequestService {
 	
 	List<OfferCreationRequestResponse> findAllOfferCreationRequests();
 
-	List<CompanyCreationRequestResponse> acceptCompanyCreationOffer(String companyName);
+	List<CompanyCreationRequestResponse> acceptCompanyCreationOffer(int id);
 
-	List<CompanyCreationRequestResponse> rejectCompanyCreationOffer(String companyName);
+	List<CompanyCreationRequestResponse> rejectCompanyCreationOffer(int id);
 
 	List<OfferCreationRequestResponse> acceptOfferCreationOffer(int id);
 

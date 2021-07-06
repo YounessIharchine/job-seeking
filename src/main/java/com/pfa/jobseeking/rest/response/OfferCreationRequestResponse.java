@@ -2,22 +2,24 @@ package com.pfa.jobseeking.rest.response;
 
 public class OfferCreationRequestResponse {
 
+	int id;
 	String requestDate;
 	String title;
 	String description;
-	String offerDate;
 	
 	public OfferCreationRequestResponse() { }
 
-	public OfferCreationRequestResponse(String requestDate, String title, String description, String offerDate) {
-		super();
+	public OfferCreationRequestResponse(int id, String requestDate, String title, String description) {
+		this.id = id;
 		this.requestDate = requestDate;
 		this.title = title;
 		this.description = description;
-		this.offerDate = offerDate;
 	}
 
 	
+	public int getId() {
+		return id;
+	}
 	public String getRequestDate() {
 		return requestDate;
 	}
@@ -27,11 +29,11 @@ public class OfferCreationRequestResponse {
 	public String getDescription() {
 		return description;
 	}
-	public String getOfferDate() {
-		return offerDate;
-	}
-
 	
+
+	public void setId(int id) {
+		this.id = id;
+	}
 	public void setRequestDate(String requestDate) {
 		this.requestDate = requestDate;
 	}
@@ -40,9 +42,6 @@ public class OfferCreationRequestResponse {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public void setOfferDate(String offerDate) {
-		this.offerDate = offerDate;
 	}
 	
 	
