@@ -24,4 +24,13 @@ public class ApplicationController {
 	public @ResponseBody byte[] getCv(@PathVariable int seekerId, @PathVariable int offerId) throws IOException {
 		return applicationService.getCv(seekerId, offerId);
 	}
+	
+	
+	@GetMapping(
+			value = "/api/applications/{seekerId}/{offerId}/coverLetter", 
+			produces = MediaType.APPLICATION_PDF_VALUE
+			)
+	public @ResponseBody byte[] getCoverLetter(@PathVariable int seekerId, @PathVariable int offerId) throws IOException {
+		return applicationService.getCoverLetter(seekerId, offerId);
+	}
 }

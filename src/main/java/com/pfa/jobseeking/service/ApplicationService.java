@@ -6,4 +6,6 @@ public interface ApplicationService {
 
 	byte[] getCv(int seekerId, int offerId) throws IOException;
 
+	byte[] getCoverLetter(int seekerId, int offerId) throws IOException;
+
 }
