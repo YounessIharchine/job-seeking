@@ -295,6 +295,8 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 	
 	
+	@PreAuthorize("hasRole('ROLE_COMPANY')")
+	@Transactional
 	@Override
 	public List<Paragraph> updateParagraph(int id, ParagraphDto paragraphDto) throws AccessDeniedException {
 		Company company = getAuthenticatedCompany();
