@@ -33,8 +33,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 	@Value("${storage.images.basePath}")
 	String path;
 	
-	@PreAuthorize("hasRole('ROLE_COMPANY')")
-	@Transactional
+//	@PreAuthorize("hasRole('ROLE_COMPANY')")
+//	@Transactional
 	@Override
 	public byte[] getCv(int seekerId, int offerId) throws IOException {
 //		Company company = getAuthenticatedCompany();
@@ -48,6 +48,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return FileUtils.readFileToByteArray(new File(path+application.getCv()));
 	}
 
+//	@PreAuthorize("hasRole('ROLE_COMPANY')")
+//	@Transactional
 	@Override
 	public byte[] getCoverLetter(int seekerId, int offerId) throws IOException {
 //		Company company = getAuthenticatedCompany();
