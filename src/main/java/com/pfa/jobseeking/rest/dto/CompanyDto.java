@@ -10,6 +10,7 @@ public class CompanyDto {
 	String city;
 	String domain;
 	String document;
+	String logo;
 	
 	
 	
@@ -18,7 +19,7 @@ public class CompanyDto {
 	
 	
 	public CompanyDto(String email, String password, String name, String publicEmail, String phone, String city,
-			String domain, String document) {
+			String domain, String document, String logo) {
 		this.email = email;
 		this.password = password;
 		this.name = name;
@@ -27,6 +28,7 @@ public class CompanyDto {
 		this.city = city;
 		this.domain = domain;
 		this.document = document;
+		this.logo = logo;
 	}
 
 	
@@ -55,9 +57,12 @@ public class CompanyDto {
 	public String getDocument() {
 		return document;
 	}
+	public String getLogo() {
+		return logo;
+	}
 
-	
-	
+
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -81,6 +86,9 @@ public class CompanyDto {
 	}
 	public void setDocument(String document) {
 		this.document = document;
+	}
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 	
 	

@@ -6,9 +6,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.pfa.jobseeking.model.offer.Application;
 import com.pfa.jobseeking.model.offer.Offer;

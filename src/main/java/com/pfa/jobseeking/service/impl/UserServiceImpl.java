@@ -130,6 +130,11 @@ public class UserServiceImpl implements UserService {
 		FileUtils.writeByteArrayToFile(new File(path+documentPath), documentBytes);
 		company.setDocumentPath(documentPath.replace("\\", "\\\\"));
 		
+		String logoPath = "\\logos\\logo-" + company.getId() + ".pdf";
+		byte[] logoBytes = Base64.getDecoder().decode(companyDto.getLogo());
+		FileUtils.writeByteArrayToFile(new File(path+logoPath), logoBytes);
+		company.getCompanyProfile().setLogo(logoPath.replace("\\", "\\\\"));
+		
 		userRepository.save(company);
 		
 		CompanyCreationRequest request = new CompanyCreationRequest();
