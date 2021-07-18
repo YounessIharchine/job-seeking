@@ -12,8 +12,7 @@ import com.pfa.jobseeking.model.user.Seeker;
 public class Application {
 
 	@EmbeddedId
-	ApplicationKey id = new ApplicationKey()
-	;
+	ApplicationKey id = new ApplicationKey();
 	
 	@ManyToOne
 	@MapsId("seekerId")
