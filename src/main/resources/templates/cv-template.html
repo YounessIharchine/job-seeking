@@ -3,28 +3,132 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<title>CV</title>
+		<link th:href="@{http://localhost:8080/cv-style.css}" rel="stylesheet"/>
 	</head>
+	  <script
+	    src="https://kit.fontawesome.com/5bf11eee96.js"
+	    crossorigin="anonymous"
+	  ></script>
 	<body>
-		<h3 style="text-align:center;color:green">
-			<span th:text="'This is a test ' + ${var}"></span>
-		</h3>
-		<div th:each="experience: ${experiences}">
-			<span th:text="${experience.jobTitle}"></span>
-		</div>
-		<div th:each="education: ${educations}">
-			<span th:text="${education.type}"></span>
-		</div>
-		<div th:each="project: ${projects}">
-			<span th:text="${project.title}"></span>
-		</div>
-		<div th:each="skill: ${skills}">
-			<span th:text="${skill.name}"></span>
-			<div th:each="technology : ${skill.technologies}">
-				<span th:text="${technology.name}"></span>
+	    <div class="cvContainer">
+	
+    <div class="container">
+      <div class="personalInfos">
+        <div class="Image">
+          <img th:src="|data:image/png;base64,${photo}|"/>
+        </div>
+
+        <div class="fullName" th:text="${seeker.firstName}+' '+${seeker.lastName}" ></div>
+        <div class="speciality">Full Stack Developper</div>
+
+        <div class="Ville_Email">
+          <div class="iconContainer City">
+            <i class="fas fa-map-marker"></i>
+            <p>Agadir</p>
+          </div>
+          <div class="iconContainer Email">
+            <i class="fas fa-envelope"></i>
+            <p>Younes.kellouch@gmail.com</p>
+          </div>
+        </div>
+
+        <div class="Phone_Linkedin_Github">
+          <div class="iconContainer Phone">
+            <i class="fas fa-phone"></i>
+            <p>070613248</p>
+          </div>
+          <div class="iconContainer Linkedin">
+            <i class="fab fa-linkedin-in"></i>
+            <p>in/YounesKellouch</p>
+          </div>
+          <div class="iconContainer Github">
+            <i class="fab fa-github-square"></i>
+            <p>YounesKellouch.github.com</p>
+          </div>
+        </div>
+      </div>
+    
+    	<div class="firstRow">
+	   	   	<div class="Experiences">
+	    		<h2>Experiences :</h2>
+	    		<div class="experiences" th:each="experience: ${experiences}"> 
+	    			<p class="jobTitle" th:text="${experience.jobTitle}"></p>
+	    			<p class="company" th:text="${experience.company}+' - '+ ${experience.city}">
+	    			</p>
+	    			<span th:text="${experience.timePeriod.startDate}+' - '+${experience.timePeriod.endDate}"></span> 
+				</div>
+	 
+	    	</div>
+	    	
+	    	<div class="Educations">
+	    		<h2>Educations : </h2>
+	    			<div class="educations" th:each="education: ${educations}"> 
+		    			<p class="institution" th:text="${education.institution}"></p>
+		    			<p class="city" th:text="${education.city}">
+		    			</p>
+		    			<span th:text="${education.type}"></span> 
+					</div>
+	    	</div>
+ 
+		</div> 
+		
+		<div class="secondRow">
+			<div class="Projects">
+				<h2>Projects :</h2>
+		    		<div class="projects" th:each="project: ${projects}"> 
+		    			<p class="title" th:text="${project.title}"></p>
+		    			<span th:text="${project.timePeriod.startDate}+' - '+${project.timePeriod.endDate}"></span> 
+					</div>
+				
 			</div>
+		
+			<div class="Skills">
+				<h2>Skills :</h2>
+					<div class="skills" th:each="skill: ${skills}">
+						<p class="title" th:text="${skill.name}"></p>
+						<div th:each="technology : ${skill.technologies}">
+							<span th:text="${technology.name}"></span>
+						</div>
+					</div>
+			
+			</div>
+			
 		</div>
-		<div th:each="language: ${languages}">
-			<span th:text="${language.name}"></span>
+		
+		<div class="thirdRow">
+			<div class="Languages">
+				<h2>Languages : </h2>
+				<div class="languages" th:each="language: ${languages}">
+					<p class="title" th:text="${language.name}"></p>
+					<span th:text="${language.level}"></span>
+				</div>
+			</div>
+				
+			
 		</div>
+    	
+    
+  
+ 
+    </div>
+    </div>
+<!-- 		<div th:each="experience: ${experiences}"> -->
+<!-- 			<span th:text="${experience.jobTitle}"></span> -->
+<!-- 		</div> -->
+<!-- 		<div th:each="education: ${educations}"> -->
+<!-- 			<span th:text="${education.type}"></span> -->
+<!-- 		</div> -->
+<!-- 		<div th:each="project: ${projects}"> -->
+<!-- 			<span th:text="${project.title}"></span> -->
+<!-- 		</div> -->
+<!-- 		<div th:each="skill: ${skills}"> -->
+<!-- 			<span th:text="${skill.name}"></span> -->
+<!-- 			<div th:each="technology : ${skill.technologies}"> -->
+<!-- 				<span th:text="${technology.name}"></span> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 		<div th:each="language: ${languages}"> -->
+<!-- 			<span th:text="${language.name}"></span> -->
+<!-- 		</div> -->
 	</body>
 </html>
